@@ -1,0 +1,20 @@
+.text-normalsize
+{
+    text-transform: none;
+}
+
+.wrap .app-content .cards .card .card-block
+{
+    font-size: inherit;
+}
+
+.cards a
+{
+    color: inherit;
+}
+
+#admin .content .bottom .right a
+{
+    line-height: 1.1;
+    margin-top: 0;
+}

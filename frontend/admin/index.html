@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- start linking  -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- icon -->
+    <link rel="icon" href="img/log.png">
+    <!-- end linking -->
+    <title>NutFlix - admin</title>
+</head>
+<body>
+<!-- start admin -->
+<section id="admin">
+    <!-- start sidebar -->
+    <div class="sidebar">
+        <!-- start with head -->
+        <div class="head">
+            <div class="logo">
+                <img src="img/logo-admin.png" alt="">
+            </div>
+            <a href="#" class="btn btn-danger">Наше лого</a>
+        </div>
+        <!-- end with head -->
+        <!-- start the list -->
+        <div id="list">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="index.html" class="nav-link active"><i
+                        class="fa fa-adjust"></i>Главная</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i
+                        class="fa fa-users"></i>Пользователи</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-toggle="collapse"><i
+                        class="fa fa-fire"></i>Тестирования</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-inbox"></i>Тесты</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-edit"></i>Вопросы</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-table"></i>Результаты</a>
+                </li>
+                <li class="nav-item"><a href="support.html" class="nav-link"><i
+                        class="fa fa-life-ring"></i>Поддержка</a></li>
+            </ul>
+        </div>
+        <!-- end the list -->
+    </div>
+    <!-- end sidebar -->
+    <!-- start content -->
+    <div class="content">
+        <!-- start content head -->
+        <div class="head">
+            <!-- head top -->
+            <div class="top">
+                <div class="left">
+                    <button id="on" class="btn btn-info"><i class="fa fa-bars"></i></button>
+                    <button id="off" class="btn btn-info hide"><i class="fa fa-align-left"></i></button>
+                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-home"></i>Домой</button>
+                </div>
+                <div class="right">
+                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-bell"></i></button>
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" id="userDropdown" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">Kenobi
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">Настройки</a>
+                            <a class="dropdown-item" href="#">Выйти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end head top -->
+            <!-- start head bottom -->
+            <div class="bottom">
+                <div class="left">
+                    <h1>Главная</h1>
+                </div>
+            </div>
+            <!-- end head bottom -->
+        </div>
+        <!-- end content head -->
+        <!-- start with the real content -->
+        <div id="real">
+            <div class="wrap">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <!-- avtive -->
+                        <div class="activeMode">
+                            <div class="card">
+                                <h1 class="text-normalsize">Остановить все тестирования?</h1>
+                                <a href="" class="btn btn-danger">Остановить</a>
+                            </div>
+                        </div>
+                        <!-- end active -->
+                    </div>
+                </div>
+                <section class="app-content">
+                    <div class="m-b-lg nav-tabs-horizontal">
+                        <!-- start cards -->
+                        <div class="tab-content p-md cards">
+                            <div class="card card-top">
+                                <h3 class="m-b-lg text-normalsize">Недавние тестирования</h3>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <a href="#">
+                                            <div class="card card-default">
+                                                <div class="card-header">
+                                                    <h4 class="card-title text-normalsize">Тестирование на
+                                                        ориентацию</h4>
+                                                </div>
+                                                <div class="card-block">
+                                                    <p><strong>Решают:</strong> 15</p>
+                                                    <p><strong>Закончили:</strong> 5</p>
+                                                    <p><strong>Всего:</strong> 20</p>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <p><strong>Времени осталось:</strong> 12:50</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div><!-- END column -->
+                                    <div class="col-sm-6 col-md-4">
+                                        <a href="#">
+                                            <div class="card card-info">
+                                                <div class="card-header">
+                                                    <h4 class="card-title text-normalsize">Тестирование на
+                                                        ориентацию</h4>
+                                                </div>
+                                                <div class="card-block card-text">
+                                                    <p><strong>Решают:</strong> 0</p>
+                                                    <p><strong>Закончили:</strong> 20</p>
+                                                    <p><strong>Всего:</strong> 20</p>
+                                                </div>
+                                                <div class="card-footer card-header">
+                                                    <p><strong>Завершено:</strong> 12:50 назад</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div><!-- END column -->
+                                </div><!-- .row -->
+                            </div><!-- .tab-pane -->
+                        </div><!-- .tab-content -->
+                    </div><!-- .nav-tabs-horizontal -->
+                </section><!-- .app-content -->
+                <!-- start analytics -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="analytics">
+                            <div class="card">
+                                <div class="icon"><i class="fa fa-inbox"></i></div>
+                                <div class="text">
+                                    <h1>984</h1>
+                                    <p>Всего тестов</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="analytics">
+                            <div class="card">
+                                <div class="icon"><i class="fa fa-edit"></i></div>
+                                <div class="text">
+                                    <h1>1455</h1>
+                                    <p>Всего вопросов</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="analytics">
+                            <div class="card">
+                                <div class="icon"><i class="fa fa-users"></i></div>
+                                <div class="text">
+                                    <h1>32</h1>
+                                    <p>Всего пользователей</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end analytics -->
+            </div>
+        </div>
+        <!-- end the real content -->
+    </div>
+    <!-- end content -->
+</section>
+<!-- end admin -->
+<!-- start screpting -->
+<script src="js/jquery.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/app.js"></script>
+<!-- end screpting -->
+</body>
+</html>
