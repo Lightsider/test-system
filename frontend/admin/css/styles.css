@@ -1,6 +1,6 @@
 .text-normalsize
 {
-    text-transform: none;
+    text-transform: none !important;
 }
 
 .wrap .app-content .cards .card .card-block
@@ -17,4 +17,38 @@
 {
     line-height: 1.1;
     margin-top: 0;
+}
+.category-link
+{
+    cursor: pointer;
+}
+#admin #leads .table .category-link td,#admin #leads .table thead th,#admin #leads .table tbody td
+{
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.category-link:hover
+{
+    background-color: #fafafa;
+}
+
+.radio-label-div
+{
+    height: 38px;
+}
+
+.radio-label
+{
+    margin-top: 7px;
+}
+
+
+#admin .sidebar #list .nav .sub .nav-link
+{
+    margin-left: 10px;
+}
+
+#admin .sidebar
+{
+    overflow: auto;
 }

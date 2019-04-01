@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- start linking  -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- icon -->
+    <link rel="icon" href="img/log.png">
+    <!-- end linking -->
+    <title>NutFlix - admin</title>
+</head>
+<body>
+<!-- start admin -->
+<section id="admin">
+    <!-- start sidebar -->
+    <div class="sidebar">
+        <!-- start with head -->
+        <div class="head">
+            <div class="logo">
+                <img src="img/logo-admin.png" alt="">
+            </div>
+            <a href="#" class="btn btn-danger">Наше лого</a>
+        </div>
+        <!-- end with head -->
+        <!-- start the list -->
+        <div id="list">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="index.html" class="nav-link"><i
+                        class="fa fa-adjust"></i>Главная</a></li>
+                <li class="nav-item"><a href="#" class="nav-link "><i
+                        class="fa fa-users"></i>Пользователи</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-toggle="collapse"><i
+                        class="fa fa-fire"></i>Тестирования</a></li>
+                <li class="nav-item"><a href="#" class="nav-link "><i class="fa fa-inbox"></i>Тесты</a></li>
+                <li class="nav-item"><a href="#" class="nav-link active"><i class="fa fa-edit"></i>Вопросы</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-table"></i>Результаты</a>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link"><i
+                        class="fa fa-cog"></i>Настройки</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i
+                        class="fa fa-life-ring"></i>Поддержка</a></li>
+
+            </ul>
+        </div>
+        <!-- end the list -->
+    </div>
+    <!-- end sidebar -->
+    <!-- start content -->
+    <div class="content">
+        <!-- start content head -->
+        <div class="head">
+            <!-- head top -->
+            <div class="top">
+                <div class="left">
+                    <button id="on" class="btn btn-info"><i class="fa fa-bars"></i></button>
+                    <button id="off" class="btn btn-info hide"><i class="fa fa-align-left"></i></button>
+                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-home"></i>Домой</button>
+                </div>
+                <div class="right">
+                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-bell"></i></button>
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" id="userDropdown" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">Kenobi
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">Настройки</a>
+                            <a class="dropdown-item" href="#">Выйти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end head top -->
+            <!-- start head bottom -->
+            <div class="bottom">
+                <div class="left">
+                    <h1>Тест детально</h1>
+                </div>
+            </div>
+            <!-- end head bottom -->
+        </div>
+        <!-- end content head -->
+        <!-- start with the real content -->
+        <div id="real">
+            <!-- start content here -->
+            <div class="wrap">
+                <section class="app-content" id="contact">
+                    <div class="card">
+                        <h3 class="m-b-lg">Тест на ориентацию</h3>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <p class="m-h-lg fz-md lh-lg"><strong>Всего вопросов:</strong> 10 </p>
+                                <p class="m-h-lg fz-md lh-lg"><strong>Всего решали:</strong> 10 </p>
+                                <p class="m-h-lg fz-md lh-lg"><strong>Средний балл:</strong> 74 </p>
+                            </div><!-- END column -->
+                        </div><!-- .row -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="mail-toolbar m-b-lg">
+                                        <div class="m-b-lg">
+                                            <a href="#" data-toggle="modal" data-target="#categoryModal"
+                                               class="btn btn-primary btn-block">Добавить вопрос</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- .row -->
+                            <div id="contacts-list" class="row">
+                                <div class="col-sm-3">
+                                    <div class="card user-card contact-item p-md">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5></a>
+                                                <small class="media-meta">С выбором ответа</small>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item-actions">
+                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                               data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
+                                        </div><!-- .contact-item-actions -->
+                                    </div><!-- card user-card -->
+                                </div><!-- END column -->
+
+                                <div class="col-sm-3">
+                                    <div class="card user-card contact-item p-md">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5></a>
+                                                <small class="media-meta">С виртуальной машиной</small>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item-actions">
+                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                               data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
+                                        </div><!-- .contact-item-actions -->
+                                    </div><!-- card user-card -->
+                                </div><!-- END column -->
+
+                                <div class="col-sm-3">
+                                    <div class="card user-card contact-item p-md">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5></a>
+                                                <small class="media-meta">С виртуальной машиной</small>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item-actions">
+                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                               data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
+                                        </div><!-- .contact-item-actions -->
+                                    </div><!-- card user-card -->
+                                </div><!-- END column -->
+
+                                <div class="col-sm-3">
+                                    <div class="card user-card contact-item p-md">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5></a>
+                                                <small class="media-meta">Без выбора ответа</small>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item-actions">
+                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                               data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
+                                        </div><!-- .contact-item-actions -->
+                                    </div><!-- card user-card -->
+                                </div><!-- END column -->
+
+
+                            </div><!-- #contacts-list -->
+                        </div><!-- END column -->
+                    </div><!-- .row -->
+                </section><!-- .app-content -->
+            </div><!-- .wrap -->
+
+            <!-- new category Modal -->
+            <div id="categoryModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Новый вопрос</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+
+                        </div>
+                        <form id="newCategoryForm" enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                                <div class="form-group m-0 mb-1">
+                                    <label for="category"> Выберите вопрос </label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option>HTML</option>
+                                        <option>CSS</option>
+                                        <option>Javascript</option>
+                                        <option>Bootstrap</option>
+                                        <option>AngularJs</option>
+                                    </select>
+                                </div>
+                            </div><!-- .modal-body -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
+                                <button type="button" class="btn btn-success" data-dismiss="modal">Добавить</button>
+                            </div><!-- .modal-footer -->
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+            <!-- delete item Modal -->
+            <div id="deleteCategoryModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Удалить вопрос?</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Вы точно хотите удалить вопрос <strong>Вопрос</strong> ?</p>
+                            <p>Вопрос будет удален из теста, но останется доступен для выбора</p>
+                        </div><!-- .modal-body -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button>
+                        </div><!-- .modal-footer -->
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+        <!-- end the real content -->
+    </div>
+    <!-- end content -->
+</section>
+<!-- end admin -->
+<!-- start screpting -->
+<script src="js/jquery.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/app.js"></script>
+<script src="js/scripts.js"></script>
+<!-- end screpting -->
+</body>
+</html>
