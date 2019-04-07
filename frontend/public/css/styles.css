@@ -4,7 +4,7 @@ body
 }
 .container-main
 {
-    height: 100vh;
+    min-height: 92.5vh;
 }
 a:hover, a:focus {
     outline: none;
@@ -16,6 +16,7 @@ a:hover, a:focus {
     background-color: #222245;
     padding: 40px 50px;
     position: relative;
+    margin-bottom: 10%;
 }
 
 .tab:before {
@@ -233,6 +234,7 @@ a:hover, a:focus {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     background-color: #222245;
     padding: 2%;
+    color: #fff;
 }
 
 .container-main h1, .card h5
@@ -248,7 +250,7 @@ a:hover, a:focus {
     background: transparent;
     opacity: 1;
     border-bottom: 2px solid #eec111;
-    margin-bottom: 5%;
+    margin-bottom: 3%;
 }
 
 .content-area .card
@@ -256,9 +258,45 @@ a:hover, a:focus {
     background-color: #16162c;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     color: white;
+    margin-bottom: 10%;
 }
 
 .text-yellow
 {
     color: #eec111 !important;
 }
+.text-red
+{
+    color: #d60000 !important;
+}
+.text-green
+{
+    color: green !important;
+}
+.text-blue
+{
+    color: #0000b6 !important;
+}
+
+.form-group .disabled
+{
+    opacity: 0.7;
+}
+
+@media(max-width: 1200px)
+{
+    .card
+    {
+        font-size: 14px;
+    }
+    .card-subtitle
+    {
+        font-size: 15px;
+    }
+    .card-title
+    {
+        font-size: 17px;
+    }
+}
+
+

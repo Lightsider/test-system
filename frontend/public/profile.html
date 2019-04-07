@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- start linking  -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- end linking -->
+    <title>NutFlix - admin</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark nav-user-side">
+    <a class="navbar-brand" href="#">Test System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Тесты<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Контакты</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="navbar-text mr-2 dropdown">
+        Вы вошли как <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">Юзер</a>
+        <div class="dropdown-menu bg-theme" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Профиль</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Выход</a>
+        </div>
+    </div>
+
+</nav>
+<div class="container container-main">
+    <div class="row">
+        <div class="container content-area">
+            <h1> Профиль </h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-4">
+                                <div class="form-group">
+                                    <label for="auth-login">Логин</label>
+                                    <input type="text" class="form-control disabled" readonly id="auth-login" value="login">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-lg-4">
+                                <div class="form-group">
+                                    <label for="auth-login">ФИО</label>
+                                    <input type="text" class="form-control" id="auth-login" value="Иванов Иван Иванович">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-lg-4">
+                                <div class="form-group">
+                                    <label for="auth-login">Группа</label>
+                                    <input type="text" class="form-control" id="auth-login" value="ИБ-51">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="auth-password">Пароль</label>
+                                    <input type="password" class="form-control" id="auth-password">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="auth-password">Повторите пароль</label>
+                                    <input type="password" class="form-control" id="auth-password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xs-12 col-lg-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default">Сохранить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- END column -->
+            </div><!-- .row -->
+        </div>
+
+        <div class="container content-area">
+            <h1> Результаты </h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3> Всего: </h3>
+                    <p><strong>Тестов прошел:</strong> 15 </p>
+                    <p><strong>Средний балл:</strong> 56 </p>
+                </div><!-- END column -->
+                <div class="col-md-4">
+                    <h3> Последний: </h3>
+                    <p><strong>Тест на системное администрирование</strong></p>
+                    <p><strong>Результат:</strong> 15 </p>
+                </div><!-- END column -->
+                <div class="col-md-4">
+                    <h3> Лучший: </h3>
+                    <p><strong>Тест на системное администрирование</strong></p>
+                    <p><strong>Результат:</strong> 98 </p>
+                </div><!-- END column -->
+            </div><!-- .row -->
+            <div class="row">
+                <div class="col-12">
+                    <h2> Все результаты: </h2>
+                    <table class="table">
+                        <!-- start head -->
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th style="width: 30%">Название теста</th>
+                            <th style="width: 15%">Дата</th>
+                            <th style="width: 15%">Время</th>
+                            <th style="width: 40%">Результат</th>
+                        </tr>
+                        </thead>
+                        <!-- end head -->
+                        <!-- start body -->
+                        <tbody>
+                        <!-- start rows -->
+                        <tr>
+                            <td>1</td>
+                            <td>Жопов Жопа</td>
+                            <td>14.12.2018</td>
+                            <td>12:23</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+                                        75 баллов
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Жопов Жопа</td>
+                            <td>14.12.2018</td>
+                            <td>12:23</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+                                        75 баллов
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Жопов Жопа</td>
+                            <td>14.12.2018</td>
+                            <td>12:23</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar bg-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                        60 баллов
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- end rows -->
+                        </tbody>
+                        <!-- end body -->
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- start screpting -->
+<script src="js/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+<!-- end screpting -->
+</body>
+</html>
