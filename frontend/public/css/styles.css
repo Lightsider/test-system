@@ -88,12 +88,15 @@ a:hover, a:focus {
     background: #ddd;
 }
 
-.form-horizontal .form-group {
+.form-horizontal .form-group,
+.form-group
+{
     margin: 0 0 15px 0;
     position: relative;
 }
 
-.form-horizontal .form-control {
+.form-horizontal .form-control,
+.form-control{
     height: 40px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid black;
@@ -106,16 +109,29 @@ a:hover, a:focus {
     transition: all 0.3s ease 0s;
 }
 
-.form-horizontal .form-control:focus {
+.list-group a
+{
+    border:1px solid black;
+    color: black;
+}
+
+.form-horizontal .form-control:focus,
+.form-control:focus{
     box-shadow: none;
     outline: 0 none;
 }
 
-.form-horizontal .form-group label {
+.form-horizontal .form-group label,
+.form-group label{
     padding: 0 20px;
     color: black;
     text-transform: capitalize;
     margin-bottom: 10px;
+}
+
+.form-control:focus
+{
+    border-color: inherit;
 }
 
 .form-horizontal .text {
@@ -129,7 +145,8 @@ a:hover, a:focus {
     text-transform: capitalize;
 }
 .form-horizontal .btn ,
-.btn-purple
+.btn-purple,
+.btn-primary
 {
     width: 100%;
     background: #7b01e9;
@@ -142,12 +159,9 @@ a:hover, a:focus {
     text-transform: uppercase;
     margin: 20px 0 30px 0;
 }
-.btn-yellow
-{
-    margin-bottom: 5%;
-}
 .form-horizontal .btn:hover,
-.btn-purple:hover
+.btn-purple:hover,
+.btn-primary:hover
 {
     background-color: #5401a8;
     color: #fff;
@@ -156,13 +170,27 @@ a:hover, a:focus {
 }
 
 .form-horizontal .btn:focus,
-.btn-yellow:focus{
+.btn-yellow:focus,
+.btn-primary:focus
+{
     background: #eec111;
     color: #fff;
     outline: none;
     box-shadow: none;
 }
 
+.btn-primary
+{
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus
+{
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
 .nav-user-side
 {
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.02);

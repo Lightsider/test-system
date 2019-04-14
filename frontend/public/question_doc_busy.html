@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- start linking  -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- end linking -->
+    <title>NutFlix - admin</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light nav-user-side">
+    <a class="navbar-brand" href="#">Test System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Тесты<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Контакты</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="navbar-text mr-2 dropdown">
+        Вы вошли как <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">Юзер</a>
+        <div class="dropdown-menu bg-theme" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Профиль</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Выход</a>
+        </div>
+    </div>
+</nav>
+<div class="container container-main">
+    <div class="row">
+        <div class="container content-area">
+            <div class="row">
+                <div class="col-4">
+                    <h1> Вопрос 10/21 </h1>
+                </div>
+                <div class="col-8 text-right">
+                    <h1> Системное администрирование </h1>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-10 mt-3">
+                        <h4> Данное задание практическое, но все доступные контейнеры для него заняты. Подождите, пока освободиться следующий.</h4>
+                        <p> Время ожидания не будет учитываться. </p>
+                        <p> Страница обновится автоматически через некоторое время. </p>
+                        <script>
+                            var timer = 10;
+                            setInterval(function () {
+                                --timer;
+                                if (timer < 1) {
+                                    location.reload()
+                                }
+                            }, 1000);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-area text-center time-card" id="time-left">
+            <strong> Ожидание: </strong>
+            <p class="mb-0">12:44</p>
+        </div>
+    </div>
+</div>
+<!-- start screpting -->
+<script src="js/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+<!-- end screpting -->
+</body>
+</html>

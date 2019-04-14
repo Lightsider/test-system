@@ -91,8 +91,22 @@
                 <form style="width: 100%">
                     <div class="row justify-content-center">
                         <div class="col-lg-6 col-xs-12 mt-3">
-                            <h5 class="text-muted"> Впишите ответ </h5>
-                            <input class="form-control" type="text" name="answer">
+                            <h5 class="text-muted"> Один вариант ответа </h5>
+
+                            <div class="funkyradio">
+                                <div class="funkyradio-danger">
+                                    <input type="checkbox" name="radio" id="radio3" checked disabled/>
+                                    <label for="radio3">первая</label>
+                                </div>
+                                <div class="funkyradio-success">
+                                    <input type="checkbox" name="radio" id="radio4" disabled/>
+                                    <label for="radio4">Вторая</label>
+                                </div>
+                                <div class="funkyradio-success">
+                                    <input type="checkbox" name="radio" id="radio5" checked disabled/>
+                                    <label for="radio5">Третья</label>
+                                </div>
+                            </div>
 
                         </div>
                         <div class="col-lg-4 col-xs-12 mt-3">
@@ -104,14 +118,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-md-1 col-xs-0"></div>
+                        <div class="col-md-10 col-xs-12">
+                            <div class="alert alert-danger" role="alert">
+                                К сожалению, все картинки в данном задании не имеют смысла. Но 3 не имеет смысла больше всех.
+                            </div>
+                        </div>
+                    </div>
                     <div class="row justify-content-center">
                         <div class="col-lg-2 col-md-3 col-xs-12">
-                            <button type="submit" class="btn btn-purple">Отправить</button>
+                            <button type="submit" class="btn btn-purple" disabled>Отправить</button>
                         </div>
                         <div class="col-6">
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-12">
-                            <a style="display: none" href="#" class="btn btn-purple">Дальше</a>
+                            <a href="#" class="btn btn-primary">Дальше</a>
                         </div>
                     </div>
                 </form>
