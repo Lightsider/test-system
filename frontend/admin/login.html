@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- start linking  -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- icon -->
+    <link rel="icon" href="img/log.png">
+    <!-- end linking -->
+    <title>NutFlix - admin</title>
+</head>
+<body>
+<!-- start admin -->
+<section id="admin" class="w-100">
+    <!-- start content -->
+    <div class="content ml-0">
+        <!-- start with the real content -->
+        <div id="real">
+            <div class="wrap">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-xs-12">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Вход в панель администратора</h4>
+                            </div>
+                            <form id="newCategoryForm" enctype="multipart/form-data" method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="question-title"> Логин </label>
+                                        <input type="text" id="question-title" name="question-title" class="form-control"
+                                               placeholder="Логин">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="question-title"> Логин </label>
+                                        <input type="password" id="password" name="question-title" class="form-control"
+                                               placeholder="password">
+                                    </div>
+                                </div><!-- .modal-body -->
+                                <div class="modal-footer justify-content-around">
+                                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Войти</button>
+                                </div><!-- .modal-footer -->
+                            </form>
+                            <a href="#" class="mt-1 mb-3 text-center" data-dismiss="modal">К основному сайту</a>
+                        </div><!-- /.modal-content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end the real content -->
+    </div>
+    <!-- end content -->
+</section>
+<!-- end admin -->
+<!-- start screpting -->
+<script src="js/jquery.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/app.js"></script>
+<!-- end screpting -->
+</body>
+</html>
