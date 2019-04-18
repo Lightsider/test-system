@@ -1,108 +1,119 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- start linking  -->
+    <link href="{{ asset('https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900') }}" rel="stylesheet">
+    <link href="{{ asset('https://use.fontawesome.com/releases/v5.0.4/css/all.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/scripts.js') }}"></script>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title> InGalaxy - @yield('title') </title>
+    <!-- icon -->
+    <link rel="icon" href="{{ asset('img/log.png') }}">
+    <!-- end linking -->
+    <title> TestAdmin - @yield('title') </title>
 </head>
-<body class="bg-welcome">
-<header class="fixed-top">
-    <div class="container-fluid">
-        <div class="row justify-content-between">
-            <div class="col-2 console p-0">
-                <div class="row h-100 justify-content-center align-items-center">
-                    <h2><a href="{{ route('news') }}">InGalaxy</a></h2>
-                </div>
-            </div>
-            <div class="col-6 console p-0">
-                <nav class="navbar navbar-expand-lg p-0">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-center align-items-center"
-                         id="navbarNavDropdown">
-                        <ul class="navbar-nav justify-content-around w-100">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile',['id'=>Auth::user()->id]) }}">
-                                    <button type="submit" class="btn button-console">Профиль</button>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users') }}">
-                                    <button type="submit" class="btn button-console">Пользователи</button>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('friends') }}">
-                                    <button type="submit" class="btn button-console">Друзья</button>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('news') }}">
-                                    <button type="submit" class="btn button-console">Галолента</button>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('messages') }}">
-                                    <button type="submit" class="btn button-console">Сообщения</button>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-            <div class="col-2 console p-0">
-                <div class="row justify-content-between align-items-center h-100 w-100 ml-0">
-                    <div class="col-6 p-0">
-                        <a href="{{ route('profile',['id'=>Auth::user()->id]) }}">
-                            @if(!empty(Auth::user()->name))
-                                {{ Auth::user()->name  }} {{ Auth::user()->surname }}
-                            @else
-                                {{ Auth::user()->login }}
-                            @endif
-                        </a>
-                    </div>
-                    <div class="col-6 p-0">
-                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#dropdown_top" role="button"
-                           aria-expanded="false" aria-controls="dropdown_top">
-                            <img src="/{{ Auth::user()->avatar }}" class="rounded z-depth-4 button-console" width="30"
-                                 height="30">
-                        </a>
-                    </div>
-                </div>
-            </div>
+<body>
+<!-- start admin -->
+<section id="admin"
+         @if(Route::current()->getName() === "login")
+         class="w-100"
+         @endif
+>
+    @if (Route::current()->getName() !== "login")
+    <!-- start sidebar -->
+    <div class="sidebar">
+        <!-- start with head -->
+        <div class="head">
+            <a href="#" class="btn btn-danger">TestAdmin</a>
         </div>
-        <div class="row justify-content-end align-items-center">
-            <div class="col-2 collapse console" id="dropdown_top">
-                <a class="btn button-console w-100 mb-3" href="{{ route('account') }}">
-                    Редактировать</a>
-                <a class="btn button-console w-100" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                    Выход</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                </form>
-            </div>
+        <!-- end with head -->
+        <!-- start the list -->
+        <div id="list">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="index.html" class="nav-link active"><i
+                                class="fa fa-adjust"></i>Главная</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i
+                                class="fa fa-users"></i>Пользователи</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-toggle="collapse"><i
+                                class="fa fa-fire"></i>Тестирования</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-inbox"></i>Тесты</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-edit"></i>Вопросы</a></li>
+                <li class="nav-item">
+                    <a href="#results" class="nav-link collapsed" data-toggle="collapse" aria-expanded="false">
+                        <i class="fa fa-table"></i>Результаты
+                        <span class="sub-ico">
+                        <i class="fa fa-angle-down"></i>
+                    </span>
+                    </a>
+                </li>
+                <li class="sub collapse" id="results" aria-expanded="false" style="">
+                    <a href="#" class="nav-link text-normalsize" data-parent="#results">По пользователям</a>
+                    <a href="#" class="nav-link text-normalsize" data-parent="#results">По тестам</a>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link"><i
+                                class="fa fa-cog"></i>Настройки</a></li>
+                <li class="nav-item"><a href="support.html" class="nav-link"><i
+                                class="fa fa-life-ring"></i>Поддержка</a></li>
+            </ul>
         </div>
+        <!-- end the list -->
     </div>
-</header>
-@if(Route::current()->getName() == "messages")
-    <div class="container-fluid main-content">
-@else
-    <div class="container main-content">
-@endif
+    <!-- end sidebar -->
+    <!-- start content -->
+    <div class="content">
+        <!-- start content head -->
+        <div class="head">
+            <!-- head top -->
+            <div class="top">
+                <div class="left">
+                    <button id="on" class="btn btn-info"><i class="fa fa-bars"></i></button>
+                    <button id="off" class="btn btn-info hide"><i class="fa fa-align-left"></i></button>
+                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-home"></i>Домой</button>
+                </div>
+                <div class="right">
+                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-bell"></i></button>
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" id="userDropdown" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">Kenobi
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">Настройки</a>
+                            <a class="dropdown-item" href="#">Выйти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end head top -->
+            <!-- start head bottom -->
+            <div class="bottom">
+                <div class="left">
+                    <h1>Главная</h1>
+                </div>
+            </div>
+            <!-- end head bottom -->
+        </div>
+        <!-- end content head -->
+    @endif
+        <div class="content
+        @if(Route::current()->getName() === "login")
+                ml-0
+        @endif"
+        >
     @yield('content')
-
-    <div id="top" class="button-console">
-        Наверх
-    </div>
-</div>
+        </div>
+</section>
+<!-- end admin -->
+<!-- start screpting -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/tether.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/highcharts.js') }}"></script>
+<script src="{{ asset('js/chart.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/scripts.js') }}"></script>
+<!-- end screpting -->
 </body>
 </html>

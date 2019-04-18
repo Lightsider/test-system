@@ -11,5 +11,7 @@
 |
 */
 
-Route::get('/', 'Admin@indexPage')->name('index');
+Route::get('/', 'Admin@index')->name('index');
+
+Route::get('/', 'Admin@login')->name('login');
 Route::post('/', 'Auth\LoginController@login');

@@ -1,75 +1,108 @@
-@extends ('layouts.index')
-@section('title', 'Вход')
+@extends ('layouts.main')
+@section('title', 'Главная')
 
 @section('content')
-<div class="container-fluid fullscreen bg-welcome align-items-center d-flex" id="welcome">
-    <div class="container console h-50">
-        <div class="row align-items-center mt-5 ml-5">
-            <div class="col-6">
-                <h3 class="hero-heading">Время покорения космоса уже прошло<br> Время быть на связи вечно </h3>
+    <!-- start with the real content -->
+    <div id="real">
+        <div class="wrap">
+            <div class="row">
+                <div class="col-lg-6">
+                    <!-- avtive -->
+                    <div class="activeMode">
+                        <div class="card">
+                            <h1 class="text-normalsize">Остановить все тестирования?</h1>
+                            <a href="" class="btn btn-danger">Остановить</a>
+                        </div>
+                    </div>
+                    <!-- end active -->
+                </div>
             </div>
-            <div class="col-6">
-                <h1 class="text-center">InGalaxy</h1>
-            </div>
-        </div>
-        <div class="row justify-content-center mt-5 mr-3">
-            <a href="#signin" id="toForms">
-                <button type="submit" class="btn button-console button-long">Начать</button>
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid fullscreen bg-welcome align-items-center d-flex" id="forms">
-    <div class="container console">
-        <div class="row">
-            <div class="col-6">
-                @include('auth.login_form')
-            </div>
-            <div class="col-6">
-                <div class="col-8 h-100 mx-auto my-auto">
-                    <h4> Нет аккаунта?</h4>
-                    <div class="row h-75 justify-content-center align-items-center">
-                        <div class="col">
-                            <p><a href="{{ route('register') }}" class="btn button-console">Зарегистрироваться</a></p>
+            <section class="app-content">
+                <div class="m-b-lg nav-tabs-horizontal">
+                    <!-- start cards -->
+                    <div class="tab-content p-md cards">
+                        <div class="card card-top">
+                            <h3 class="m-b-lg text-normalsize">Недавние тестирования</h3>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                    <a href="#">
+                                        <div class="card card-default">
+                                            <div class="card-header">
+                                                <h4 class="card-title text-normalsize">Тестирование на
+                                                    ориентацию</h4>
+                                            </div>
+                                            <div class="card-block">
+                                                <p><strong>Решают:</strong> 15</p>
+                                                <p><strong>Закончили:</strong> 5</p>
+                                                <p><strong>Всего:</strong> 20</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <p><strong>Времени осталось:</strong> 12:50</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div><!-- END column -->
+                                <div class="col-sm-6 col-md-4">
+                                    <a href="#">
+                                        <div class="card card-info">
+                                            <div class="card-header">
+                                                <h4 class="card-title text-normalsize">Тестирование на
+                                                    ориентацию</h4>
+                                            </div>
+                                            <div class="card-block card-text">
+                                                <p><strong>Решают:</strong> 0</p>
+                                                <p><strong>Закончили:</strong> 20</p>
+                                                <p><strong>Всего:</strong> 20</p>
+                                            </div>
+                                            <div class="card-footer card-header">
+                                                <p><strong>Завершено:</strong> 12:50 назад</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div><!-- END column -->
+                            </div><!-- .row -->
+                        </div><!-- .tab-pane -->
+                    </div><!-- .tab-content -->
+                </div><!-- .nav-tabs-horizontal -->
+            </section><!-- .app-content -->
+            <!-- start analytics -->
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="analytics">
+                        <div class="card">
+                            <div class="icon"><i class="fa fa-inbox"></i></div>
+                            <div class="text">
+                                <h1>984</h1>
+                                <p>Всего тестов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="analytics">
+                        <div class="card">
+                            <div class="icon"><i class="fa fa-edit"></i></div>
+                            <div class="text">
+                                <h1>1455</h1>
+                                <p>Всего вопросов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="analytics">
+                        <div class="card">
+                            <div class="icon"><i class="fa fa-users"></i></div>
+                            <div class="text">
+                                <h1>32</h1>
+                                <p>Всего пользователей</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- end analytics -->
         </div>
     </div>
-</div>
-<script>
-    // скролл
-    $(window).bind('mousewheel', function(event) {
-        event.preventDefault();
-
-        if (event.originalEvent.wheelDelta >= 0) {
-            var top = $("#welcome").offset().top;
-            $('body,html').animate({scrollTop: top}, timeToScroll);
-        }
-        else {
-            var top = $("#forms").offset().top;
-            $('body,html').animate({scrollTop: top}, timeToScroll);
-        }
-
-        $('#signin').find('#login').focus();
-    });
-
-    // кнопка
-    $(document).ready(function(){
-        $("#welcome").on("click","a", function (event) {
-            //отменяем стандартную обработку нажатия по ссылке
-            event.preventDefault();
-
-            //забираем идентификатор бока с атрибута href
-            var id  = $(this).attr('href'),
-                //узнаем высоту от начала страницы до блока на который ссылается якорь
-                top = $(id).offset().top;
-
-            $('body,html').animate({scrollTop: top}, timeToScroll);
-            $('#signin').find('#login').focus();
-        });
-    });
-</script>
+    <!-- end the real content -->
 @endsection
