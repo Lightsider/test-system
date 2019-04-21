@@ -11,7 +11,8 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Вход в панель администратора</h4>
                         </div>
-                        <form id="newCategoryForm" enctype="multipart/form-data" method="post">
+                        <form id="newCategoryForm" enctype="multipart/form-data" method="post" action="{{ route('login') }}">
+                            @csrf
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="login"> Логин </label>
@@ -25,8 +26,13 @@
                             <div class="modal-footer justify-content-around">
                                 <button type="submit" class="btn btn-primary" data-dismiss="modal">Войти</button>
                             </div><!-- .modal-footer -->
+                            @if ($errors->has('login'))
+                                <div class="text-red text-center">
+                                    <p>{{ $errors->first('login') }}</p>
+                                </div>
+                            @endif
                         </form>
-                        <a href="{{ str_replace ("8000","80",Request::root())  }}" class="mt-1 mb-3 text-center" data-dismiss="modal">К основному сайту</a>
+                        <a href="{{ config("params.public_site_url")  }}" class="mt-1 mb-3 text-center" data-dismiss="modal">К основному сайту</a>
                     </div><!-- /.modal-content -->
                 </div>
             </div>

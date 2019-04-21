@@ -11,6 +11,7 @@ class Admin extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
+
     /**
     index page
      */
@@ -21,13 +22,5 @@ class Admin extends BaseController
             return redirect('login');
         }
         return view('index');
-    }
-
-    /**
-    login page
-     */
-    public function login()
-    {
-        return view('login');
     }
 }

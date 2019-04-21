@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 /**
  * @property int $id
@@ -15,14 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property UsersStatus $usersStatus
  */
-class Users extends Model
+class Users extends BaseModel implements AuthenticatableContract
 {
+    use Authenticatable;
     /**
      * The table associated with the model.
      * 
      * @var string
      */
-    protected $table = 'Users';
+    protected $table = 'users';
 
     /**
      * @var array

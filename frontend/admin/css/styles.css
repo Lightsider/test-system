@@ -52,3 +52,20 @@
 {
     overflow: auto;
 }
+
+.text-yellow
+{
+    color: #ffd211 !important;
+}
+.text-red
+{
+    color: #f10000 !important;
+}
+.text-green
+{
+    color: #00be00 !important;
+}
+.text-blue
+{
+    color: #0000d3 !important;
+}
