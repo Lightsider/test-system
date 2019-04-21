@@ -11,7 +11,7 @@
 |
 */
 //dashboard
-Route::get('/', 'Admin@index')->name('index');
+Route::get('/', 'Admin@index')->middleware('status')->name('index');
 
 //login page
 Route::get('login', 'Auth\LoginController@index')->name('login');

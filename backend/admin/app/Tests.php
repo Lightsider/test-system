@@ -19,7 +19,7 @@ class Tests extends Model
      * 
      * @var string
      */
-    protected $table = 'Tests';
+    protected $table = 'tests';
 
     /**
      * @var array

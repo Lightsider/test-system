@@ -23,7 +23,7 @@ class CreateTempTestingTable extends Migration
             $table->foreign('id_current_quest')->references('id')->on('questions');
             $table->string('quest_arr')->unique();
             $table->string('skip_quest_arr');
-            $table->string('endtime');
+            $table->dateTime('endtime');
             $table->timestamps();
         });
     }

@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $endtime
  * @property string $created_at
  * @property string $updated_at
- * @property Question $question
- * @property Test $test
- * @property User $user
+ * @property Quests $question
+ * @property Tests $test
+ * @property Users $user
  */
 class TempTesting extends Model
 {

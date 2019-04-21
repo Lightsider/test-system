@@ -18,7 +18,7 @@ class Quests extends Model
      * 
      * @var string
      */
-    protected $table = 'Questions';
+    protected $table = 'questions';
 
     /**
      * @var array

@@ -27,7 +27,7 @@ class LoginController extends MainController
      *
      * @var string
      */
-    protected $redirectTo = '/index';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -51,7 +51,7 @@ class LoginController extends MainController
      */
     public function authenticate()
     {
-        if (Auth::attempt(['login' => $login, 'password' => $password]))
+        if (Auth::attempt(['login' => $login, 'password' => $password,'status'=> "1"]))
         {
             return redirect()->intended($this->redirectTo);
         }

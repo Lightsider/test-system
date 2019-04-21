@@ -27,13 +27,13 @@
     <div class="sidebar">
         <!-- start with head -->
         <div class="head">
-            <a href="#" class="btn btn-danger">TestAdmin</a>
+            <a href="{{ route("index") }}" class="btn btn-danger">TestAdmin</a>
         </div>
         <!-- end with head -->
         <!-- start the list -->
         <div id="list">
             <ul class="nav flex-column">
-                <li class="nav-item"><a href="index.html" class="nav-link active"><i
+                <li class="nav-item"><a href="{{ route("index") }}" class="nav-link active"><i
                                 class="fa fa-adjust"></i>Главная</a></li>
                 <li class="nav-item"><a href="#" class="nav-link"><i
                                 class="fa fa-users"></i>Пользователи</a></li>
@@ -71,17 +71,20 @@
                 <div class="left">
                     <button id="on" class="btn btn-info"><i class="fa fa-bars"></i></button>
                     <button id="off" class="btn btn-info hide"><i class="fa fa-align-left"></i></button>
-                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-home"></i>Домой</button>
+                    <a href="{{ route("index") }}" class="btn btn-info hidden-xs-down"><i class="fa fa-home"></i>Домой</a>
                 </div>
                 <div class="right">
-                    <button class="btn btn-info hidden-xs-down"><i class="fa fa-bell"></i></button>
                     <div class="dropdown">
                         <button class="btn btn-info dropdown-toggle" id="userDropdown" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">Kenobi
                         </button>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="#">Настройки</a>
-                            <a class="dropdown-item" href="#">Выйти</a>
+                            <a class="dropdown-item" href="{{ route("logout") }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">Выйти</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -97,13 +100,17 @@
         </div>
         <!-- end content head -->
     @endif
-        <div class="content
-        @if(Route::current()->getName() === "login")
-                ml-0
-        @endif"
-        >
+        @if(Route::current()->getName() !== "index")
+            <div class="content
+            @if(Route::current()->getName() === "login")
+                    ml-0
+            @endif"
+            >
+        @endif
     @yield('content')
+        @if(Route::current()->getName() !== "index")
         </div>
+        @endif
 </section>
 <!-- end admin -->
 <!-- start screpting -->
