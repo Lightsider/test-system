@@ -18,7 +18,7 @@ class CreateAnswersTable extends Migration
             $table->integer('id_quest')->unsigned();
             $table->foreign('id_quest')->references('id')->on('questions');
             $table->string('text');
-            $table->enum('status', ['wrong', 'right']);
+            $table->string('status');
             $table->timestamps();
         });
     }
