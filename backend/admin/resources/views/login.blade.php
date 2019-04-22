@@ -11,7 +11,7 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Вход в панель администратора</h4>
                         </div>
-                        <form id="newCategoryForm" enctype="multipart/form-data" method="post" action="{{ route('login') }}">
+                        <form id="loginForm" enctype="multipart/form-data" method="post" action="{{ route('login') }}">
                             @csrf
                             <div class="modal-body">
                                 <div class="form-group">

@@ -33,7 +33,7 @@
         <!-- start the list -->
         <div id="list">
             <ul class="nav flex-column">
-                <li class="nav-item"><a href="{{ route("index") }}" class="nav-link active"><i
+                <li class="nav-item"><a href="{{ route("index") }}" class="nav-link @if(Route::current()->getName() === "index") active @endif"><i
                                 class="fa fa-adjust"></i>Главная</a></li>
                 <li class="nav-item"><a href="#" class="nav-link"><i
                                 class="fa fa-users"></i>Пользователи</a></li>
@@ -53,7 +53,7 @@
                     <a href="#" class="nav-link text-normalsize" data-parent="#results">По пользователям</a>
                     <a href="#" class="nav-link text-normalsize" data-parent="#results">По тестам</a>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link"><i
+                <li class="nav-item"><a href="{{ route("settings") }}" class="nav-link @if(Route::current()->getName() === "settings") active @endif"><i
                                 class="fa fa-cog"></i>Настройки</a></li>
                 <li class="nav-item"><a href="support.html" class="nav-link"><i
                                 class="fa fa-life-ring"></i>Поддержка</a></li>
@@ -76,7 +76,7 @@
                 <div class="right">
                     <div class="dropdown">
                         <button class="btn btn-info dropdown-toggle" id="userDropdown" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">Kenobi
+                                aria-haspopup="true" aria-expanded="false">{{ Auth::user()->login }}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="#">Настройки</a>
@@ -93,22 +93,18 @@
             <!-- start head bottom -->
             <div class="bottom">
                 <div class="left">
-                    <h1>Главная</h1>
+                    <h1>@yield('title')</h1>
                 </div>
             </div>
             <!-- end head bottom -->
         </div>
         <!-- end content head -->
     @endif
-        @if(Route::current()->getName() !== "index")
-            <div class="content
-            @if(Route::current()->getName() === "login")
-                    ml-0
-            @endif"
-            >
+        @if(Route::current()->getName() === "login")
+            <div class="content ml-0">
         @endif
     @yield('content')
-        @if(Route::current()->getName() !== "index")
+        @if(Route::current()->getName() === "login")
         </div>
         @endif
 </section>

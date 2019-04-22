@@ -21,7 +21,7 @@ class CheckRole
         $status = $user->usersStatus()->get()->all()[0]->value;
         if($status!=="admin")
         {
-            return redirect("http://".config("params.public_site_url"));
+            return redirect("//".config("params.public_site_url"));
         }
 
         return $next($request);

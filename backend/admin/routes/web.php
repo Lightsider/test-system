@@ -12,6 +12,9 @@
 */
 //dashboard
 Route::get('/', 'Admin@index')->middleware('status')->name('index');
+//settings
+Route::get('/settings', 'Admin@settings')->middleware('status')->name('settings');
+Route::post('/settings', 'Admin@saveSettings')->middleware('status')->name('saveSettings');
 
 //login page
 Route::get('login', 'Auth\LoginController@index')->name('login');
