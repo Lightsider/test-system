@@ -35,7 +35,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item"><a href="{{ route("index") }}" class="nav-link @if(Route::current()->getName() === "index") active @endif"><i
                                 class="fa fa-adjust"></i>Главная</a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i
+                <li class="nav-item"><a href="{{ route("usersList") }}" class="nav-link @if(Route::current()->getName() === "usersList") active @endif"><i
                                 class="fa fa-users"></i>Пользователи</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" data-toggle="collapse"><i
                                 class="fa fa-fire"></i>Тестирования</a></li>

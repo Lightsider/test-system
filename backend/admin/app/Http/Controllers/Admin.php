@@ -7,12 +7,14 @@ use App\Settings;
 use App\TempTesting;
 use App\Tests;
 use App\Users;
+use App\UsersStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Admin extends BaseController
 {
@@ -24,7 +26,7 @@ class Admin extends BaseController
     }
 
     /**
-    index page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -43,7 +45,7 @@ class Admin extends BaseController
     }
 
     /**
-    settings page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function settings()
     {
@@ -53,6 +55,11 @@ class Admin extends BaseController
         ]);
     }
 
+
+    /**
+     * @param Request $request
+     * @return $this
+     */
     public function saveSettings(Request $request)
     {
         $testing_time = Settings::getByKey("testing_time");
@@ -61,5 +68,43 @@ class Admin extends BaseController
         $testing_time->save();
 
         return redirect("settings")->with("message", "Настройки успешно изменены");
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function usersList()
+    {
+        $users = Users::all();
+        return view('users',[
+            "users"=>$users
+        ]);
+    }
+
+    public function addOrUpdateUser(Request $request)
+    {
+        $this->validate($request, [
+            'login' => ['string', 'max:255', 'nullable','unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'fullname' => ['string', 'max:255'],
+            'group' => ['string', 'max:255', 'nullable'],
+            'status' => ['string', 'max:255', 'nullable'],
+        ]);
+
+        $user = new Users();
+        $user->login=trim($request->login);
+        $user->password= Hash::make($request->login);
+        $user->fullname=trim($request->login);
+        $user->group=str_ireplace(["-","_","'","\""," "],"",mb_strtoupper(trim($request->group)));
+
+        $userStatus = UsersStatus::where("value","=",trim($request->status))->first();
+        $user->id_status = $userStatus->id ?? UsersStatus::where("value","=","user")->first()->id;
+
+        $user->save();
+
+        echo json_encode([
+            "message"=>"Пользователь ". $user->login ." успешно добавлен"
+        ]);
+        die();
     }
 }

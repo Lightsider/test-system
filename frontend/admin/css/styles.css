@@ -69,3 +69,8 @@
 {
     color: #0000d3 !important;
 }
+
+.avatar img
+{
+    max-width: 100%;
+}
