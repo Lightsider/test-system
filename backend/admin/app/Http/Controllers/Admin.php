@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Quests;
+use App\Results;
 use App\Settings;
 use App\TempTesting;
 use App\Tests;
 use App\Users;
 use App\UsersStatus;
+use Dotenv\Regex\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
@@ -31,16 +33,16 @@ class Admin extends BaseController
     public function index()
     {
         $testing_time = strtotime(Settings::getByKey("testing_time")->value) ?? 0;
-        $current_testing = DB::table("temp_testing")->where("endtime","<",date("d-m-Y",time() + $testing_time))->get()->all();
+        $current_testing = DB::table("temp_testing")->where("endtime", "<", date("d-m-Y", time() + $testing_time))->get()->all();
         $tests_count = Tests::all()->count();
         $quests_count = Quests::all()->count();
         $users_count = Users::all()->count();
 
-        return view('index',[
-            "current_testing"=>$current_testing,
-            "tests_count"=>$tests_count,
-            "quests_count"=>$quests_count,
-            "users_count"=>$users_count
+        return view('index', [
+            "current_testing" => $current_testing,
+            "tests_count" => $tests_count,
+            "quests_count" => $quests_count,
+            "users_count" => $users_count
         ]);
     }
 
@@ -50,8 +52,8 @@ class Admin extends BaseController
     public function settings()
     {
         $settings = Settings::getAll(); // custom method
-        return view('settings',[
-            "settings"=>$settings
+        return view('settings', [
+            "settings" => $settings
         ]);
     }
 
@@ -76,8 +78,28 @@ class Admin extends BaseController
     public function usersList()
     {
         $users = Users::all();
-        return view('users',[
-            "users"=>$users
+        return view('users', [
+            "users" => $users
+        ]);
+    }
+
+    public function userProfile($login)
+    {
+        $user = Users::where("login", $login)->get()->first();
+        if (empty($user)) return abort(404);
+
+        $results = Results::where("id_user", $user->id)->get();
+
+        $averageValue = null;
+        foreach ($results as $value) {
+            $averageValue += $value->result;
+        }
+        if (!empty($averageValue)) $averageValue = $averageValue / count($results);
+
+        return view('user_profile', [
+            "user" => $user,
+            "results" => $results,
+            "averageValue" => $averageValue
         ]);
     }
 }

@@ -150,33 +150,6 @@
                         </div><!-- /.modal -->
 
                         <div id="contacts-list" class="row">
-                            @foreach($users as $user)
-                                <div class="col-sm-6">
-                                    <div class="card user-card contact-item p-md" id="user-{{ $user->id }}">
-                                        <input type="hidden" value="{{ $user->id }}" name="user-id">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <div class="avatar avatar-xl avatar-circle">
-                                                    @if($user->usersStatus->value === "admin")
-                                                        <a href="#"><img src="/img/admin.png" alt="admin image"></a>
-                                                    @else
-                                                        <a href="#"><img src="/img/stud.png" alt="user image"></a>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <a href="#"><h5 class="media-heading title-color">{{ $user->fullname }}</h5></a>
-                                                <small class="media-meta">{{ $user->usersStatus->value }}</small><br>
-                                                <small class="media-meta">{{ $user->group }}</small>
-                                            </div>
-                                        </div>
-                                        <div class="contact-item-actions">
-                                            <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal" data-target="#contactModal"><i class="fa fa-edit"></i></a>
-                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser"><i class="fa fa-trash"></i></a>
-                                        </div><!-- .contact-item-actions -->
-                                    </div><!-- card user-card -->
-                                </div><!-- END column -->
-                            @endforeach
                         </div><!-- #contacts-list -->
                     </div><!-- END column -->
                 </div><!-- .row -->

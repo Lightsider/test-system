@@ -130,7 +130,7 @@ class Api extends BaseController
     public function deleteUser($id)
     {
         if (!is_numeric($id)) return false;
-        if ($id == 1) return Response::json(["message" => "Администратора удалять нельзя"],
+        if ($id == 1) return Response::json(["message" => "Первого администратора удалять нельзя"],
             200,
             ['Content-type' => 'application/json; charset=utf-8'],
             JSON_UNESCAPED_UNICODE);

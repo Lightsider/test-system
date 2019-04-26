@@ -43,6 +43,11 @@ $("button[name='add-ans-doc']").click(function (event) {
 });
 
 
+$(document).ready(function (e) {
+   showUsersList();
+});
+
+
 /********************work with forms***************************/
 
 $("#addUser").submit(function (e) {
@@ -81,8 +86,13 @@ $("#addUser").submit(function (e) {
 });
 
 $("#contacts-list").on("click",".btn-success",function (e) {
-    event.preventDefault();
+    e.preventDefault();
     var user_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=user-id]").val();
+    getUserInfoInUpdateForm(user_id)
+});
+
+function getUserInfoInUpdateForm(user_id)
+{
     var modal = $("#editUser");
     modal.find(".btn-success").attr("disabled","true");
     modal.modal('show');
@@ -103,7 +113,7 @@ $("#contacts-list").on("click",".btn-success",function (e) {
             alert("Пользователь не найден");
         }
     });
-});
+}
 
 $("#updateUser").submit(function (e) {
     e.preventDefault();
@@ -141,48 +151,107 @@ $("#updateUser").submit(function (e) {
 });
 
 function showUsersList() {
-    $("#contacts-list").html("");
-    $.ajax({
-        url: '/api/users',
-        method: 'get',
-        success: function (data) {
-            $.each(data, function (index, value) {
-                var html = "<div class=\"col-sm-6\">\n" +
-                    "                                    <div class=\"card user-card contact-item p-md\" id=\"user-" + value["id"] + "\">\n" +
-                    "<input type=\"hidden\" value=\"" + value["id"] + "\" name=\"user-id\">                                        " +
-                    "<div class=\"media\">\n" +
-                    "                                            <div class=\"media-left\">\n" +
-                    "                                                <div class=\"avatar avatar-xl avatar-circle\">\n";
-                if (value["users_status"]["value"] === "admin") {
-                    html += "<a href=\"#\"><img src=\"/img/admin.png\" alt=\"admin image\"></a>";
+    if($("div").is("#contacts-list"))
+    {
+        $("#contacts-list").html("");
+        $.ajax({
+            url: '/api/users',
+            method: 'get',
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    var html = "<div class=\"col-sm-6\">\n" +
+                        "                                    <div class=\"card user-card contact-item p-md\" id=\"user-" + value["id"] + "\">\n" +
+                        "<input type=\"hidden\" value=\"" + value["id"] + "\" name=\"user-id\">                                        " +
+                        "<div class=\"media\">\n" +
+                        "                                            <div class=\"media-left\">\n" +
+                        "                                                <div class=\"avatar avatar-xl avatar-circle\">\n";
+                    if (value["users_status"]["value"] === "admin") {
+                        html += "<a href=\"/users/"+value["login"]+"\"><img src=\"/img/admin.png\" alt=\"admin image\"></a>";
+                    }
+                    else {
+                        html += "<a href=\"/users/"+value["login"]+"\"><img src=\"/img/stud.png\" alt=\"user image\"></a>";
+                    }
+                    html += "</div>\n" +
+                        "                                            </div>\n" +
+                        "                                            <div class=\"media-body\">\n" +
+                        "                                                <a href=\"/users/"+value["login"]+"\"><h5 class=\"media-heading title-color\">" + value["fullname"] + "</h5></a>\n" +
+                        "                                                <small class=\"media-meta\">" + value["users_status"]["value"] + "</small><br>\n" +
+                        "                                                <small class=\"media-meta\">" + value["group"] + "</small>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                        <div class=\"contact-item-actions\">\n" +
+                        "                                            <a href=\"javascript:void(0)\" class=\"btn btn-success\" data-toggle=\"modal\" data-target=\"#contactModal\"><i class=\"fa fa-edit\"></i></a>\n" +
+                        "                                            <a href=\"javascript:void(0)\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteItemModal\"><i class=\"fa fa-trash\"></i></a>\n" +
+                        "                                        </div><!-- .contact-item-actions -->\n" +
+                        "                                    </div><!-- card user-card -->\n" +
+                        "                                </div><!-- END column -->";
+
+                    $("#contacts-list").append(html);
+                });
+            }
+        });
+    }
+    else if($("div").is("#Profile"))
+    {
+        $(".profile-cover").html("");
+        var user_id = $("input[name=user-id]").val();
+        $.ajax({
+            url: '/api/user/' + user_id,
+            method: 'get',
+            success: function (data) {
+                var html = " <div class=\"cover-user m-b-lg\">                    <div>\n" +
+                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInUpdateForm("+data["id"]+")\"\n" +
+                    "                                   data-toggle=\"modal\" data-target=\"#editUser\"><span\n" +
+                    "                                            class=\"cover-icon\"><i class=\"fa fa-edit\"></i></span></a>\n" +
+                    "                            </div>\n" +
+                    "                            <div>\n" +
+                    "                                <div class=\"avatar avatar-xl avatar-circle\">\n" +
+                    "                                    <a href=\"javascript:void(0)\">\n";
+                if (data["users_status"]["value"] === "admin") {
+                    html += "<img class=\"img-responsive\" src=\"/img/admin.png\" alt=\"admin image\">\n";
                 }
                 else {
-                    html += "<a href=\"#\"><img src=\"/img/stud.png\" alt=\"user image\"></a>";
+                    html += "<img class=\"img-responsive\" src=\"/img/stud.png\" alt=\"user image\">\n";
                 }
-                html += "</div>\n" +
-                    "                                            </div>\n" +
-                    "                                            <div class=\"media-body\">\n" +
-                    "                                                <a href=\"#\"><h5 class=\"media-heading title-color\">" + value["fullname"] + "</h5></a>\n" +
-                    "                                                <small class=\"media-meta\">" + value["users_status"]["value"] + "</small><br>\n" +
-                    "                                                <small class=\"media-meta\">" + value["group"] + "</small>\n" +
-                    "                                            </div>\n" +
-                    "                                        </div>\n" +
-                    "                                        <div class=\"contact-item-actions\">\n" +
-                    "                                            <a href=\"javascript:void(0)\" class=\"btn btn-success\" data-toggle=\"modal\" data-target=\"#contactModal\"><i class=\"fa fa-edit\"></i></a>\n" +
-                    "                                            <a href=\"javascript:void(0)\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteItemModal\"><i class=\"fa fa-trash\"></i></a>\n" +
-                    "                                        </div><!-- .contact-item-actions -->\n" +
-                    "                                    </div><!-- card user-card -->\n" +
-                    "                                </div><!-- END column -->";
+                html+=
+                    "                                    </a>\n" +
+                    "                                </div><!-- .avatar -->\n" +
+                    "                            </div>\n" +
+                    "                            <div>\n" +
+                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInDeleteForm("+data["id"]+")\"\n" +
+                    "                                   data-toggle=\"modal\" data-target=\"#deleteUser\"><span\n" +
+                    "                                            class=\"cover-icon\"><i class=\"fa fa-window-close\"></i></span></a>\n" +
+                    "                            </div>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"text-center\">\n" +
+                    "                            <h4 class=\"profile-info-name m-b-lg\">\n" +
+                    "                                "+data["fullname"]+"\n" +
+                    "                                <a href=\"javascript:void(0)\" class=\"title-color\">\n" +
+                    "                                    aka "+data["login"]+"\n" +
+                    "                                </a>\n" +
+                    "                            </h4>\n" +
+                    "                            <div>\n" +
+                    "                                <a href=\"javascript:void(0)\" class=\"m-r-xl theme-color\"><i\n" +
+                    "                                            class=\"fa fa-bolt m-r-xs\"></i> "+data["users_status"]["value"]+"</a>\n" +
+                    "                                <a href=\"javascript:void(0)\" class=\"theme-color\"><i\n" +
+                    "                                            class=\"fa fa-map-marker m-r-xs\"></i>"+data["group"]+"</a>\n" +
+                    "                            </div>\n" +
+                    "                        </div>"
+                $(".profile-cover").append(html);
+            }
+        });
+    }
 
-                $("#contacts-list").append(html);
-            });
-        }
-    });
 }
 
 $("#contacts-list").on("click",".btn-danger",function (e) {
-    event.preventDefault();
+    e.preventDefault();
     var user_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=user-id]").val();
+    getUserInfoInDeleteForm(user_id);
+});
+
+function getUserInfoInDeleteForm(user_id)
+{
     var modal = $("#deleteUser");
     modal.find(".btn-danger").attr("disabled","true");
     modal.modal('show');
@@ -200,10 +269,10 @@ $("#contacts-list").on("click",".btn-danger",function (e) {
             alert("Пользователь не найден");
         }
     });
-});
+}
 
 $("#deleteUser .btn-danger").click(function (e) {
-    event.preventDefault();
+    e.preventDefault();
     var modal = $("#deleteUser");
     var user_id = modal.find("input[name=user-id]").val();
     $.ajax({
@@ -221,7 +290,11 @@ $("#deleteUser .btn-danger").click(function (e) {
         }
     });
     showUsersList();
+    if($("div").is("#Profile")) $(location).attr('href',"/users");
 });
+
+
+
 
 /********************work with forms***************************/
 
