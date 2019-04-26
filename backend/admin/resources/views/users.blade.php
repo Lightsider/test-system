@@ -26,7 +26,7 @@
                                         <h4 class="modal-title">Новый пользователь</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form action="{{ route('addOrUpdateUser') }}" id="addUser">
+                                    <form action="{{ route('addUser') }}" id="addUser">
                                         {{ csrf_field() }}
                                         <div class="modal-body">
                                             <div class="form-group">
@@ -48,13 +48,13 @@
                                                 <h6>Статус</h6>
                                                 <div>
                                                     <label>
-                                                        <input type="radio" id="radioStud" name="status" value="user">
+                                                        <input type="radio" name="status" value="user">
                                                         Студент
                                                     </label>
                                                 </div>
                                                 <div>
                                                     <label>
-                                                        <input type="radio" id="radioAdmin" name="status" value="admin">
+                                                        <input type="radio" name="status" value="admin">
                                                         Администратор
                                                     </label>
                                                 </div>
@@ -72,19 +72,78 @@
                             </div><!-- /.modal-dialog -->
                         </div><!-- /.modal -->
 
-                        <!-- delete item Modal -->
-                        <div id="deleteItemModal" class="modal fade" tabindex="-1" role="dialog">
+                        <!-- edit user Modal -->
+                        <div id="editUser" class="modal fade" tabindex="-1" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Редактировать пользователя</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form id="updateUser">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="user-id" class="form-control">
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <input type="text" name="login" class="form-control" placeholder="Логин">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" name="password" class="form-control" placeholder="Пароль">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" name="password_confirmation" class="form-control" placeholder="Повторите пароль">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="fullname" class="form-control" placeholder="ФИО">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="group" class="form-control" placeholder="Группа">
+                                            </div>
+                                            <div class="form-group">
+                                                <h6>Статус</h6>
+                                                <div>
+                                                    <label>
+                                                        <input type="radio" name="status" value="user">
+                                                        Студент
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="radio" name="status" value="admin">
+                                                        Администратор
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="alert alert-success mt-3" id="updateUserMessage" style="display: none">
+                                                <strong> {{ session('message') }}</strong>
+                                            </div>
+                                        </div><!-- .modal-body -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Отмена</button>
+                                            <button type="submit" class="btn btn-success">Сохранить</button>
+                                        </div><!-- .modal-footer -->
+                                    </form>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+                        <!-- delete item Modal -->
+                        <div id="deleteUser" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <input type="hidden" name="user-id">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Удалить пользователя</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Вы точно хотите удалить пользователя <strong>Kenobi</strong> ?</p>
+                                        <p>Вы точно хотите удалить пользователя <strong></strong> ?</p>
+                                        <div class="alert alert-success mt-3" id="deleteUserMessage" style="display: none">
+                                            <strong> {{ session('message') }}</strong>
+                                        </div>
                                     </div><!-- .modal-body -->
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button>
+                                        <button type="button" class="btn btn-danger">Удалить</button>
                                     </div><!-- .modal-footer -->
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
@@ -93,26 +152,27 @@
                         <div id="contacts-list" class="row">
                             @foreach($users as $user)
                                 <div class="col-sm-6">
-                                    <div class="card user-card contact-item p-md">
+                                    <div class="card user-card contact-item p-md" id="user-{{ $user->id }}">
+                                        <input type="hidden" value="{{ $user->id }}" name="user-id">
                                         <div class="media">
                                             <div class="media-left">
                                                 <div class="avatar avatar-xl avatar-circle">
                                                     @if($user->usersStatus->value === "admin")
-                                                        <a href="#"><img src="/img/admin.png" alt="admin image">
+                                                        <a href="#"><img src="/img/admin.png" alt="admin image"></a>
                                                     @else
-                                                                <a href="#"><img src="/img/stud.png" alt="user image">
+                                                        <a href="#"><img src="/img/stud.png" alt="user image"></a>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="media-body">
                                                 <a href="#"><h5 class="media-heading title-color">{{ $user->fullname }}</h5></a>
-                                                <small class="media-meta">{{ $user->usersStatus->value }}</small>
+                                                <small class="media-meta">{{ $user->usersStatus->value }}</small><br>
+                                                <small class="media-meta">{{ $user->group }}</small>
                                             </div>
                                         </div>
                                         <div class="contact-item-actions">
                                             <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal" data-target="#contactModal"><i class="fa fa-edit"></i></a>
-                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteItemModal"><i class="fa fa-trash"></i></a>
+                                            <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser"><i class="fa fa-trash"></i></a>
                                         </div><!-- .contact-item-actions -->
                                     </div><!-- card user-card -->
                                 </div><!-- END column -->

@@ -48,17 +48,18 @@ $("button[name='add-ans-doc']").click(function (event) {
 $("#addUser").submit(function (e) {
     e.preventDefault();
 
+    //add user
     $.ajax({
-        url: '/addOrUpdateUser',
+        url: '/api/addUser',
         data: $(this).serialize(),
         method: 'post',
         success: function (data) {
-            data = $.parseJSON(data);
             var message = data["message"];
             $("#newUserMessage").css("display", "block");
             $("#newUserMessage").removeClass("alert-danger");
             $("#newUserMessage").addClass("alert-success");
             $("#newUserMessage strong").text(message);
+            $("#addUser")[0].reset();
         },
         error: function (data) {
             data = $.parseJSON(data.responseText);
@@ -74,8 +75,153 @@ $("#addUser").submit(function (e) {
             $("#newUserMessage strong").html(message);
         }
     });
+
+    // get userlist
+    showUsersList();
 });
-// TO DO  work with data
+
+$("#contacts-list").on("click",".btn-success",function (e) {
+    event.preventDefault();
+    var user_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=user-id]").val();
+    var modal = $("#editUser");
+    modal.find(".btn-success").attr("disabled","true");
+    modal.modal('show');
+    $("#updateUserMessage").css("display", "none");
+    $("#updateUserMessage strong").text("");
+    $.ajax({
+        url: '/api/user/' + user_id,
+        method: 'get',
+        success: function (data) {
+            modal.find(".modal-content input[name=user-id]").val(data["id"]);
+            modal.find(".modal-content input[name=login]").val(data["login"]);
+            modal.find(".modal-content input[name=fullname]").val(data["fullname"]);
+            modal.find(".modal-content input[name=group]").val(data["group"]);
+            modal.find(".modal-content input[name=status][value="+data["users_status"]["value"]+"]").attr("checked",true);
+            modal.find(".btn-success").removeAttr("disabled");
+        },
+        error: function (data) {
+            alert("Пользователь не найден");
+        }
+    });
+});
+
+$("#updateUser").submit(function (e) {
+    e.preventDefault();
+    var user_id = $(this).find("input[name=user-id]").val();
+    //update user
+    $.ajax({
+        url: '/api/updateUser/' + user_id,
+        data: $(this).serialize(),
+        method: 'post',
+        success: function (data) {
+            var message = data["message"];
+            $("#updateUserMessage").css("display", "block");
+            $("#updateUserMessage").removeClass("alert-danger");
+            $("#updateUserMessage").addClass("alert-success");
+            $("#updateUserMessage strong").text(message);
+            $("#updateUser input[type=password]").val("");
+        },
+        error: function (data) {
+            data = $.parseJSON(data.responseText);
+            var message_arr = data["errors"], message = "";
+            $.each(message_arr, function (index, value) {
+                $.each(value, function (index, value2) {
+                    message += value2 + "<br>";
+                });
+            });
+            $("#updateUserMessage").css("display", "block");
+            $("#updateUserMessage").removeClass("alert-success");
+            $("#updateUserMessage").addClass("alert-danger");
+            $("#updateUserMessage strong").html(message);
+        }
+    });
+
+    // get userlist
+    showUsersList();
+});
+
+function showUsersList() {
+    $("#contacts-list").html("");
+    $.ajax({
+        url: '/api/users',
+        method: 'get',
+        success: function (data) {
+            $.each(data, function (index, value) {
+                var html = "<div class=\"col-sm-6\">\n" +
+                    "                                    <div class=\"card user-card contact-item p-md\" id=\"user-" + value["id"] + "\">\n" +
+                    "<input type=\"hidden\" value=\"" + value["id"] + "\" name=\"user-id\">                                        " +
+                    "<div class=\"media\">\n" +
+                    "                                            <div class=\"media-left\">\n" +
+                    "                                                <div class=\"avatar avatar-xl avatar-circle\">\n";
+                if (value["users_status"]["value"] === "admin") {
+                    html += "<a href=\"#\"><img src=\"/img/admin.png\" alt=\"admin image\"></a>";
+                }
+                else {
+                    html += "<a href=\"#\"><img src=\"/img/stud.png\" alt=\"user image\"></a>";
+                }
+                html += "</div>\n" +
+                    "                                            </div>\n" +
+                    "                                            <div class=\"media-body\">\n" +
+                    "                                                <a href=\"#\"><h5 class=\"media-heading title-color\">" + value["fullname"] + "</h5></a>\n" +
+                    "                                                <small class=\"media-meta\">" + value["users_status"]["value"] + "</small><br>\n" +
+                    "                                                <small class=\"media-meta\">" + value["group"] + "</small>\n" +
+                    "                                            </div>\n" +
+                    "                                        </div>\n" +
+                    "                                        <div class=\"contact-item-actions\">\n" +
+                    "                                            <a href=\"javascript:void(0)\" class=\"btn btn-success\" data-toggle=\"modal\" data-target=\"#contactModal\"><i class=\"fa fa-edit\"></i></a>\n" +
+                    "                                            <a href=\"javascript:void(0)\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteItemModal\"><i class=\"fa fa-trash\"></i></a>\n" +
+                    "                                        </div><!-- .contact-item-actions -->\n" +
+                    "                                    </div><!-- card user-card -->\n" +
+                    "                                </div><!-- END column -->";
+
+                $("#contacts-list").append(html);
+            });
+        }
+    });
+}
+
+$("#contacts-list").on("click",".btn-danger",function (e) {
+    event.preventDefault();
+    var user_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=user-id]").val();
+    var modal = $("#deleteUser");
+    modal.find(".btn-danger").attr("disabled","true");
+    modal.modal('show');
+    $("#deleteUserMessage").css("display", "none");
+    $("#deleteUserMessage strong").text("");
+    $.ajax({
+        url: '/api/user/' + user_id,
+        method: 'get',
+        success: function (data) {
+            modal.find(".modal-body p strong").text(data["login"]);
+            modal.find(".modal-content input[name=user-id]").val(data["id"]);
+            modal.find(".btn-danger").removeAttr("disabled");
+        },
+        error: function (data) {
+            alert("Пользователь не найден");
+        }
+    });
+});
+
+$("#deleteUser .btn-danger").click(function (e) {
+    event.preventDefault();
+    var modal = $("#deleteUser");
+    var user_id = modal.find("input[name=user-id]").val();
+    $.ajax({
+        url: '/api/deleteUser/' + user_id,
+        method: 'delete',
+        success: function (data) {
+            var message = data["message"];
+            $("#deleteUserMessage").css("display", "block");
+            $("#deleteUserMessage").removeClass("alert-danger");
+            $("#deleteUserMessage").addClass("alert-success");
+            $("#deleteUserMessage strong").text(message);
+        },
+        error: function (data) {
+            alert("Пользователь не найден");
+        }
+    });
+    showUsersList();
+});
 
 /********************work with forms***************************/
 

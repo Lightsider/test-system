@@ -80,31 +80,4 @@ class Admin extends BaseController
             "users"=>$users
         ]);
     }
-
-    public function addOrUpdateUser(Request $request)
-    {
-        $this->validate($request, [
-            'login' => ['string', 'max:255', 'nullable','unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'fullname' => ['string', 'max:255'],
-            'group' => ['string', 'max:255', 'nullable'],
-            'status' => ['string', 'max:255', 'nullable'],
-        ]);
-
-        $user = new Users();
-        $user->login=trim($request->login);
-        $user->password= Hash::make($request->login);
-        $user->fullname=trim($request->login);
-        $user->group=str_ireplace(["-","_","'","\""," "],"",mb_strtoupper(trim($request->group)));
-
-        $userStatus = UsersStatus::where("value","=",trim($request->status))->first();
-        $user->id_status = $userStatus->id ?? UsersStatus::where("value","=","user")->first()->id;
-
-        $user->save();
-
-        echo json_encode([
-            "message"=>"Пользователь ". $user->login ." успешно добавлен"
-        ]);
-        die();
-    }
 }
