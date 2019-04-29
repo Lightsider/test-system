@@ -6,33 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
+ * @property int $id_quest
  * @property int $id_test
- * @property int $id_category
- * @property Categories $category
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Quests $question
  * @property Tests $test
  */
-class TestToCategory extends Model
+class TestToQuest extends Model
 {
     /**
      * The table associated with the model.
      * 
      * @var string
      */
-    protected $table = 'test_to_category';
+    protected $table = 'test_to_quest';
 
     /**
      * @var array
      */
-    protected $fillable = ['id_test', 'id_category'];
-
-    public $timestamps = false;
+    protected $fillable = ['id_quest', 'id_test', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category()
+    public function question()
     {
-        return $this->belongsTo('App\Categories', 'id_category');
+        return $this->belongsTo('App\Quests', 'id_quest');
     }
 
     /**

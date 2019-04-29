@@ -33,4 +33,28 @@ class Tests extends Model
         return $time;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function category()
+    {
+        return $this->belongsToMany('App\Categories', 'test_to_category',"id_test","id_category");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function questions()
+    {
+        return $this->belongsToMany('App\Quests', 'test_to_quest',"id_test","id_quest");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function results()
+    {
+        return $this->hasMany('App\Results',"id_test");
+    }
+
 }

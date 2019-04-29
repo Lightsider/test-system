@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Categories;
 use App\Quests;
 use App\Results;
 use App\Settings;
 use App\TempTesting;
 use App\Tests;
+use App\TestToCategory;
+use App\TestToQuest;
 use App\Users;
 use App\UsersStatus;
 use Dotenv\Regex\Result;
@@ -83,6 +86,11 @@ class Admin extends BaseController
         ]);
     }
 
+    /**
+     * @param $login
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
     public function userProfile($login)
     {
         $user = Users::where("login", $login)->get()->first();
@@ -100,6 +108,45 @@ class Admin extends BaseController
             "user" => $user,
             "results" => $results,
             "averageValue" => $averageValue
+        ]);
+    }
+
+    public function testsList()
+    {
+        $tests = Tests::all();
+
+        $counts_quest = [];
+        $averageValues = [];
+        $categories = [];
+        foreach ($tests as $test) {
+            $counts_quest[$test->id] = TestToQuest::where("id_test", $test->id)->get()->count();
+
+            $categories[$test->id] = TestToCategory::where("id",$test->id)->get();
+            $tmp_categories="";
+            foreach ($categories[$test->id] as $category)
+            {
+                $tmp_categories .= $category->category->name.",";
+            }
+            $categories[$test->id] = mb_substr($tmp_categories,0,mb_strlen($tmp_categories)-1);
+
+            $results = Results::where("id_test", $test->id)->get();
+            $averageValue = null;
+
+            foreach ($results as $result)
+            {
+                $averageValue += $result->result;
+            }
+            if (!empty($averageValue)) $averageValue = $averageValue / count($results);
+            $averageValues[$test->id] = $averageValue;
+        }
+
+        $allow_categories = Categories::all();
+        return view('tests', [
+            "categories"=>$categories,
+            "average_values"=>$averageValues,
+            "counts_quest" => $counts_quest,
+            "tests" => $tests,
+            "allow_categories" => $allow_categories
         ]);
     }
 }

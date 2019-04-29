@@ -44,12 +44,27 @@ $("button[name='add-ans-doc']").click(function (event) {
 
 
 $(document).ready(function (e) {
-   showUsersList();
+    showUsersList();
+    showTestsList();
 });
+
+function getColorFromResults(results, prefix) {
+    prefix = prefix || "";
+    if (typeof results === "string" || typeof results === "number") {
+        if (results < 25)
+            return prefix + "-" + "danger";
+        else if (results < 50)
+            return prefix + "-" + "warning";
+        else if (results < 75)
+            return prefix + "-" + "primary";
+        else return prefix + "-" + "success";
+    }
+    else return prefix + "-" + "default";
+}
 
 
 /********************work with forms***************************/
-
+//users
 $("#addUser").submit(function (e) {
     e.preventDefault();
 
@@ -85,16 +100,15 @@ $("#addUser").submit(function (e) {
     showUsersList();
 });
 
-$("#contacts-list").on("click",".btn-success",function (e) {
+$("#contacts-list").on("click", ".btn-success", function (e) {
     e.preventDefault();
     var user_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=user-id]").val();
     getUserInfoInUpdateForm(user_id)
 });
 
-function getUserInfoInUpdateForm(user_id)
-{
+function getUserInfoInUpdateForm(user_id) {
     var modal = $("#editUser");
-    modal.find(".btn-success").attr("disabled","true");
+    modal.find(".btn-success").attr("disabled", "true");
     modal.modal('show');
     $("#updateUserMessage").css("display", "none");
     $("#updateUserMessage strong").text("");
@@ -106,7 +120,7 @@ function getUserInfoInUpdateForm(user_id)
             modal.find(".modal-content input[name=login]").val(data["login"]);
             modal.find(".modal-content input[name=fullname]").val(data["fullname"]);
             modal.find(".modal-content input[name=group]").val(data["group"]);
-            modal.find(".modal-content input[name=status][value="+data["users_status"]["value"]+"]").attr("checked",true);
+            modal.find(".modal-content input[name=status][value=" + data["users_status"]["value"] + "]").attr("checked", true);
             modal.find(".btn-success").removeAttr("disabled");
         },
         error: function (data) {
@@ -151,8 +165,7 @@ $("#updateUser").submit(function (e) {
 });
 
 function showUsersList() {
-    if($("div").is("#contacts-list"))
-    {
+    if ($("div").is("#contacts-list")) {
         $("#contacts-list").html("");
         $.ajax({
             url: '/api/users',
@@ -166,15 +179,15 @@ function showUsersList() {
                         "                                            <div class=\"media-left\">\n" +
                         "                                                <div class=\"avatar avatar-xl avatar-circle\">\n";
                     if (value["users_status"]["value"] === "admin") {
-                        html += "<a href=\"/users/"+value["login"]+"\"><img src=\"/img/admin.png\" alt=\"admin image\"></a>";
+                        html += "<a href=\"/users/" + value["login"] + "\"><img src=\"/img/admin.png\" alt=\"admin image\"></a>";
                     }
                     else {
-                        html += "<a href=\"/users/"+value["login"]+"\"><img src=\"/img/stud.png\" alt=\"user image\"></a>";
+                        html += "<a href=\"/users/" + value["login"] + "\"><img src=\"/img/stud.png\" alt=\"user image\"></a>";
                     }
                     html += "</div>\n" +
                         "                                            </div>\n" +
                         "                                            <div class=\"media-body\">\n" +
-                        "                                                <a href=\"/users/"+value["login"]+"\"><h5 class=\"media-heading title-color\">" + value["fullname"] + "</h5></a>\n" +
+                        "                                                <a href=\"/users/" + value["login"] + "\"><h5 class=\"media-heading title-color\">" + value["fullname"] + "</h5></a>\n" +
                         "                                                <small class=\"media-meta\">" + value["users_status"]["value"] + "</small><br>\n" +
                         "                                                <small class=\"media-meta\">" + value["group"] + "</small>\n" +
                         "                                            </div>\n" +
@@ -191,8 +204,7 @@ function showUsersList() {
             }
         });
     }
-    else if($("div").is("#Profile"))
-    {
+    else if ($("div").is("#Profile")) {
         $(".profile-cover").html("");
         var user_id = $("input[name=user-id]").val();
         $.ajax({
@@ -200,7 +212,7 @@ function showUsersList() {
             method: 'get',
             success: function (data) {
                 var html = " <div class=\"cover-user m-b-lg\">                    <div>\n" +
-                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInUpdateForm("+data["id"]+")\"\n" +
+                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInUpdateForm(" + data["id"] + ")\"\n" +
                     "                                   data-toggle=\"modal\" data-target=\"#editUser\"><span\n" +
                     "                                            class=\"cover-icon\"><i class=\"fa fa-edit\"></i></span></a>\n" +
                     "                            </div>\n" +
@@ -213,28 +225,28 @@ function showUsersList() {
                 else {
                     html += "<img class=\"img-responsive\" src=\"/img/stud.png\" alt=\"user image\">\n";
                 }
-                html+=
+                html +=
                     "                                    </a>\n" +
                     "                                </div><!-- .avatar -->\n" +
                     "                            </div>\n" +
                     "                            <div>\n" +
-                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInDeleteForm("+data["id"]+")\"\n" +
+                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInDeleteForm(" + data["id"] + ")\"\n" +
                     "                                   data-toggle=\"modal\" data-target=\"#deleteUser\"><span\n" +
                     "                                            class=\"cover-icon\"><i class=\"fa fa-window-close\"></i></span></a>\n" +
                     "                            </div>\n" +
                     "                        </div>\n" +
                     "                        <div class=\"text-center\">\n" +
                     "                            <h4 class=\"profile-info-name m-b-lg\">\n" +
-                    "                                "+data["fullname"]+"\n" +
+                    "                                " + data["fullname"] + "\n" +
                     "                                <a href=\"javascript:void(0)\" class=\"title-color\">\n" +
-                    "                                    aka "+data["login"]+"\n" +
+                    "                                    aka " + data["login"] + "\n" +
                     "                                </a>\n" +
                     "                            </h4>\n" +
                     "                            <div>\n" +
                     "                                <a href=\"javascript:void(0)\" class=\"m-r-xl theme-color\"><i\n" +
-                    "                                            class=\"fa fa-bolt m-r-xs\"></i> "+data["users_status"]["value"]+"</a>\n" +
+                    "                                            class=\"fa fa-bolt m-r-xs\"></i> " + data["users_status"]["value"] + "</a>\n" +
                     "                                <a href=\"javascript:void(0)\" class=\"theme-color\"><i\n" +
-                    "                                            class=\"fa fa-map-marker m-r-xs\"></i>"+data["group"]+"</a>\n" +
+                    "                                            class=\"fa fa-map-marker m-r-xs\"></i>" + data["group"] + "</a>\n" +
                     "                            </div>\n" +
                     "                        </div>"
                 $(".profile-cover").append(html);
@@ -244,16 +256,15 @@ function showUsersList() {
 
 }
 
-$("#contacts-list").on("click",".btn-danger",function (e) {
+$("#contacts-list").on("click", ".btn-danger", function (e) {
     e.preventDefault();
     var user_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=user-id]").val();
     getUserInfoInDeleteForm(user_id);
 });
 
-function getUserInfoInDeleteForm(user_id)
-{
+function getUserInfoInDeleteForm(user_id) {
     var modal = $("#deleteUser");
-    modal.find(".btn-danger").attr("disabled","true");
+    modal.find(".btn-danger").attr("disabled", "true");
     modal.modal('show');
     $("#deleteUserMessage").css("display", "none");
     $("#deleteUserMessage strong").text("");
@@ -290,11 +301,138 @@ $("#deleteUser .btn-danger").click(function (e) {
         }
     });
     showUsersList();
-    if($("div").is("#Profile")) $(location).attr('href',"/users");
+    if ($("div").is("#Profile")) $(location).attr('href', "/users");
+});
+
+//tests
+$("#addTest").submit(function (e) {
+    e.preventDefault();
+
+    //add user
+    $.ajax({
+        url: '/api/addTest',
+        data: $(this).serialize(),
+        method: 'post',
+        success: function (data) {
+            var message = data["message"];
+            $("#newTestMessage").css("display", "block");
+            $("#newTestMessage").removeClass("alert-danger");
+            $("#newTestMessage").addClass("alert-success");
+            $("#newTestMessage strong").text(message);
+            $("#addTest")[0].reset();
+        },
+        error: function (data) {
+            data = $.parseJSON(data.responseText);
+            var message_arr = data["errors"], message = "";
+            $.each(message_arr, function (index, value) {
+                $.each(value, function (index, value2) {
+                    message += value2 + "<br>";
+                });
+            });
+            $("#newTestMessage").css("display", "block");
+            $("#newTestMessage").removeClass("alert-success");
+            $("#newTestMessage").addClass("alert-danger");
+            $("#newTestMessage strong").html(message);
+        }
+    });
+
+    // get userlist
+    showTestsList();
 });
 
 
-
+function showTestsList() {
+    if ($("div").is("#testsList")) {
+        $("#testsList").html("");
+        $.ajax({
+            url: '/api/tests',
+            method: 'get',
+            success: function (data) {
+                $.each(data["tests"], function (index, value) {
+                    var html = "<div class=\"col-sm-6 col-md-4\">\n" +
+                        "                                        <a href=\"#\">" +
+                        "<div class=\"card\ " + getColorFromResults(data["average_values"][value["id"]], "card") + "\">\n" +
+                        "                                                <div class=\"card-header\">\n" +
+                        "                                                    <h4 class=\"card-title text-normalsize\">" + value["title"] + "</h4>\n" +
+                        "                                                </div>\n" +
+                        "                                                <div class=\"card-block\">\n" +
+                        "                                                    <p><strong>Всего\n" +
+                        "                                                            вопросов:</strong> " + value["questions"].length + "\n" +
+                        "                                                    </p>\n";
+                    if (data["average_values"][value["id"]] !== null) {
+                        html += "<p><strong>Средний балл:</strong> " + data["average_values"][value["id"]] + "</p>\n"
+                    }
+                    else {
+                        html += "<p><strong>Средний балл:</strong> Нет данных </p>\n"
+                    }
+                    html += "                                             </div>\n" +
+                    "                                                <div class=\"card-footer\">\n";
+                    if (value["category"].length > 0) {
+                        $.each(value["category"], function (index_cat, category) {
+                            html += category["name"] + ",";
+                        });
+                        html = html.substr(0,html.length-1)
+                    }
+                    else {
+                        html += "Без категории";
+                    }
+                    html += "                                                </div>\n" +
+                    "                                            </div>";
+                    $("#testsList").append(html);
+                });
+            }
+        });
+    }
+    else if ($("div").is("#Profile")) {
+        $(".profile-cover").html("");
+        var user_id = $("input[name=user-id]").val();
+        $.ajax({
+            url: '/api/user/' + user_id,
+            method: 'get',
+            success: function (data) {
+                var html = " <div class=\"cover-user m-b-lg\">                    <div>\n" +
+                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInUpdateForm(" + data["id"] + ")\"\n" +
+                    "                                   data-toggle=\"modal\" data-target=\"#editUser\"><span\n" +
+                    "                                            class=\"cover-icon\"><i class=\"fa fa-edit\"></i></span></a>\n" +
+                    "                            </div>\n" +
+                    "                            <div>\n" +
+                    "                                <div class=\"avatar avatar-xl avatar-circle\">\n" +
+                    "                                    <a href=\"javascript:void(0)\">\n";
+                if (data["users_status"]["value"] === "admin") {
+                    html += "<img class=\"img-responsive\" src=\"/img/admin.png\" alt=\"admin image\">\n";
+                }
+                else {
+                    html += "<img class=\"img-responsive\" src=\"/img/stud.png\" alt=\"user image\">\n";
+                }
+                html +=
+                    "                                    </a>\n" +
+                    "                                </div><!-- .avatar -->\n" +
+                    "                            </div>\n" +
+                    "                            <div>\n" +
+                    "                                <a href=\"javascript:void(0)\" onclick=\"getUserInfoInDeleteForm(" + data["id"] + ")\"\n" +
+                    "                                   data-toggle=\"modal\" data-target=\"#deleteUser\"><span\n" +
+                    "                                            class=\"cover-icon\"><i class=\"fa fa-window-close\"></i></span></a>\n" +
+                    "                            </div>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"text-center\">\n" +
+                    "                            <h4 class=\"profile-info-name m-b-lg\">\n" +
+                    "                                " + data["fullname"] + "\n" +
+                    "                                <a href=\"javascript:void(0)\" class=\"title-color\">\n" +
+                    "                                    aka " + data["login"] + "\n" +
+                    "                                </a>\n" +
+                    "                            </h4>\n" +
+                    "                            <div>\n" +
+                    "                                <a href=\"javascript:void(0)\" class=\"m-r-xl theme-color\"><i\n" +
+                    "                                            class=\"fa fa-bolt m-r-xs\"></i> " + data["users_status"]["value"] + "</a>\n" +
+                    "                                <a href=\"javascript:void(0)\" class=\"theme-color\"><i\n" +
+                    "                                            class=\"fa fa-map-marker m-r-xs\"></i>" + data["group"] + "</a>\n" +
+                    "                            </div>\n" +
+                    "                        </div>"
+                $(".profile-cover").append(html);
+            }
+        });
+    }
+}
 
 /********************work with forms***************************/
 

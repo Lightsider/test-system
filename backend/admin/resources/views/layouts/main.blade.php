@@ -38,9 +38,9 @@
                 <li class="nav-item"><a href="{{ route("usersList") }}" class="nav-link @if(Route::current()->getName() === "usersList"
                 || Route::current()->getName() === "userProfile") active @endif"><i
                                 class="fa fa-users"></i>Пользователи</a></li>
-                <li class="nav-item"><a href="#" class="nav-link" data-toggle="collapse"><i
-                                class="fa fa-fire"></i>Тестирования</a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-inbox"></i>Тесты</a></li>
+                {{--<li class="nav-item"><a href="#" class="nav-link" data-toggle="collapse"><i--}}
+                                {{--class="fa fa-fire"></i>Тестирования</a></li>--}}
+                <li class="nav-item"><a href="{{ route("testsList") }}" class="nav-link @if(Route::current()->getName() === "testsList") active @endif"><i class="fa fa-inbox"></i>Тесты</a></li>
                 <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-edit"></i>Вопросы</a></li>
                 <li class="nav-item">
                     <a href="#results" class="nav-link collapsed" data-toggle="collapse" aria-expanded="false">
