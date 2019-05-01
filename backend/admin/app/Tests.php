@@ -28,7 +28,7 @@ class Tests extends Model
 
     public function getTimeAttribute($value)
     {
-        $time = date('i:s', strtotime($value));
+        $time = date('H:i', strtotime($value));
 
         return $time;
     }

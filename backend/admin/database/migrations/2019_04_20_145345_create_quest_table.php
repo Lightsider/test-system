@@ -17,6 +17,8 @@ class CreateQuestTable extends Migration
             $table->increments('id');
             $table->string('title',255);
             $table->text('description');
+            $table->integer('score');
+            $table->enum('type',["ch","wch","mch","doc"]);
             $table->timestamps();
         });
     }

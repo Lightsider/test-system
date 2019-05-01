@@ -23,6 +23,14 @@ class Quests extends Model
     /**
      * @var array
      */
-    protected $fillable = ['title', 'description', 'created_at', 'updated_at'];
+    protected $fillable = ['title', 'description', 'score','type','created_at', 'updated_at'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function category()
+    {
+        return $this->belongsToMany('App\Categories', 'quest_to_category',"id_quest","id_category");
+    }
 
 }

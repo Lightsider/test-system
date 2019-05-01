@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
+use App\Quests;
 use App\Results;
 use App\Tests;
 use App\TestToCategory;
@@ -147,7 +148,35 @@ class Api extends BaseController
             JSON_UNESCAPED_UNICODE);
     }
 
+    /******************************************** TEST ********************************************************/
 
+
+    /**
+     * @param $id
+     * @return bool|\Illuminate\Http\JsonResponse
+     */
+    public function getTest($id)
+    {
+        if (!is_numeric($id)) return false;
+
+        $response["test"] = Tests::with("category")->with("questions")->with("results")->where("id",$id)->get()->first();
+        $average_values = null;
+        foreach ($response["test"]["results"] as $result)
+        {
+            $average_values += $result["result"];
+        }
+
+        if($average_values!==null) $average_values = $average_values/count($response["test"]["results"]);
+
+
+        $response["average_value"] = $average_values;
+
+        return Response::json($response,
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+
+    }
 
     /**
      * @param Request $request
@@ -158,7 +187,7 @@ class Api extends BaseController
         $this->validate($request, [
             'title' => ['string', 'max:255','required'],
             'description' => ['string'],
-            'time' => ['int','required'],
+            'time' => ['date_format:H:i','required'],
             'category' => ['array','nullable'],
         ]);
 
@@ -169,7 +198,7 @@ class Api extends BaseController
             $test = new Tests();
             $test->title = trim($request->title);
             $test->description = trim($request->description);
-            $test->time = date("H:i:s",strtotime("now + ". trim($request->fullname)." MM"));
+            $test->time = trim($request->time);
             $test->save();
 
             if($request->category)
@@ -208,6 +237,85 @@ class Api extends BaseController
         }
     }
 
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateTest(Request $request,$id)
+    {
+        $this->validate($request, [
+            'id' => ['int', 'required'],
+            'title' => ['string', 'max:255','required'],
+            'description' => ['string'],
+            'time' => ['date_format:H:i','required'],
+            'category' => ['array','nullable'],
+        ]);
+
+        if(
+            DB::transaction(function ()
+            {
+                global $request;
+                $test = Tests::find($request->id);
+                $test->title = trim($request->title);
+                $test->description = trim($request->description);
+                $test->time = trim($request->time);
+                $test->save();
+
+                if($request->category)
+                {
+                    //delete old
+                    $oldCategories = DB::table("test_to_category")->where('id_test',$test->id)->get();
+                    foreach ($oldCategories as $oldCategory)
+                    {
+                        TestToCategory::destroy($oldCategory->id);
+                    }
+                    //add new
+                    $categories = DB::table("categories")->whereIn('id',$request->category)->get();
+                    foreach ($categories as $category)
+                    {
+                        $testToCategory = new TestToCategory();
+                        $testToCategory->id_test = $test->id;
+                        $testToCategory->id_category = $category->id;
+                        $testToCategory->save();
+                    }
+                }
+
+                return true;
+
+
+            }) === true
+        )
+        {
+            return Response::json([
+                "message" => "Тест " . htmlspecialchars(trim($request->title)) . " успешно изменен"
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+        else
+        {
+            return Response::json([
+                "message" => "Что-то пошло не так, тест не добавлен."
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public function deleteTest(int $id)
+    {
+        Tests::findOrFail($id)->delete();
+        return Response::json([
+            "message" => "Тест успешно удален"
+        ],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -228,28 +336,124 @@ class Api extends BaseController
         }
 
         $response["average_values"] = $average_values;
-        /*
-        $response["main"] = TestToCategory::with("category")->with("test")->select("id", "id_test", "id_category")->get();
-        foreach ($response["main"] as $testToCategory)
-        {
-            $response["count_quests"][$testToCategory->id_test] = TestToQuest::where("id_test", $testToCategory->id_test)->get()->count();
-
-            $arrCategories = $testToCategory->test->category;
-            $response["categories"][$testToCategory->test->id] = $arrCategories;
-
-            $results = Results::where("id_test", $testToCategory->id_test)->get();
-            $averageValue = null;
-
-            foreach ($results as $result)
-            {
-                $averageValue += $result->result;
-            }
-            if (!empty($averageValue)) $averageValue = $averageValue / count($results);
-            $response["average_value"][$testToCategory->test->id] = $averageValue;
-        }
-        */
 
         return Response::json($response,
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+
+    /******************************************** QUEST ********************************************************/
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function questsForTestList(int $testId=null)
+    {
+        if($testId!==null && is_numeric($testId))
+        {
+            $quests = TestToQuest::where("id_test",$testId)->get()->toArray();
+            $questArr = [];
+            foreach ($quests as $quest)
+            {
+                $questArr[] = $quest["id_quest"];
+            }
+            $quests = Quests::with("category")->whereIn("questions.id",$questArr)->get();
+            return Response::json($quests,
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+
+        return Response::json(["message"=>"Тест не найден"],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    public function questDetail(int $id)
+    {
+        if($id!==null && is_numeric($id))
+        {
+            $quest = Quests::findOrFail($id);
+            return Response::json($quest,
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+
+        return Response::json(["message"=>"Вопрос не найден"],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addQuestToTest(Request $request)
+    {
+        $this->validate($request, [
+            'test-id' => ['int', 'required'],
+            'quests' => ['array', 'required'],
+        ]);
+
+        if(
+            DB::transaction(function ()
+            {
+                global $request;
+
+                $test_id = $request->get('test-id');
+                $quests = $request->quests;
+                $oldTestToQuest = TestToQuest::where("id_test",$test_id)->get();
+                foreach ($oldTestToQuest as $quest)
+                {
+                    $quest->delete();
+                }
+                foreach ($quests as $quest)
+                {
+                    $testToQuest = new TestToQuest();
+                    $testToQuest->id_test = $test_id;
+                    $testToQuest->id_quest = $quest;
+                    $testToQuest->save();
+                }
+
+                return true;
+
+
+            }) === true
+        )
+        {
+            return Response::json([
+                "message" => "Тест успешно изменен"
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+        else
+        {
+            return Response::json([
+                "message" => "Что-то пошло не так, тест не изменен."
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+
+    }
+
+    public function deleteQuestInTest(int $id_test, int $id_quest)
+    {
+        if (!is_numeric($id_test) || !is_numeric($id_quest)) return false;
+
+        TestToQuest::where("id_test",$id_test)->where("id_quest",$id_quest)->get()->first()->delete();
+
+        return Response::json([
+            "message" => "Вопрос успешно удален из теста"
+        ],
             200,
             ['Content-type' => 'application/json; charset=utf-8'],
             JSON_UNESCAPED_UNICODE);

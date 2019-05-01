@@ -34,8 +34,8 @@
                                     <textarea class="form-control" placeholder="Описание" name="description"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <h6>Время в минутах</h6>
-                                    <input type="number" name="time" class="form-control" min="0">
+                                    <h6>Время</h6>
+                                    <input type="time" name="time" class="form-control" min="0">
                                 </div>
                                 <div class="form-group m-0 mb-1">
                                     <label for="category"> Категории </label>

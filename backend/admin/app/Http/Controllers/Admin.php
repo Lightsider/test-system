@@ -111,41 +111,31 @@ class Admin extends BaseController
         ]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function testsList()
     {
-        $tests = Tests::all();
-
-        $counts_quest = [];
-        $averageValues = [];
-        $categories = [];
-        foreach ($tests as $test) {
-            $counts_quest[$test->id] = TestToQuest::where("id_test", $test->id)->get()->count();
-
-            $categories[$test->id] = TestToCategory::where("id",$test->id)->get();
-            $tmp_categories="";
-            foreach ($categories[$test->id] as $category)
-            {
-                $tmp_categories .= $category->category->name.",";
-            }
-            $categories[$test->id] = mb_substr($tmp_categories,0,mb_strlen($tmp_categories)-1);
-
-            $results = Results::where("id_test", $test->id)->get();
-            $averageValue = null;
-
-            foreach ($results as $result)
-            {
-                $averageValue += $result->result;
-            }
-            if (!empty($averageValue)) $averageValue = $averageValue / count($results);
-            $averageValues[$test->id] = $averageValue;
-        }
-
         $allow_categories = Categories::all();
         return view('tests', [
-            "categories"=>$categories,
-            "average_values"=>$averageValues,
-            "counts_quest" => $counts_quest,
-            "tests" => $tests,
+            "allow_categories" => $allow_categories
+        ]);
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function testDetail(int $id)
+    {
+        $test = Tests::findOrFail($id);
+
+        $quests = Quests::all();
+
+        $allow_categories = Categories::all();
+        return view('test_detail', [
+            "test" => $test,
+            "allow_quests" => $quests,
             "allow_categories" => $allow_categories
         ]);
     }

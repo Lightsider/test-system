@@ -46,7 +46,7 @@ class Results extends Model
 
     public function getTimeAttribute($value)
     {
-        $time = date('i мин s с', strtotime($value));
+        $time = date('H:i:s', strtotime($value));
 
         return $time;
     }
