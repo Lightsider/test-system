@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_status')->unsigned();
-            $table->foreign('id_status')->references('id')->on('users_status')->onDelete('cascade');;
+            $table->foreign('id_status')->references('id')->on('users_status')->onDelete('cascade')->onUpdate('cascade');
             $table->string('login',255)->unique();
             $table->string('password',255);
             $table->string('fullname',255);

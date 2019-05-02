@@ -23,7 +23,7 @@ class Categories extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function questToCategories()
+    public function quests()
     {
         return $this->hasMany('App\QuestToCategory', 'id_category');
     }
@@ -31,7 +31,7 @@ class Categories extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function testToCategories()
+    public function tests()
     {
         return $this->hasMany('App\TestToCategory', 'id_category');
     }

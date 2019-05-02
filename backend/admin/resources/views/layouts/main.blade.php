@@ -42,7 +42,8 @@
                                 {{--class="fa fa-fire"></i>Тестирования</a></li>--}}
                 <li class="nav-item"><a href="{{ route("testsList") }}" class="nav-link @if(Route::current()->getName() === "testsList" ||
                 Route::current()->getName() === "testDetail") active @endif"><i class="fa fa-inbox"></i>Тесты</a></li>
-                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-edit"></i>Вопросы</a></li>
+                <li class="nav-item"><a href="{{ route("questsList") }}" class="nav-link @if(Route::current()->getName() === "questsList" /*||
+                Route::current()->getName() === "testDetail"*/) active @endif"><i class="fa fa-edit"></i>Вопросы</a></li>
                 <li class="nav-item">
                     <a href="#results" class="nav-link collapsed" data-toggle="collapse" aria-expanded="false">
                         <i class="fa fa-table"></i>Результаты

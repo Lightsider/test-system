@@ -248,8 +248,7 @@ $("#deleteTest .btn-danger").click(function (e) {
             alert("Тест не найден");
         }
     });
-    showUsersList();
-    //if ($("div").is("#deleteTest")) $(location).attr('href', "/tests");
+    if ($("div").is("#deleteTest")) $(location).attr('href', "/tests");
 });
 
 $("#editQuestInTestForm").submit(function (e) {
@@ -319,10 +318,157 @@ $("#deleteQuestInTest .btn-danger").click(function (e) {
     showQuestList();
 });
 
+//categories
+
+$("#addCategory").submit(function (e) {
+    e.preventDefault();
+
+    //add category
+    $.ajax({
+        url: '/api/addCategory',
+        data: $(this).serialize(),
+        method: 'post',
+        success: function (data) {
+            var message = data["message"];
+            $("#addCategoryMessage").css("display", "block");
+            $("#addCategoryMessage").removeClass("alert-danger");
+            $("#addCategoryMessage").addClass("alert-success");
+            $("#addCategoryMessage strong").text(message);
+            $("#addCategory")[0].reset();
+        },
+        error: function (data) {
+            data = $.parseJSON(data.responseText);
+            var message_arr = data["errors"], message = "";
+            $.each(message_arr, function (index, value) {
+                $.each(value, function (index, value2) {
+                    message += value2 + "<br>";
+                });
+            });
+            $("#addCategoryMessage").css("display", "block");
+            $("#addCategoryMessage").removeClass("alert-success");
+            $("#addCategoryMessage").addClass("alert-danger");
+            $("#addCategoryMessage strong").html(message);
+        }
+    });
+
+    // get categorylist
+    showCategoriesList();
+});
+
+$("#cat-list").on("click", ".fa-edit", function (e) {
+    e.preventDefault();
+    var cat_id = $(this).parent(".item-actions").parent(".list-group-item").find("input[name=cat_id]").val();
+    getCategoryInfoInUpdateForm(cat_id)
+});
+
+$("#updateCategory").submit(function (e) {
+    e.preventDefault();
+
+    var modal = $("#editCategory");
+    var cat_id = modal.find("input[name=cat_id]").val();
+    //update category
+    $.ajax({
+        url: '/api/updateCategory/' + cat_id,
+        data: $(this).serialize(),
+        method: 'post',
+        success: function (data) {
+            var message = data["message"];
+            $("#updateCategoryMessage").css("display", "block");
+            $("#updateCategoryMessage").removeClass("alert-danger");
+            $("#updateCategoryMessage").addClass("alert-success");
+            $("#updateCategoryMessage strong").text(message);
+        },
+        error: function (data) {
+            data = $.parseJSON(data.responseText);
+            var message_arr = data["errors"], message = "";
+            $.each(message_arr, function (index, value) {
+                $.each(value, function (index, value2) {
+                    message += value2 + "<br>";
+                });
+            });
+            $("#updateCategoryMessage").css("display", "block");
+            $("#updateCategoryMessage").removeClass("alert-success");
+            $("#updateCategoryMessage").addClass("alert-danger");
+            $("#updateCategoryMessage strong").html(message);
+        }
+    });
+
+    // get questlist
+    showCategoriesList();
+});
+
+$("#cat-list").on("click", ".fa-trash", function (e) {
+    e.preventDefault();
+    var cat_id = $(this).parent(".item-actions").parent(".list-group-item").find("input[name=cat_id]").val();
+    getCategoryInfoInDeleteForm(cat_id)
+});
+
+
+$("#deleteCategory .btn-danger").click(function (e) {
+    e.preventDefault();
+    var modal = $("#deleteCategory");
+    var cat_id = modal.find("input[name=cat_id]").val();
+    $.ajax({
+        url: '/api/deleteCategory/' + cat_id,
+        method: 'delete',
+        success: function (data) {
+            var message = data["message"];
+            $("#deleteCategoryMessage").css("display", "block");
+            $("#deleteCategoryMessage").removeClass("alert-danger");
+            $("#deleteCategoryMessage").addClass("alert-success");
+            $("#deleteCategoryMessage strong").text(message);
+        },
+        error: function (data) {
+            alert("Категория не найдена");
+        }
+    });
+    showCategoriesList();
+});
+
 /********************work with forms***************************/
 
 
 /********************functions***************************/
+function getCategoryInfoInDeleteForm(id) {
+    var modal = $("#deleteCategory");
+    modal.find(".btn-danger").attr("disabled", "true");
+    modal.modal('show');
+    $("#deleteCategoryMessage").css("display", "none");
+    $("#deleteCategoryMessage strong").text("");
+    $.ajax({
+        url: '/api/category/' + id,
+        method: 'get',
+        success: function (data) {
+            modal.find(".modal-content input[name=cat_id]").val(data["id"]);
+            modal.find(".modal-content strong:first").text(data["name"]);
+            modal.find(".btn-danger").removeAttr("disabled");
+        },
+        error: function (data) {
+            alert("Категория не найдена");
+        }
+    });
+}
+
+function getCategoryInfoInUpdateForm(id) {
+    var modal = $("#editCategory");
+    modal.find(".btn-success").attr("disabled", "true");
+    modal.modal('show');
+    $("#updateCategoryMessage").css("display", "none");
+    $("#updateCategoryMessage strong").text("");
+    $.ajax({
+        url: '/api/category/' + id,
+        method: 'get',
+        success: function (data) {
+            modal.find(".modal-content input[name=cat_id]").val(data["id"]);
+            modal.find(".modal-content input[name=name]").val(data["name"]);
+            modal.find(".modal-content input[name=slug]").val(data["slug"]);
+            modal.find(".btn-success").removeAttr("disabled");
+        },
+        error: function (data) {
+            alert("Категория не найдена");
+        }
+    });
+}
 
 function getQuestInfoInDeleteForm(quest_id) {
     var modal = $("#deleteQuestInTest");
@@ -388,6 +534,38 @@ function showQuestList() {
                         "                            </div><!-- END column -->"
 
                     $("#questList").append(html);
+                });
+            }
+        });
+    }
+}
+
+function showCategoriesList() {
+    if ($("div").is("#cat-list")) {
+        $("#cat-list").html("Загрузка...");
+        $.ajax({
+            url: '/api/categories',
+            method: 'get',
+            success: function (data) {
+                $("#cat-list").html("");
+                $.each(data, function (index, value) {
+                    var count_quests = 0;
+                    if(value["quests"] && value["quests"].length)count_quests = value["quests"].length;
+                    var html = "<a href=\"#\" class=\"list-group-item\">\n" +
+                        "                                            <input type=\"hidden\" name=\"cat_id\" value=\""+value["id"]+"\">\n" +
+                        "                                            <div class=\"item-data\">\n" +
+                        "                                                <span class=\"label-text\">"+value["name"]+"</span>\n" +
+                        "                                                <span class=\"pull-right hide-on-hover\">"+count_quests +"</span>\n" +
+                        "                                            </div>\n" +
+                        "                                            <div class=\"item-actions\">\n" +
+                        "                                                <i class=\"item-action fa fa-edit\" data-toggle=\"modal\"\n" +
+                        "                                                   data-target=\"#editCategory\"></i>\n" +
+                        "                                                <i class=\"item-action fa fa-trash\" data-toggle=\"modal\"\n" +
+                        "                                                   data-target=\"#deleteCategory\"></i>\n" +
+                        "                                            </div>\n" +
+                        "                                        </a><!-- .list-group-item -->";
+
+                    $("#cat-list").append(html);
                 });
             }
         });

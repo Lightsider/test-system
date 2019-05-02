@@ -16,9 +16,9 @@ class CreateQuestToCategoryTable extends Migration
         Schema::create('quest_to_category', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_quest')->unsigned();
-            $table->foreign('id_quest')->references('id')->on('questions')->onDelete('cascade');;
+            $table->foreign('id_quest')->references('id')->on('questions')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('id_category')->unsigned();
-            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade');;
+            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

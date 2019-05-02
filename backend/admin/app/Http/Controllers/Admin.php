@@ -139,4 +139,15 @@ class Admin extends BaseController
             "allow_categories" => $allow_categories
         ]);
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function questsList()
+    {
+        $allow_categories = Categories::all();
+        return view('quests', [
+            "allow_categories" => $allow_categories
+        ]);
+    }
 }

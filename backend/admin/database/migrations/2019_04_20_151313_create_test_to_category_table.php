@@ -16,9 +16,9 @@ class CreateTestToCategoryTable extends Migration
         Schema::create('test_to_category', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_test')->unsigned();
-            $table->foreign('id_test')->references('id')->on('tests')->onDelete('cascade');;
+            $table->foreign('id_test')->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('id_category')->unsigned();
-            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade');;
+            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

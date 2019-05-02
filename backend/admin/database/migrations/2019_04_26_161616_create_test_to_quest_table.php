@@ -16,9 +16,9 @@ class CreateTestToQuestTable extends Migration
         Schema::create('test_to_quest', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_quest')->unsigned();
-            $table->foreign('id_quest')->references('id')->on('questions')->onDelete('cascade');
+            $table->foreign('id_quest')->references('id')->on('questions')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('id_test')->unsigned();
-            $table->foreign('id_test')->references('id')->on('tests')->onDelete('cascade');
+            $table->foreign('id_test')->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

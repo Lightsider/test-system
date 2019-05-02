@@ -31,3 +31,10 @@ Route::get('/quests/{testId}', 'Api@questsForTestList')->name('questsForTestList
 Route::get('/quest/{id}', 'Api@questDetail')->name('questDetail');
 Route::post('/addQuestToTest', 'Api@addQuestToTest')->name('addQuestToTest');
 Route::delete('/deleteQuestInTest/{id_test}/{id_quest}', 'Api@deleteQuestInTest')->name('deleteQuestInTest');
+
+//categories
+Route::get('/categories', 'Api@categoriesList')->name('categoriesList');
+Route::get('/category/{id}', 'Api@categoryDetail')->name('categoryDetail');
+Route::post('/addCategory', 'Api@addCategory')->name('addCategory');
+Route::post('/updateCategory/{id}', 'Api@updateCategory')->name('updateCategory');
+Route::delete('/deleteCategory/{id}', 'Api@deleteCategory')->name('deleteCategory');

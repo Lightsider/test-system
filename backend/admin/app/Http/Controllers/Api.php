@@ -445,6 +445,11 @@ class Api extends BaseController
 
     }
 
+    /**
+     * @param int $id_test
+     * @param int $id_quest
+     * @return bool|\Illuminate\Http\JsonResponse
+     */
     public function deleteQuestInTest(int $id_test, int $id_quest)
     {
         if (!is_numeric($id_test) || !is_numeric($id_quest)) return false;
@@ -453,6 +458,104 @@ class Api extends BaseController
 
         return Response::json([
             "message" => "Вопрос успешно удален из теста"
+        ],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+
+
+    /******************************************** CATEGORIES ********************************************************/
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function categoriesList()
+    {
+        $categories = Categories::with("quests")->with("tests")->get();
+
+        return Response::json(
+            $categories
+        ,
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    public function categoryDetail(int $id)
+    {
+        $category = Categories::findOrFail($id);
+        return Response::json(
+            $category
+            ,
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addCategory(Request $request)
+    {
+        $this->validate($request, [
+            'name' => ['string', 'max:255','required'],
+            'slug' => ['string', 'max:255','required','regex:|^[a-zA-Z]+$|', 'unique:categories'],
+        ]);
+
+        $category = new Categories();
+        $category->name = $request->name;
+        $category->slug = $request->slug;
+        $category->save();
+
+        return Response::json([
+            "message" => "Категория успешно добавлена"
+        ],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @param Request $request
+     * @param $cat_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateCategory(Request $request,$cat_id)
+    {
+        $category = Categories::findOrFail($request->cat_id);
+        $this->validate($request, [
+            'cat_id'=>['int','required'],
+            'name' => ['string', 'max:255','required'],
+            'slug' => ['string', 'max:255','required','regex:|^[a-zA-Z]+$|', 'unique:categories,id,'.$cat_id],
+        ]);
+
+        $category->name = $request->name;
+        $category->slug = $request->slug;
+        $category->save();
+
+        return Response::json([
+            "message" => "Категория ".$category->name." успешно изменена"
+        ],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @param int $id_test
+     * @return bool|\Illuminate\Http\JsonResponse
+     */
+    public function deleteCategory(int $id_cat)
+    {
+        if (!is_numeric($id_cat)) return false;
+
+        Categories::where("id",$id_cat)->get()->first()->delete();
+
+        return Response::json([
+            "message" => "Категория успешно удалена"
         ],
             200,
             ['Content-type' => 'application/json; charset=utf-8'],
