@@ -27,10 +27,14 @@ Route::post('/updateTest/{id}', 'Api@updateTest')->name('updateTest');
 Route::delete('/deleteTest/{id}', 'Api@deleteTest')->name('deleteTest');
 
 //questions
+Route::get('/quests', 'Api@questsList')->name('questsList');
 Route::get('/quests/{testId}', 'Api@questsForTestList')->name('questsForTestList');
 Route::get('/quest/{id}', 'Api@questDetail')->name('questDetail');
 Route::post('/addQuestToTest', 'Api@addQuestToTest')->name('addQuestToTest');
 Route::delete('/deleteQuestInTest/{id_test}/{id_quest}', 'Api@deleteQuestInTest')->name('deleteQuestInTest');
+Route::post('/addQuest', 'Api@addQuest')->name('addQuest');
+Route::post('/updateQuest/{id_quest}', 'Api@updateQuest')->name('updateQuest');
+Route::delete('/deleteQuest/{id_quest}', 'Api@deleteQuest')->name('deleteQuest');
 
 //categories
 Route::get('/categories', 'Api@categoriesList')->name('categoriesList');

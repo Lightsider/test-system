@@ -1,6 +1,7 @@
-$("#question-type").change(function (event) {
-    $('#question-type').parent(".form-group").nextAll().css("display", "none");
+$("form select[name=type]").change(function (event) {
+    $('form select[name=type]').parent(".form-group").nextAll().css("display", "none");
     $("#" + $(this).val()).css('display', "block");
+    $("#u" + $(this).val()).css('display', "block");
 });
 
 //choose
@@ -47,6 +48,7 @@ $(document).ready(function (e) {
     showUsersList();
     showTestsList();
     showQuestList();
+    showQuestsByCategory("all");
 });
 
 
@@ -309,7 +311,7 @@ $("#deleteQuestInTest .btn-danger").click(function (e) {
             $("#deleteQuestInTestMessage").removeClass("alert-danger");
             $("#deleteQuestInTestMessage").addClass("alert-success");
             $("#deleteQuestInTestMessage strong").text(message);
-            $("#quests option[value="+ quest_id +"]").removeAttr("selected");
+            $("#quests option[value=" + quest_id + "]").removeAttr("selected");
         },
         error: function (data) {
             alert("Этот вопрос в этом тесте не найден");
@@ -425,10 +427,305 @@ $("#deleteCategory .btn-danger").click(function (e) {
     showCategoriesList();
 });
 
+$("#categories-list").on("click", ".list-group-item:not(.text-color)", function (e) {
+    e.preventDefault();
+    var cat_id = $(this).find("input[name=cat_id]").val();
+    showQuestsByCategory(cat_id);
+});
+
+
+//quests
+$("#addQuestion").submit(function (e) {
+    e.preventDefault();
+
+    //add quest
+    $.ajax({
+        url: '/api/addQuest',
+        data: new FormData($("#addQuestion")[0]),
+        method: 'post',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            var message = data["message"];
+            $("#newQuestMessage").css("display", "block");
+            $("#newQuestMessage").removeClass("alert-danger");
+            $("#newQuestMessage").addClass("alert-success");
+            $("#newQuestMessage strong").text(message);
+            $("#addQuestion")[0].reset();
+            // update page
+            showCategoriesList();
+            showQuestsByCategory("all");
+        },
+        error: function (data) {
+            data = $.parseJSON(data.responseText);
+            var message_arr = data["errors"], message = "";
+            $.each(message_arr, function (index, value) {
+                $.each(value, function (index, value2) {
+                    message += value2 + "<br>";
+                });
+            });
+            $("#newQuestMessage").css("display", "block");
+            $("#newQuestMessage").removeClass("alert-success");
+            $("#newQuestMessage").addClass("alert-danger");
+            $("#newQuestMessage strong").html(message);
+        }
+    });
+});
+
+$("#deleteQuest .btn-danger").click(function (e) {
+    $("#deleteQuest .btn-danger").attr("disabled", "true");
+    e.preventDefault();
+    var modal = $("#deleteQuest");
+    var quest_id = modal.find("input[name=quest_id]").val();
+    $.ajax({
+        url: '/api/deleteQuest/' + quest_id,
+        method: 'delete',
+        success: function (data) {
+            var message = data["message"];
+            $("#deleteQuestMessage").css("display", "block");
+            $("#deleteQuestMessage").removeClass("alert-danger");
+            $("#deleteQuestMessage").addClass("alert-success");
+            $("#deleteQuestMessage strong").text(message);
+        },
+        error: function (data) {
+            alert("Вопрос не найден");
+        }
+    });
+    // update page
+    showCategoriesList();
+    showQuestsByCategory("all");
+});
+
+$("#quests-list").on("click", ".btn-danger", function (e) {
+    e.preventDefault();
+    var quest_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=quest_id]").val();
+    $("#deleteQuest .btn-danger").removeAttr("disabled");
+    getQuestInfoInDeleteForm(quest_id);
+});
+
+$("#deleteQuest").on("hidden.bs.modal", function () {
+    $("#deleteQuestMessage").css("display", "none");
+});
+
+$("#updateQuest").on("hidden.bs.modal", function () {
+    $("#updateQuestMessage").css("display", "none");
+});
+
+$("#newQuestion").on("hidden.bs.modal", function () {
+    $("#newQuestMessage").css("display", "none");
+});
+
+$("#quests-list").on("click", ".btn-success", function (e) {
+    e.preventDefault();
+    var quest_id = $(this).parent(".contact-item-actions").parent(".user-card").find("input[name=quest_id]").val();
+    $("#updateQuest .btn-success").removeAttr("disabled");
+    getQuestInfoInUpdateForm(quest_id);
+});
+
+$("#updateQuestion").submit(function (e) {
+    e.preventDefault();
+    var id = $("#updateQuestion").find("input[name=id]").val();
+    //add user
+    $.ajax({
+        url: '/api/updateQuest/'+ id,
+        data: new FormData($("#updateQuestion")[0]),
+        method: 'post',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+            var message = data["message"];
+            $("#updateQuestMessage").css("display", "block");
+            $("#updateQuestMessage").removeClass("alert-danger");
+            $("#updateQuestMessage").addClass("alert-success");
+            $("#updateQuestMessage strong").text(message);
+            // update page
+            showCategoriesList();
+            showQuestsByCategory("all");
+        },
+        error: function (data) {
+            data = $.parseJSON(data.responseText);
+            var message_arr = data["errors"], message = "";
+            $.each(message_arr, function (index, value) {
+                $.each(value, function (index, value2) {
+                    message += value2 + "<br>";
+                });
+            });
+            $("#updateQuestMessage").css("display", "block");
+            $("#updateQuestMessage").removeClass("alert-success");
+            $("#updateQuestMessage").addClass("alert-danger");
+            $("#updateQuestMessage strong").html(message);
+        }
+    });
+});
+
 /********************work with forms***************************/
 
 
 /********************functions***************************/
+function getQuestInfoInUpdateForm(id) {
+    var modal = $("#editQuestion");
+    $("#updateQuestion")[0].reset();
+    $("#updateQuestion input").removeAttr("checked");
+    modal.find(".btn-success").attr("disabled", "true");
+    modal.modal('show');
+    $("#updateQuestMessage").css("display", "none");
+    $("#updateQuestMessage strong").text("");
+    $.ajax({
+        url: '/api/quest/' + id,
+        method: 'get',
+        success: function (data) {
+            modal.find(".modal-content input[name=id]").val(data["id"]);
+            modal.find(".modal-content input[name=title]").val(data["title"]);
+            modal.find(".modal-content textarea[name=description]").val(data["description"]);
+            modal.find(".modal-content input[name=score]").val(data["score"]);
+            modal.find(".modal-content textarea[name=hint]").val(data["hint"]);
+
+            modal.find("#quest-files").html("");
+            $.each(data["files"], function (index, value) {
+                var html = "<p><a href=\"" + value["path"] + "\" download=\"true\">" + value["path"].split("/")[1] + "</a> <a href=\"#\" class=\"text-danger\"> Удалить </a></p>"
+                modal.find("#quest-files").append(html);
+            });
+
+            modal.find(".modal-content select[name='categories[]'] option").removeAttr("selected");
+            $.each(data['category'], function (index, category) {
+                modal.find(".modal-content select[name='categories[]'] option[value=" + category["id"] + "]").attr("selected", "true");
+            });
+
+            modal.find(".modal-content select[name='type'] option").removeAttr("selected");
+            modal.find(".modal-content select[name='type'] option[value=" + data["type"] + "]").attr("selected", "true");
+            modal.find(".modal-content select[name='type']").trigger("change");
+
+            if (data["type"] === "ch") {
+                var i = 1;
+                $.each(data["answers"], function (index, answer) {
+                    if (modal.find("input[name='ans-" + i + "-ch']").length > 0) {
+                        modal.find("input[name='ans-" + i + "-ch']").val(answer["text"]);
+                        if(answer["status"]=="1")
+                        {
+                            modal.find("input[name='ans-right-ch'][value="+i+"]").attr('checked', 'checked');
+                        }
+                    }
+                    else
+                    {
+                        modal.find("button[name='add-ans-ch']").click();
+                        modal.find("input[name='ans-" + i + "-ch']").val(answer["text"]);
+                        if(answer["status"]=="1")
+                        {
+                            modal.find("input[name='ans-right-ch'][value="+i+"]").attr('checked', 'checked');
+                        }
+                    }
+                    i++;
+                });
+            }
+            else if (data["type"] === "wch") {
+                modal.find(".modal-content textarea[name=ans-wch]").val(data["answers"][0]["text"]);
+            }
+            else if (data["type"] === "mch") {
+                var i = 1;
+                $.each(data["answers"], function (index, answer) {
+                    if (modal.find("input[name='ans-" + i + "-mch']").length > 0) {
+                        modal.find("input[name='ans-" + i + "-mch']").val(answer["text"]);
+                        if(answer["status"]=="1")
+                        {
+                            modal.find("input[name='ans-right-mch-"+i+"']").attr('checked', 'checked');
+                        }
+                    }
+                    else
+                    {
+                        modal.find("button[name='add-ans-mch']").click();
+                        modal.find("input[name='ans-" + i + "-mch']").val(answer["text"]);
+                        if(answer["status"]=="1")
+                        {
+                            modal.find("input[name='ans-right-mch-"+i+"']").attr('checked', 'checked');
+                        }
+                    }
+                    i++;
+                });
+            }
+            else if (data["type"] === "doc") {
+                modal.find(".modal-content textarea[name=ans-doc]").val(data["answers"][0]["text"]);
+            }
+
+            modal.find(".btn-success").removeAttr("disabled");
+        },
+        error: function (data) {
+            alert("Вопрос не найдена");
+        }
+    });
+}
+
+function showQuestsByCategory(cat_id) {
+    var url = "";
+    if (cat_id !== "all") {
+        url = '/api/category/' + cat_id;
+    }
+    else url = '/api/quests';
+
+    var listBlock = $("#quests-list");
+    listBlock.text("Загрузка...");
+    $.ajax({
+        url: url,
+        method: 'get',
+        success: function (data) {
+            listBlock.text("");
+            var array;
+            if (cat_id !== "all") {
+                array = data["quests"]
+            }
+            else
+                array = data;
+
+            $.each(array, function (index, value) {
+                var type = "";
+                var html = "<div class=\"col-sm-3\">\n" +
+                    "                                <div class=\"card user-card contact-item p-md\">\n" +
+                    "                                    <div class=\"media\">\n" +
+                    "                                        <div class=\"media-body\">" +
+                    "<input type='hidden' name='quest_id' value='" + value["id"] + "'>" +
+                    "                                            <a href=\"#\"><h5 class=\"media-heading title-color\">" + value["title"] + "</h5></a>\n";
+                if (value["type"] == "wch") type = "С развернутым ответом";
+                else if (value["type"] == "mch") type = "С множественным выбором";
+                else if (value["type"] == "wch") type = "С виртуальным контейнером";
+                else type = "С выбором ответа";
+                html +=
+                    "                                            <small class=\"media-meta\">" + type + "</small>\n" +
+                    "<br><small class='media-meta'>";
+                if (value["category"].length > 0) {
+                    $.each(value["category"], function (index_cat, category) {
+                        html += category["name"] + ",";
+                    });
+                    html = html.substr(0, html.length - 1)
+                }
+                else {
+                    html += "Без категории";
+                }
+                html += "</small><p class=\"media-meta mb-0\">" + value["score"] + " баллов </p>" +
+                    "                                        </div>\n" +
+                    "                                    </div>\n" +
+                    "                                    <div class=\"contact-item-actions\">\n" +
+                    "                                        <a href=\"javascript:void(0)\" class=\"btn btn-success\" data-toggle=\"modal\"\n" +
+                    "                                           data-target=\"#editQuest\"><i class=\"fa fa-edit\"></i></a>" +
+                    "                                        <a href=\"javascript:void(0)\" class=\"btn btn-danger\" data-toggle=\"modal\"\n" +
+                    "                                           data-target=\"#deleteQuest\"><i class=\"fa fa-trash\"></i></a>\n" +
+                    "                                    </div><!-- .contact-item-actions -->\n" +
+                    "                                </div><!-- card user-card -->\n" +
+                    "                            </div><!-- END column -->"
+
+                listBlock.append(html);
+            });
+
+            $(".list-group-item").removeClass("active");
+            $(".list-group-item input[name=cat_id][value=" + cat_id + "]").parent(".list-group-item").addClass("active");
+
+        },
+        error: function (data) {
+            alert("Категория не найдена");
+        }
+    });
+}
+
 function getCategoryInfoInDeleteForm(id) {
     var modal = $("#deleteCategory");
     modal.find(".btn-danger").attr("disabled", "true");
@@ -471,23 +768,44 @@ function getCategoryInfoInUpdateForm(id) {
 }
 
 function getQuestInfoInDeleteForm(quest_id) {
-    var modal = $("#deleteQuestInTest");
-    modal.find(".btn-danger").attr("disabled", "true");
-    modal.modal('show');
-    $("#deleteQuestInTestMessage").css("display", "none");
-    $("#deleteQuestInTestMessage strong").text("");
-    $.ajax({
-        url: '/api/quest/' + quest_id,
-        method: 'get',
-        success: function (data) {
-            modal.find(".modal-body p strong").text(data["title"]);
-            modal.find(".modal-content input[name=quest_id]").val(data["id"]);
-            modal.find(".btn-danger").removeAttr("disabled");
-        },
-        error: function (data) {
-            alert("Этот вопрос в этом тесте не найден");
-        }
-    });
+    if ($("div").is("#deleteQuestInTest")) {
+        var modal = $("#deleteQuestInTest");
+        modal.find(".btn-danger").attr("disabled", "true");
+        modal.modal('show');
+        $("#deleteQuestInTestMessage").css("display", "none");
+        $("#deleteQuestInTestMessage strong").text("");
+        $.ajax({
+            url: '/api/quest/' + quest_id,
+            method: 'get',
+            success: function (data) {
+                modal.find(".modal-body p strong").text(data["title"]);
+                modal.find(".modal-content input[name=quest_id]").val(data["id"]);
+                modal.find(".btn-danger").removeAttr("disabled");
+            },
+            error: function (data) {
+                alert("Этот вопрос в этом тесте не найден");
+            }
+        });
+    }
+    else if ($("div").is("#deleteQuest")) {
+        var modal = $("#deleteQuest");
+        modal.find(".btn-danger").attr("disabled", "true");
+        modal.modal('show');
+        $("#deleteQuest").css("display", "none");
+        $("#deleteQuest strong:first").text("");
+        $.ajax({
+            url: '/api/quest/' + quest_id,
+            method: 'get',
+            success: function (data) {
+                modal.find(".modal-body p strong:first").text(data["title"]);
+                modal.find(".modal-content input[name=quest_id]").val(data["id"]);
+                modal.find(".btn-danger").removeAttr("disabled");
+            },
+            error: function (data) {
+                alert("Вопрос не найден");
+            }
+        });
+    }
 }
 
 function showQuestList() {
@@ -548,14 +866,15 @@ function showCategoriesList() {
             method: 'get',
             success: function (data) {
                 $("#cat-list").html("");
+                $("select[name='categories[]']").html("");
                 $.each(data, function (index, value) {
                     var count_quests = 0;
-                    if(value["quests"] && value["quests"].length)count_quests = value["quests"].length;
+                    if (value["quests"] && value["quests"].length) count_quests = value["quests"].length;
                     var html = "<a href=\"#\" class=\"list-group-item\">\n" +
-                        "                                            <input type=\"hidden\" name=\"cat_id\" value=\""+value["id"]+"\">\n" +
+                        "                                            <input type=\"hidden\" name=\"cat_id\" value=\"" + value["id"] + "\">\n" +
                         "                                            <div class=\"item-data\">\n" +
-                        "                                                <span class=\"label-text\">"+value["name"]+"</span>\n" +
-                        "                                                <span class=\"pull-right hide-on-hover\">"+count_quests +"</span>\n" +
+                        "                                                <span class=\"label-text\">" + value["name"] + "</span>\n" +
+                        "                                                <span class=\"pull-right hide-on-hover\">" + count_quests + "</span>\n" +
                         "                                            </div>\n" +
                         "                                            <div class=\"item-actions\">\n" +
                         "                                                <i class=\"item-action fa fa-edit\" data-toggle=\"modal\"\n" +
@@ -566,6 +885,8 @@ function showCategoriesList() {
                         "                                        </a><!-- .list-group-item -->";
 
                     $("#cat-list").append(html);
+                    var option = "<option value=\"" + value["id"] + "\">" + value["name"] + "</option>"
+                    $("select[name='categories[]']").append(option);
                 });
             }
         });
@@ -606,6 +927,7 @@ function showTestsList() {
             success: function (data) {
                 $("#testsList").html("");
                 $.each(data["tests"], function (index, value) {
+                    var type = "";
                     var html = "<div class=\"col-sm-6 col-md-4\">\n" +
                         "                                        <a href=\"/test/" + value["id"] + "\">" +
                         "<div class=\"card\ " + getColorFromResults(data["average_values"][value["id"]], "card") + "\">\n" +
@@ -622,6 +944,11 @@ function showTestsList() {
                     else {
                         html += "<p><strong>Средний балл:</strong> Нет данных </p>\n"
                     }
+                    if (value["type"] == "learn") type = "Обучающий";
+                    else type = "Контрольный";
+
+                    html += "<p><strong>Тип:</strong> " + type + "\n" +
+                        "                                                    </p>\n";
                     html += "                                             </div>\n" +
                         "                                                <div class=\"card-footer\">\n";
                     if (value["category"].length > 0) {
@@ -649,6 +976,7 @@ function showTestsList() {
             method: 'get',
             success: function (data) {
                 $("#test-info").html("");
+                var type = "";
                 var html = "<h3 class=\"m-b-lg\">" + data["test"]["title"] + "</h3>\n" +
                     "                    <div class=\"row mt-3\">\n" +
                     "                        <div class=\"col-md-12\">\n" +
@@ -673,6 +1001,9 @@ function showTestsList() {
                 else {
                     html += "<p class=\"m-h-lg fz-md lh-lg\"><strong>Средний балл:</strong> Нет данных </p>\n"
                 }
+                if (data["test"]["type"] == "learn") type = "Обучающий";
+                else type = "Контрольный";
+                html += "<p class=\"m-h-lg fz-md lh-lg\"><strong>Тип:</strong> " + type + " </p>\n"
                 html +=
                     "                        </div><!-- END column -->\n" +
                     "                    </div><!-- .row -->";

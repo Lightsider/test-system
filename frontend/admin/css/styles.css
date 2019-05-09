@@ -134,3 +134,30 @@
     background-color:#8CD790;
     color:white;
 }
+
+#categories-list .list-group-item.active
+{
+    background-color: #ae55ff;
+}
+
+.wrap #contact #categories-list .list-group .list-group-item.active:hover
+{
+    background-color: #ae55ff;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+    border-color: #ae55ff;
+}
+
+.app-action-panel .list-group-item.active .item-actions .item-action
+{
+    color:white;
+}
+
+.wrap #contact #categories-list .list-group .list-group-item .item-action:hover
+{
+    color: #5c2982;
+}
+
+#doc
+{
+    padding: 0;
+}

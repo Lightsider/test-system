@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -55,6 +56,30 @@ class Tests extends Model
     public function results()
     {
         return $this->hasMany('App\Results',"id_test");
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypes()
+    {
+        $type = DB::select( DB::raw("SHOW COLUMNS FROM tests WHERE Field = 'type'") )[0]->Type;
+        preg_match('/^enum\((.*)\)$/', $type, $matches);
+        $enum = array();
+        foreach( explode(',', $matches[1]) as $value )
+        {
+            $v = trim( $value, "'" );
+            switch ($v){
+                case "learn":
+                    $string = "Обучающий";
+                    break;
+                default:
+                    $string = "Контрольный";
+
+            }
+            $enum = array_add($enum, $v, $string);
+        }
+        return $enum;
     }
 
 }

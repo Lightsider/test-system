@@ -17,7 +17,7 @@ class CreateAnswersTable extends Migration
             $table->increments('id');
             $table->integer('id_quest')->unsigned();
             $table->foreign('id_quest')->references('id')->on('questions')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('text',255);
+            $table->text('text');
             $table->string('status',255);
             $table->timestamps();
         });

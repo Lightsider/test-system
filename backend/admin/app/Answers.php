@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $status
  * @property string $created_at
  * @property string $updated_at
- * @property Question $question
+ * @property Quests $question
  */
 class Answers extends Model
 {

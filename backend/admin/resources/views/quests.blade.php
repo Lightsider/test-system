@@ -11,13 +11,13 @@
                     <div class="col-md-2">
                         <div class="app-action-panel" id="contacts-action-panel">
                             <div class="m-b-lg">
-                                <a href="#" data-toggle="modal" data-target="#categoryModal"
+                                <a href="#" data-toggle="modal" data-target="#newQuestion"
                                    class="btn btn-primary btn-block text-normalsize">Новый вопрос</a>
                             </div>
                             <!-- contact category list -->
                             <div id="categories-list" class="app-actions-list scrollable-container">
                                 <div class="list-group">
-                                    <a href="#" class="list-group-item">
+                                    <a href="#" class="list-group-item active">
                                         <input type="hidden" name="cat_id" value="all">
                                         <div class="item-data">
                                             <i class="fa fa-inbox text-color m-r-xs"></i>
@@ -65,79 +65,7 @@
                             </div><!-- END column -->
                         </div><!-- .row -->
 
-                        <div id="contacts-list" class="row">
-                            <div class="col-sm-4">
-                                <div class="card user-card contact-item p-md">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5>
-                                            </a>
-                                            <small class="media-meta">С выбором ответа</small>
-                                        </div>
-                                    </div>
-                                    <div class="contact-item-actions">
-                                        <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal"
-                                           data-target="#categoryModal"><i class="fa fa-edit"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                           data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
-                                    </div><!-- .contact-item-actions -->
-                                </div><!-- card user-card -->
-                            </div><!-- END column -->
-
-                            <div class="col-sm-4">
-                                <div class="card user-card contact-item p-md">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5>
-                                            </a>
-                                            <small class="media-meta">С виртуальной машиной</small>
-                                        </div>
-                                    </div>
-                                    <div class="contact-item-actions">
-                                        <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal"
-                                           data-target="#categoryModal"><i class="fa fa-edit"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                           data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
-                                    </div><!-- .contact-item-actions -->
-                                </div><!-- card user-card -->
-                            </div><!-- END column -->
-
-                            <div class="col-sm-4">
-                                <div class="card user-card contact-item p-md">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5>
-                                            </a>
-                                            <small class="media-meta">С виртуальной машиной</small>
-                                        </div>
-                                    </div>
-                                    <div class="contact-item-actions">
-                                        <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal"
-                                           data-target="#categoryModal"><i class="fa fa-edit"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                           data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
-                                    </div><!-- .contact-item-actions -->
-                                </div><!-- card user-card -->
-                            </div><!-- END column -->
-
-                            <div class="col-sm-4">
-                                <div class="card user-card contact-item p-md">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <a href="#"><h5 class="media-heading title-color">Вопрос про ориентацию</h5>
-                                            </a>
-                                            <small class="media-meta">Без выбора ответа</small>
-                                        </div>
-                                    </div>
-                                    <div class="contact-item-actions">
-                                        <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal"
-                                           data-target="#categoryModal"><i class="fa fa-edit"></i></a>
-                                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                           data-target="#deleteCategoryModal"><i class="fa fa-trash"></i></a>
-                                    </div><!-- .contact-item-actions -->
-                                </div><!-- card user-card -->
-                            </div><!-- END column -->
-
+                        <div id="quests-list" class="row mt-5">
 
                         </div><!-- #contacts-list -->
                     </div><!-- END column -->
@@ -146,7 +74,7 @@
         </div><!-- .wrap -->
 
 
-        <!-- new contact Modal -->
+        <!-- new category Modal -->
         <div id="newCategory" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -176,7 +104,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <!-- update contact Modal -->
+        <!-- update category Modal -->
         <div id="editCategory" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -207,28 +135,32 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <!-- delete item Modal -->
-        <div id="deleteItemModal" class="modal fade" tabindex="-1" role="dialog">
+        <!-- delete quest Modal -->
+        <div id="deleteQuest" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Удалить категорию</h4>
+                        <h4 class="modal-title">Удалить вопрос</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <p>Вы точно хотите удалить категорию <strong>Kenobi</strong> ?</p>
-                        <p>Все вопросы этой категории перейдут в категорию <br><strong>"без категории"</strong></p>
+                        <input type="hidden" name="quest_id">
+                        <p>Вы точно хотите удалить вопрос <strong></strong> ?</p>
+                        <p>Вопрос будет удален <strong>безвозвратно</strong></p>
+                        <div class="alert alert-success mt-3" id="deleteQuestMessage" style="display: none">
+                            <strong> {{ session('message') }}</strong>
+                        </div>
                     </div><!-- .modal-body -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button>
+                        <button type="button" class="btn btn-danger">Удалить</button>
                     </div><!-- .modal-footer -->
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <!-- new category Modal -->
-        <div id="categoryModal" class="modal fade" tabindex="-1" role="dialog">
+        <!-- new question Modal -->
+        <div id="newQuestion" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -237,49 +169,185 @@
                                     aria-hidden="true">&times;</span></button>
 
                     </div>
-                    <form id="newCategoryForm" enctype="multipart/form-data" method="post">
+                    <form id="addQuestion" enctype="multipart/form-data" method="post">
                         <div class="modal-body">
                             <div class="form-group m-0 mb-1">
-                                <label for="category"> Название </label>
-                                <input type="text" id="question-title" name="question-title" class="form-control"
+                                <label for="title"> Название </label>
+                                <input type="text" name="title" class="form-control"
                                        placeholder="Название">
                             </div>
                             <div class="form-group m-0 mb-1">
-                                <label for="category"> Текст вопроса </label>
-                                <textarea id="question-quest" name="question-quest" class="form-control"></textarea>
+                                <label for="description"> Текст вопроса </label>
+                                <textarea name="description" class="form-control"></textarea>
                             </div>
                             <div class="form-group m-0 mb-1">
-                                <label for="quest-files"> Файлы </label><br>
-                                <input type="file" multiple name="quest-files" id="quest-files">
+                                <label for="score"> Баллы </label>
+                                <input name="score" class="form-control" type="number" min="1" max="5" value="1">
                             </div>
                             <div class="form-group m-0 mb-1">
-                                <p><a href="#" download="true">Файл 1</a> <a href="#" class="text-danger"> Удалить </a>
-                                </p>
-                                <p><a href="#" download="true">Файл 2</a> <a href="#" class="text-danger"> Удалить </a>
-                                </p>
-                                <p><a href="#" download="true">Файл 3</a> <a href="#" class="text-danger"> Удалить </a>
-                                </p>
+                                <label for="description"> Текст подсказки для обучающего теста </label>
+                                <textarea name="hint" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="files"> Файлы </label><br>
+                                <input type="file" multiple name="files[]" id="files">
                             </div>
                             <div class="form-group m-0 mb-1">
                                 <label for="category"> Категория </label>
-                                <select class="form-control" id="category" name="category">
-                                    <option>HTML</option>
-                                    <option>CSS</option>
-                                    <option>Javascript</option>
-                                    <option>Bootstrap</option>
-                                    <option>AngularJs</option>
+                                <select class="form-control" name="categories[]" multiple>
+                                    @foreach($allow_categories as $allow_category)
+                                        <option value="{{$allow_category->id}}">{{$allow_category->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group m-0 mb-1">
-                                <label for="question-type"> Тип </label>
-                                <select class="form-control" id="question-type" name="question-type">
-                                    <option value="choose">С выбором ответа</option>
-                                    <option value="multi_choose">С множественным выбором</option>
-                                    <option value="wo_choose">Без выбора ответа</option>
-                                    <option value="docker">С виртуальной машиной</option>
+                                <label for="type"> Тип </label>
+                                <select class="form-control" name="type">
+                                    @foreach($types as $code => $string)
+                                        <option value="{{$code}}">{{$string}}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <div class="form-group m-0 mb-1" id="choose">
+                            <div class="form-group m-0 mb-1" id="ch">
+                                <label> Ответы </label>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <input type="text" name="ans-1-ch" class="form-control"
+                                               placeholder="Ответ">
+                                        <input type="text" name="ans-2-ch" class="form-control"
+                                               placeholder="Ответ">
+                                        <button class="btn btn-primary text-normalsize" name="add-ans-ch"
+                                                id="add-ans-ch"
+                                                value="Добавить ответ">Добавить ответ
+                                        </button>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="radio-label-div">
+                                            <label class="radio-label" for="ans-1-ch">
+                                                <input type="radio" name="ans-right-ch" value="1">
+                                            </label>
+                                        </div>
+                                        <div class="radio-label-div">
+                                            <label for="ans-2-ch" class="radio-label">
+                                                <input type="radio" name="ans-right-ch" value="2">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-0 mb-1" id="mch" style="display: none">
+                                <label> Ответы </label>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <input type="text" id="ans-1-mch" name="ans-1-mch" class="form-control"
+                                               placeholder="Ответ">
+                                        <input type="text" id="ans-2-mch" name="ans-2-mch" class="form-control"
+                                               placeholder="Ответ">
+                                        <button class="btn btn-primary text-normalsize" name="add-ans-mch"
+                                                id="add-ans-mch"
+                                                value="Добавить ответ">Добавить ответ
+                                        </button>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="radio-label-div">
+                                            <label class="radio-label" for="ans-1-mch">
+                                                <input type="checkbox" name="ans-right-mch-1" value="1">
+                                            </label>
+                                        </div>
+                                        <div class="radio-label-div">
+                                            <label class="radio-label" for="ans-2-mch">
+                                                <input type="checkbox" name="ans-right-mch-2" value="2">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-0 mb-1" id="wch" style="display: none">
+                                <label> Ответ </label>
+                                <textarea type="text" id="ans-wch" name="ans-wch" class="form-control"
+                                                  placeholder="Ответ"></textarea>
+                            </div>
+                            <div class="form-group m-0 mb-1" id="doc" style="display: none">
+                                <div class="form-group m-0 mb-1">
+                                    <label for="category"> Имя контейнера </label>
+                                    <input type="text" id="docker-title" name="docker-title" class="form-control"
+                                           placeholder="Имя контейнера">
+                                </div>
+                                <label> Ответ </label>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea type="text" id="ans-doc" name="ans-doc" class="form-control"
+                                                  placeholder="Ответ"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-success mt-3" id="newQuestMessage" style="display: none">
+                                <strong> {{ session('message') }}</strong>
+                            </div>
+                        </div><!-- .modal-body -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
+                            <button type="submit" class="btn btn-success">Сохранить</button>
+                        </div><!-- .modal-footer -->
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <!-- edit question Modal -->
+        <div id="editQuestion" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Изменить вопрос</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+
+                    </div>
+                    <form id="updateQuestion" enctype="multipart/form-data" method="post">
+                        <div class="modal-body">
+                            <input type="hidden" name="id">
+                            <div class="form-group m-0 mb-1">
+                                <label for="category"> Название </label>
+                                <input type="text" name="title" class="form-control"
+                                       placeholder="Название">
+                            </div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="description"> Текст вопроса </label>
+                                <textarea name="description" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="score"> Баллы </label>
+                                <input name="score" class="form-control" type="number" min="1" max="5" value="1">
+                            </div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="description"> Текст подсказки для обучающего теста </label>
+                                <textarea name="hint" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="files"> Файлы </label><br>
+                                <input type="file" multiple name="files[]" id="files">
+                            </div>
+                            <div class="form-group m-0 mb-1" id="quest-files"></div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="category"> Категория </label>
+                                <select class="form-control" name="categories[]" multiple>
+                                    @foreach($allow_categories as $allow_category)
+                                        <option value="{{$allow_category->id}}">{{$allow_category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group m-0 mb-1">
+                                <label for="type"> Тип </label>
+                                <select class="form-control" name="type">
+                                    @foreach($types as $code => $string)
+                                        <option value="{{$code}}">{{$string}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group m-0 mb-1" id="uch">
                                 <label> Ответы </label>
                                 <div class="row">
                                     <div class="col-10">
@@ -306,7 +374,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group m-0 mb-1" id="multi_choose" style="display: none">
+                            <div class="form-group m-0 mb-1" id="umch" style="display: none">
                                 <label> Ответы </label>
                                 <div class="row">
                                     <div class="col-10">
@@ -326,46 +394,40 @@
                                             </label>
                                         </div>
                                         <div class="radio-label-div">
-                                            <label class="radio-label" for="ans-2-mch" class="radio-label">
+                                            <label class="radio-label" for="ans-2-mch">
                                                 <input type="checkbox" name="ans-right-mch-2" value="2">
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group m-0 mb-1" id="wo_choose" style="display: none">
+                            <div class="form-group m-0 mb-1" id="uwch" style="display: none">
                                 <label> Ответ </label>
-                                <div class="row">
-                                    <div class="col-10">
-                                        <input type="text" id="ans-1-woch" name="ans-1-woch" class="form-control"
-                                               placeholder="Ответ">
-                                    </div>
-                                </div>
+                                <textarea type="text" id="ans-wch" name="ans-wch" class="form-control"
+                                          placeholder="Ответ"></textarea>
                             </div>
-                            <div class="form-group m-0 mb-1" id="docker" style="display: none">
+                            <div class="form-group m-0 mb-1" id="udoc" style="display: none">
                                 <div class="form-group m-0 mb-1">
                                     <label for="category"> Имя контейнера </label>
                                     <input type="text" id="docker-title" name="docker-title" class="form-control"
                                            placeholder="Имя контейнера">
                                 </div>
-                                <label> Ответы </label>
+                                <label> Ответ </label>
                                 <div class="row">
                                     <div class="col-12">
-                                        <input type="text" id="ans-1-doc" name="ans-1-doc" class="form-control"
-                                               placeholder="Ответ">
-                                        <input type="text" id="ans-2-doc" name="ans-2-doc" class="form-control"
-                                               placeholder="Ответ">
-                                        <button class="btn btn-primary text-normalsize" name="add-ans-doc"
-                                                id="add-ans-doc"
-                                                value="Добавить ответ">Добавить ответ
-                                        </button>
+                                        <textarea type="text" id="ans-doc" name="ans-doc" class="form-control"
+                                                  placeholder="Ответ"></textarea>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="alert alert-success mt-3" id="updateQuestMessage" style="display: none">
+                                <strong> {{ session('message') }}</strong>
                             </div>
                         </div><!-- .modal-body -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Отменить</button>
-                            <button type="button" class="btn btn-success" data-dismiss="modal">Сохранить</button>
+                            <button type="submit" class="btn btn-success">Сохранить</button>
                         </div><!-- .modal-footer -->
                     </form>
                 </div><!-- /.modal-content -->

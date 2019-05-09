@@ -18,6 +18,7 @@ class CreateTestsTable extends Migration
             $table->string('title',255);
             $table->string('description',255);
             $table->time('time');
+            $table->enum('type',["learn","control"]);
             $table->timestamps();
         });
     }

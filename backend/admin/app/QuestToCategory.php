@@ -40,4 +40,6 @@ class QuestToCategory extends Model
     {
         return $this->belongsTo('App\Question', 'id_quest');
     }
+
+    public $timestamps = false;
 }

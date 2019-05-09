@@ -21,11 +21,12 @@ class Categories extends Model
     protected $fillable = ['name', 'slug', 'created_at', 'updated_at'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function quests()
     {
-        return $this->hasMany('App\QuestToCategory', 'id_category');
+        return $this->belongsToMany('App\Quests', 'quest_to_category','id_category','id_quest')
+            ->with("category");
     }
 
     /**

@@ -117,8 +117,10 @@ class Admin extends BaseController
     public function testsList()
     {
         $allow_categories = Categories::all();
+        $types = Tests::getTypes();
         return view('tests', [
-            "allow_categories" => $allow_categories
+            "allow_categories" => $allow_categories,
+            'types'=>$types
         ]);
     }
 
@@ -129,14 +131,15 @@ class Admin extends BaseController
     public function testDetail(int $id)
     {
         $test = Tests::findOrFail($id);
-
         $quests = Quests::all();
+        $types = Tests::getTypes();
 
         $allow_categories = Categories::all();
         return view('test_detail', [
             "test" => $test,
             "allow_quests" => $quests,
-            "allow_categories" => $allow_categories
+            "allow_categories" => $allow_categories,
+            'types'=>$types
         ]);
     }
 
@@ -146,8 +149,10 @@ class Admin extends BaseController
     public function questsList()
     {
         $allow_categories = Categories::all();
+        $types = Quests::getTypes();
         return view('quests', [
-            "allow_categories" => $allow_categories
+            "allow_categories" => $allow_categories,
+            'types'=>$types
         ]);
     }
 }

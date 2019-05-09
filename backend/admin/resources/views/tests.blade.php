@@ -45,6 +45,14 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group m-0 mb-1">
+                                    <label for="type"> Тип </label>
+                                    <select class="form-control" id="type" name="type">
+                                        @foreach($types as $code=>$string)
+                                            <option value="{{$code}}">{{$string}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="alert alert-success mt-3" id="newTestMessage" style="display: none">
                                     <strong> {{ session('message') }}</strong>
                                 </div>

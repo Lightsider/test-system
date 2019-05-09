@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Answers;
 use App\Categories;
+use App\Files;
 use App\Quests;
+use App\QuestToCategory;
 use App\Results;
+use App\Settings;
 use App\Tests;
 use App\TestToCategory;
 use App\TestToQuest;
@@ -250,6 +254,7 @@ class Api extends BaseController
             'description' => ['string'],
             'time' => ['date_format:H:i','required'],
             'category' => ['array','nullable'],
+            'type' => ['string', 'max:255','required'],
         ]);
 
         if(
@@ -260,6 +265,7 @@ class Api extends BaseController
                 $test->title = trim($request->title);
                 $test->description = trim($request->description);
                 $test->time = trim($request->time);
+                $test->type = trim($request->type);
                 $test->save();
 
                 if($request->category)
@@ -305,6 +311,11 @@ class Api extends BaseController
         }
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function deleteTest(int $id)
     {
         Tests::findOrFail($id)->delete();
@@ -321,7 +332,7 @@ class Api extends BaseController
      */
     public function testsList()
     {
-        $response["tests"] = Tests::with("category")->with("questions")->with("results")->get();
+        $response["tests"] = Tests::with("category")->with("questions")->with("results")->orderBy("id","desc")->get();
         $average_values = [];
 
         foreach ($response["tests"] as $test)
@@ -346,6 +357,15 @@ class Api extends BaseController
 
     /******************************************** QUEST ********************************************************/
 
+    public function questsList()
+    {
+        $quests = Quests::with("category")->orderBy("id","desc")->get();
+
+        return Response::json($quests,
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -376,7 +396,7 @@ class Api extends BaseController
     {
         if($id!==null && is_numeric($id))
         {
-            $quest = Quests::findOrFail($id);
+            $quest = Quests::with("files")->with("category")->with("answers")->findOrFail($id);
             return Response::json($quest,
                 200,
                 ['Content-type' => 'application/json; charset=utf-8'],
@@ -465,6 +485,331 @@ class Api extends BaseController
     }
 
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addQuest(Request $request)
+    {
+        $this->validate($request, [
+            'title' => ['string', 'max:255','required'],
+            'description' => ['string','required'],
+            'type' => ['string','required'],
+            'hint' => ['string','nullable'],
+            'score' => ['int','required',"min:1","max:5"],
+            'file.*' => ['file','nullable'],
+            'category' => ['array','nullable'],
+        ]);
+
+        if(
+            DB::transaction(function ()
+            {
+                global $request;
+                $quest = new Quests();
+                $quest->title = trim($request->title);
+                $quest->description = trim($request->description);
+                $quest->score = trim($request->score);
+                $quest->type = trim($request->type);
+                $quest->hint = trim($request->hint);
+                $quest->save();
+
+                $files = $request->file('files');
+
+                if($request->hasFile('files'))
+                {
+                    foreach ($files as $file) {
+                        $destinationPath = Settings::where("key","upload_file_path")->get()->first()->value;
+                        $filePath = $file->store($destinationPath);
+
+                        $newFile = new Files();
+                        $newFile->path = $filePath;
+                        $newFile->id_quest = $quest->id;
+                        $newFile->save();
+                    }
+                }
+
+                if($request->categories)
+                {
+                    $categories = DB::table("categories")->whereIn('id',$request->categories)->get();
+                    foreach ($categories as $category)
+                    {
+                        $questToCategory = new QuestToCategory();
+                        $questToCategory->id_quest = $quest->id;
+                        $questToCategory->id_category = $category->id;
+                        $questToCategory->save();
+                    }
+                }
+
+                //create answers
+                switch ($quest->type)
+                {
+                    case "wch":
+                        $answer = new Answers();
+                        $this->validate($request, [
+                            'ans-wch' => ['string','required'],
+                        ]);
+
+                        $answer->id_quest = $quest->id;
+                        $answer->text = $request->get("ans-wch");
+                        $answer->status = "1";
+                        $answer->save();
+                        break;
+                    case "mch":
+                        $i=1;
+                        while (!empty($request->get("ans-".$i."-mch")))
+                        {
+                            $this->validate($request, [
+                                "ans-".$i."-mch" => ['string','required'],
+                                "ans-right-mch-".$i=> ['string'],
+                            ]);
+                            $answer = new Answers();
+                            $answer->id_quest = $quest->id;
+                            $answer->text = $request->get("ans-".$i."-mch");
+                            if( !empty($request->get("ans-right-mch-".$i)))
+                                $answer->status = "1";
+                            else
+                                $answer->status = "0";
+                            $answer->save();
+                            $i++;
+                        }
+                        break;
+                    case "doc":
+                        //TODO для докера
+                        $answer = new Answers();
+                        $this->validate($request, [
+                            'ans-doc' => ['string','required'],
+                        ]);
+                        $answer->id_quest = $quest->id;
+                        $answer->text = $request->get("ans-doc");
+                        $answer->status = "1";
+                        $answer->save();
+                        break;
+                    case "ch":
+                        $i=1;
+                        while (!empty($request->get("ans-".$i."-ch")))
+                        {
+                            $this->validate($request, [
+                                "ans-".$i."-ch" => ['string','required'],
+                                "ans-right-ch" => ['string','required'],
+                            ]);
+                            $answer = new Answers();
+                            $answer->id_quest = $quest->id;
+                            $answer->text = $request->get("ans-".$i."-ch");
+                            if( !empty($request->get("ans-right-ch")) && $request->get("ans-right-ch")==$i)
+                                $answer->status = "1";
+                            else
+                                $answer->status = "0";
+                            $answer->save();
+                            $i++;
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+
+
+                return true;
+
+
+            }) === true
+        )
+        {
+            return Response::json([
+                "message" => "Вопрос " . htmlspecialchars(trim($request->title)) . " успешно добавлен"
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+        else
+        {
+            return Response::json([
+                "message" => "Что-то пошло не так, вопрос не добавлен."
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateQuest(Request $request)
+    {
+        $this->validate($request, [
+            'id' => ['int', 'required'],
+            'title' => ['string', 'max:255','required'],
+            'description' => ['string','required'],
+            'type' => ['string','required'],
+            'hint' => ['string','nullable'],
+            'score' => ['int','required',"min:1","max:5"],
+            'file.*' => ['file','nullable'],
+            'category' => ['array','nullable'],
+        ]);
+
+        if(
+            DB::transaction(function ()
+            {
+                global $request;
+                $quest = Quests::findOrFail($request->id);
+                $quest->title = trim($request->title);
+                $quest->description = trim($request->description);
+                $quest->score = trim($request->score);
+                $quest->type = trim($request->type);
+                $quest->hint = trim($request->hint);
+                $quest->save();
+
+                $files = $request->file('files');
+
+                if($request->hasFile('files'))
+                {
+                    foreach ($files as $file) {
+                        $destinationPath = Settings::where("key","upload_file_path")->get()->first()->value;
+                        $filePath = $file->store($destinationPath);
+
+                        $newFile = new Files();
+                        $newFile->path = $filePath;
+                        $newFile->id_quest = $quest->id;
+                        $newFile->save();
+                    }
+                }
+
+                if($request->categories)
+                {
+                    //delete old
+                    $oldCategories = DB::table("quest_to_category")->where('id_quest',$quest->id)->get();
+                    foreach ($oldCategories as $oldCategory)
+                    {
+                        QuestToCategory::destroy($oldCategory->id);
+                    }
+                    //add new
+                    $categories = DB::table("categories")->whereIn('id',$request->categories)->get();
+                    foreach ($categories as $category)
+                    {
+                        $questToCategory = new QuestToCategory();
+                        $questToCategory->id_quest = $quest->id;
+                        $questToCategory->id_category = $category->id;
+                        $questToCategory->save();
+                    }
+                }
+
+                //delete old answers
+                $oldAnswers = Answers::where("id_quest",$quest->id)->get();
+                foreach ($oldAnswers as $oldAnswer)
+                {
+                    Answers::destroy($oldAnswer->id);
+                }
+                //create answers
+                switch ($quest->type)
+                {
+                    case "wch":
+                        $answer = new Answers();
+                        $this->validate($request, [
+                            'ans-wch' => ['string','required'],
+                        ]);
+
+                        $answer->id_quest = $quest->id;
+                        $answer->text = $request->get("ans-wch");
+                        $answer->status = "1";
+                        $answer->save();
+                        break;
+                    case "mch":
+                        $i=1;
+                        while (!empty($request->get("ans-".$i."-mch")))
+                        {
+                            $this->validate($request, [
+                                "ans-".$i."-mch" => ['string','required'],
+                                "ans-right-mch-".$i=> ['string'],
+                            ]);
+                            $answer = new Answers();
+                            $answer->id_quest = $quest->id;
+                            $answer->text = $request->get("ans-".$i."-mch");
+                            if( !empty($request->get("ans-right-mch-".$i)))
+                                $answer->status = "1";
+                            else
+                                $answer->status = "0";
+                            $answer->save();
+                            $i++;
+                        }
+                        break;
+                    case "doc":
+                        //TODO для докера
+                        $answer = new Answers();
+                        $this->validate($request, [
+                            'ans-doc' => ['string','required'],
+                        ]);
+                        $answer->id_quest = $quest->id;
+                        $answer->text = $request->get("ans-doc");
+                        $answer->status = "1";
+                        $answer->save();
+                        break;
+                    case "ch":
+                        $i=1;
+                        while (!empty($request->get("ans-".$i."-ch")))
+                        {
+                            $this->validate($request, [
+                                "ans-".$i."-ch" => ['string','required'],
+                                "ans-right-ch" => ['string','required'],
+                            ]);
+                            $answer = new Answers();
+                            $answer->id_quest = $quest->id;
+                            $answer->text = $request->get("ans-".$i."-ch");
+                            if( !empty($request->get("ans-right-ch")) && $request->get("ans-right-ch")==$i)
+                                $answer->status = "1";
+                            else
+                                $answer->status = "0";
+                            $answer->save();
+                            $i++;
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+
+
+                return true;
+
+
+            }) === true
+        )
+        {
+            return Response::json([
+                "message" => "Вопрос " . htmlspecialchars(trim($request->title)) . " успешно изменен"
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+        else
+        {
+            return Response::json([
+                "message" => "Что-то пошло не так, вопрос не изменен."
+            ],
+                200,
+                ['Content-type' => 'application/json; charset=utf-8'],
+                JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function deleteQuest(int $id)
+    {
+        Quests::findOrFail($id)->delete();
+        return Response::json([
+            "message" => "Вопрос успешно удален"
+        ],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
 
     /******************************************** CATEGORIES ********************************************************/
 
@@ -485,7 +830,7 @@ class Api extends BaseController
 
     public function categoryDetail(int $id)
     {
-        $category = Categories::findOrFail($id);
+        $category = Categories::with("quests")->findOrFail($id);
         return Response::json(
             $category
             ,
