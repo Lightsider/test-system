@@ -1,97 +1,52 @@
 @extends ('layouts.main')
-@section('title', 'Главная')
+@section('title', 'Список тестов')
 
 @section('content')
-    <!-- start with the real content -->
-    <div id="real">
-        <div class="wrap">
-            @if($current_testing)
-            <div class="row">
-                <div class="col-lg-6">
-                    <!-- avtive -->
-                    <div class="activeMode">
-                        <div class="card">
-                            <h1 class="text-normalsize">Остановить все тестирования?</h1>
-                            <a href="" class="btn btn-danger">Остановить</a>
-                        </div>
-                    </div>
-                    <!-- end active -->
-                </div>
-            </div>
-            @endif
+    <div class="row">
+        <div class="container content-area">
+            <h1> Доступные тесты </h1>
+            <div class="row justify-content-around">
+                @if(!empty($tests))
+                    @foreach($tests as $test)
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3" style="width: 100%">{{$test->title}}</h5>
+                                    <h6 class="card-subtitle mb-2 text-{{$average_values[$test->id]["color"]}}">Средний балл: {{$average_values[$test->id]["count"]??"нет данных"}}</h6>
+                                    <p class="card-subtitle mb-2 text-muted">Время: {{$test->time}}</p>
+                                    <p class="card-subtitle mb-2 text-muted">Вопросов: {{count($test->questions)}}</p>
+                                    @if($test->type =="learn")
+                                        <p class="card-subtitle mb-2 text-muted">Тип: обучающий</p>
+                                    @else
+                                        <p class="card-subtitle mb-2 text-muted">Тип: контрольный</p>
+                                    @endif
 
-                <section class="app-content">
-                    <div class="m-b-lg nav-tabs-horizontal">
-                        <!-- start cards -->
-                        <div class="tab-content p-md cards">
-                            <div class="card card-top">
-                                @if($current_testing)
-                                    <h3 class="m-b-lg text-normalsize">Недавние тестирования</h3>
-                                    <div class="row">
-                                        @foreach($current_testing as $test)
-                                            {{-- TO DO --}}
-                                        <div class="col-sm-6 col-md-4">
-                                            <div class="card card-default">
-                                                <div class="card-header">
-                                                    <h4 class="card-title text-normalsize">{{ $test->title }} </h4>
-                                                </div>
-                                                <div class="card-block">
-                                                    <p><strong>Решают:</strong> 15</p>
-                                                    <p><strong>Закончили:</strong> 5</p>
-                                                    <p><strong>Всего:</strong> 20</p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <p><strong>Времени осталось:</strong> 12:50</p>
-                                                </div>
-                                            </div>
-                                        </div><!-- END column -->
+                                    <p class="card-text">{{$test->description}}</p>
+                                    <p class="card-text mb-0"><strong>Категории:</strong></p>
+                                    @if(!empty($test->category[0]))
+                                        @foreach($test->category as $key => $category)
+                                            <p class="card-text @if(count($test->category)-1 == $key)mb-3 @else mb-1 @endif">
+                                                {{$category->name}};
+                                            </p>
                                         @endforeach
-                                    </div><!-- .row -->
-                                @else
-                                    <h3 class="m-b-lg text-normalsize">Нет свежих тестирований</h3>
-                            </div><!-- .tab-pane -->
-                        </div><!-- .tab-content -->
-                    </div><!-- .nav-tabs-horizontal -->
-                </section><!-- .app-content -->
-            @endif
-            <!-- start analytics -->
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="analytics">
-                        <div class="card">
-                            <div class="icon"><i class="fa fa-inbox"></i></div>
-                            <div class="text">
-                                <h1>{{ $tests_count }}</h1>
-                                <p>Всего тестов</p>
+                                    @else
+                                        <p class="card-text">Без категории</p>
+                                    @endif
+                                    @if(!empty($user_results[$test->id]["value"]))
+                                    <p class="card-text text-{{$user_results[$test->id]["color"]}}"><strong>Ваш результат:</strong>
+                                        {{$user_results[$test->id]["value"]}} </p>
+                                    @else
+                                        <p class="card-text"><strong>Вы не проходили этот тест</strong></p>
+                                    @endif
+                                    <a href="#" class="btn btn-purple">Начать</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="analytics">
-                        <div class="card">
-                            <div class="icon"><i class="fa fa-edit"></i></div>
-                            <div class="text">
-                                <h1>{{ $quests_count }}</h1>
-                                <p>Всего вопросов</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="analytics">
-                        <div class="card">
-                            <div class="icon"><i class="fa fa-users"></i></div>
-                            <div class="text">
-                                <h1>{{ $users_count }}</h1>
-                                <p>Всего пользователей</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    @endforeach
+                @else
+                    <p> Нет доступных тестов </p>
+                @endif
             </div>
-            <!-- end analytics -->
         </div>
     </div>
-    <!-- end the real content -->
 @endsection

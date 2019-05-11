@@ -29,7 +29,7 @@ class Tests extends Model
 
     public function getTimeAttribute($value)
     {
-        $time = date('H:i', strtotime($value));
+        $time = date('H:i:s', strtotime($value));
 
         return $time;
     }
@@ -80,6 +80,12 @@ class Tests extends Model
             $enum = array_add($enum, $v, $string);
         }
         return $enum;
+    }
+
+
+    public function getUserResult(int $user_id)
+    {
+        return Results::where("id_user",$user_id)->where("id_test",$this->id)->get()->first();
     }
 
 }

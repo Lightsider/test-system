@@ -31,21 +31,68 @@ class PublicSide extends BaseController
     }
 
     /**
+     * @param $result
+     * @return string
+     */
+    private function getColorScheme($result)
+    {
+        if(!is_numeric($result)) return "default";
+        elseif($result < 25)
+        {
+            return "red";
+        }
+        elseif($result < 50)
+        {
+            return "yellow";
+        }
+        elseif(!$result < 75)
+        {
+            return "blue";
+        }
+        elseif($result < 100)
+        {
+            return "green";
+        }
+        else return "default";
+    }
+
+    /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $testing_time = strtotime(Settings::getByKey("testing_time")->value) ?? 0;
-        $current_testing = DB::table("temp_testing")->where("endtime", "<", date("d-m-Y", time() + $testing_time))->get()->all();
-        $tests_count = Tests::all()->count();
-        $quests_count = Quests::all()->count();
-        $users_count = Users::all()->count();
+        $tests = Tests::with('questions')->with("category")->get();
+
+        $average_values = [];
+        $user_results = [];
+
+        foreach ($tests as $test)
+        {
+            $average_values[$test->id] = null;
+            foreach ($test["results"] as $result)
+            {
+                $average_values[$test->id] += $result["result"];
+            }
+            if($average_values[$test->id]!==null) $average_values[$test->id]["value"] = $average_values[$test->id]/count($test["results"]);
+            $average_values[$test->id]["color"] = $this->getColorScheme($average_values[$test->id]["value"]);
+
+            $user_results[$test->id]["value"]=$test->getUserResult(Auth::user()->id);
+            $user_results[$test->id]["color"] = $this->getColorScheme( $user_results[$test->id]["value"]);
+        }
 
         return view('index', [
-            "current_testing" => $current_testing,
-            "tests_count" => $tests_count,
-            "quests_count" => $quests_count,
-            "users_count" => $users_count
+            "average_values"=>$average_values,
+            "user_results"=>$user_results,
+            "tests" => $tests
         ]);
+    }
+    //todo СДЕЛАТЬ НАСТРОЙКУ ДЛЯ ВКЛЮЧЕНИЯ РЕГИСТРАЦИИ
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function contacts()
+    {
+        return view('contacts');
     }
 }

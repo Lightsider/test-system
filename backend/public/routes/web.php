@@ -10,8 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//dashboard
-Route::get('/', 'PublicSide@index')->middleware('auth')->name('index');
+//tests list
+Route::get('/', 'PublicSide@index')->name('index');
+
+//contacts
+Route::get('/contacts', 'PublicSide@contacts')->name('contacts');
 
 //login and register pages
 Route::get('auth', 'Auth\LoginController@index')->name('auth');
