@@ -42,8 +42,8 @@
                                 {{--class="fa fa-fire"></i>Тестирования</a></li>--}}
                 <li class="nav-item"><a href="{{ route("testsList") }}" class="nav-link @if(Route::current()->getName() === "testsList" ||
                 Route::current()->getName() === "testDetail") active @endif"><i class="fa fa-inbox"></i>Тесты</a></li>
-                <li class="nav-item"><a href="{{ route("questsList") }}" class="nav-link @if(Route::current()->getName() === "questsList" /*||
-                Route::current()->getName() === "testDetail"*/) active @endif"><i class="fa fa-edit"></i>Вопросы</a></li>
+                <li class="nav-item"><a href="{{ route("questsList") }}" class="nav-link @if(Route::current()->getName() === "questsList" ||
+                Route::current()->getName() === "questDetail") active @endif"><i class="fa fa-edit"></i>Вопросы</a></li>
                 <li class="nav-item">
                     <a href="#results" class="nav-link collapsed" data-toggle="collapse" aria-expanded="false">
                         <i class="fa fa-table"></i>Результаты
@@ -53,12 +53,12 @@
                     </a>
                 </li>
                 <li class="sub collapse" id="results" aria-expanded="false" style="">
-                    <a href="#" class="nav-link text-normalsize" data-parent="#results">По пользователям</a>
-                    <a href="#" class="nav-link text-normalsize" data-parent="#results">По тестам</a>
+                    <a href="{{ route("usersList") }}" class="nav-link text-normalsize" data-parent="#results">По пользователям</a>
+                    <a href="{{ route("testsList") }}" class="nav-link text-normalsize" data-parent="#results">По тестам</a>
                 </li>
                 <li class="nav-item"><a href="{{ route("settings") }}" class="nav-link @if(Route::current()->getName() === "settings") active @endif"><i
                                 class="fa fa-cog"></i>Настройки</a></li>
-                <li class="nav-item"><a href="support.html" class="nav-link"><i
+                <li class="nav-item"><a href="{{route("support")}}" class="nav-link @if(Route::current()->getName() === "support") active @endif"><i
                                 class="fa fa-life-ring"></i>Поддержка</a></li>
             </ul>
         </div>

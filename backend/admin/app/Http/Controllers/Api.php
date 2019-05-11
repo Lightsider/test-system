@@ -7,13 +7,13 @@ use App\Categories;
 use App\Files;
 use App\Quests;
 use App\QuestToCategory;
-use App\Results;
 use App\Settings;
 use App\Tests;
 use App\TestToCategory;
 use App\TestToQuest;
 use App\Users;
 use App\UsersStatus;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -21,7 +21,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
-
 
 class Api extends BaseController
 {
@@ -901,6 +900,26 @@ class Api extends BaseController
 
         return Response::json([
             "message" => "Категория успешно удалена"
+        ],
+            200,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE);
+    }
+
+    /******************************************** FILES ********************************************************/
+
+    public function deleteFile(int $id)
+    {
+        if (!is_numeric($id)) return false;
+
+        $dbFile = Files::where("id",$id)->get()->first();
+        $fileSystem = new Filesystem();
+        $fileSystem->delete(public_path($dbFile->path));
+        $dbFile->delete();
+
+
+        return Response::json([
+            "message" => "Вопрос успешно удален"
         ],
             200,
             ['Content-type' => 'application/json; charset=utf-8'],

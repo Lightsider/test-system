@@ -435,7 +435,7 @@
         </div><!-- /.modal -->
 
 
-        <!-- delete item Modal -->
+        <!-- delete category Modal -->
         <div id="deleteCategory" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">

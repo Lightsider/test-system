@@ -23,10 +23,14 @@ Route::get('/test/{id}', 'Admin@testDetail')->middleware('status')->name('testDe
 
 //quests
 Route::get('/quests', 'Admin@questsList')->middleware('status')->name('questsList');
+Route::get('/quest/{id}', 'Admin@questDetail')->middleware('status')->name('questDetail');
 
 //settings
 Route::get('/settings', 'Admin@settings')->middleware('status')->name('settings');
 Route::post('/settings', 'Admin@saveSettings')->middleware('status')->name('saveSettings');
+
+//support
+Route::get('/support', 'Admin@support')->middleware('status')->name('support');
 
 //login page
 Route::get('login', 'Auth\LoginController@index')->name('login');

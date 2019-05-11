@@ -266,6 +266,7 @@ $("#editQuestInTestForm").submit(function (e) {
             $("#updateQuestInTestMessage").removeClass("alert-danger");
             $("#updateQuestInTestMessage").addClass("alert-success");
             $("#updateQuestInTestMessage strong").text(message);
+            showTestsList();
         },
         error: function (data) {
             data = $.parseJSON(data.responseText);
@@ -492,6 +493,7 @@ $("#deleteQuest .btn-danger").click(function (e) {
             alert("Вопрос не найден");
         }
     });
+    if ($("div").is("#quest-info")) $(location).attr('href', "/quests");
     // update page
     showCategoriesList();
     showQuestsByCategory("all");
@@ -526,7 +528,7 @@ $("#quests-list").on("click", ".btn-success", function (e) {
 $("#updateQuestion").submit(function (e) {
     e.preventDefault();
     var id = $("#updateQuestion").find("input[name=id]").val();
-    //add user
+    //update quest
     $.ajax({
         url: '/api/updateQuest/'+ id,
         data: new FormData($("#updateQuestion")[0]),
@@ -542,7 +544,10 @@ $("#updateQuestion").submit(function (e) {
             $("#updateQuestMessage strong").text(message);
             // update page
             showCategoriesList();
-            showQuestsByCategory("all");
+            if ($("div").is("#quest-info")) {
+                showQuestList();
+            }
+            else showQuestsByCategory("all");
         },
         error: function (data) {
             data = $.parseJSON(data.responseText);
@@ -558,6 +563,29 @@ $("#updateQuestion").submit(function (e) {
             $("#updateQuestMessage strong").html(message);
         }
     });
+});
+
+$("#modalUpdateQuest").click(function () {
+    var quest_id = $("input[name=id]").val();
+    getQuestInfoInUpdateForm(quest_id);
+});
+
+$(document).on("click","a[data-target=deleteFile]",function (e) {
+    e.preventDefault();
+    var id = $(this).data("value");
+    $.ajax({
+        url: '/api/deleteFile/' + id,
+        method: 'delete',
+        success: function (data) {
+            alert("Файл успешно удален")
+        },
+        error: function (data) {
+            alert("Ошибка при удалении файла");
+        }
+    });
+    // update page
+    showCategoriesList();
+    showQuestsByCategory("all");
 });
 
 /********************work with forms***************************/
@@ -584,7 +612,7 @@ function getQuestInfoInUpdateForm(id) {
 
             modal.find("#quest-files").html("");
             $.each(data["files"], function (index, value) {
-                var html = "<p><a href=\"" + value["path"] + "\" download=\"true\">" + value["path"].split("/")[1] + "</a> <a href=\"#\" class=\"text-danger\"> Удалить </a></p>"
+                var html = "<p><a href=\"/" + value["path"] + "\" target='_blank'>" + value["path"].split("/")[1] + "</a> <a href=\"#\" class=\"text-danger\" data-target='deleteFile' data-value='" + value["id"] +"'> Удалить </a></p>"
                 modal.find("#quest-files").append(html);
             });
 
@@ -651,7 +679,7 @@ function getQuestInfoInUpdateForm(id) {
             modal.find(".btn-success").removeAttr("disabled");
         },
         error: function (data) {
-            alert("Вопрос не найдена");
+            alert("Вопрос не найден");
         }
     });
 }
@@ -684,7 +712,7 @@ function showQuestsByCategory(cat_id) {
                     "                                    <div class=\"media\">\n" +
                     "                                        <div class=\"media-body\">" +
                     "<input type='hidden' name='quest_id' value='" + value["id"] + "'>" +
-                    "                                            <a href=\"#\"><h5 class=\"media-heading title-color\">" + value["title"] + "</h5></a>\n";
+                    "                                            <a href=\"/quest/"+value["id"]+"\"><h5 class=\"media-heading title-color\">" + value["title"] + "</h5></a>\n";
                 if (value["type"] == "wch") type = "С развернутым ответом";
                 else if (value["type"] == "mch") type = "С множественным выбором";
                 else if (value["type"] == "wch") type = "С виртуальным контейнером";
@@ -824,10 +852,10 @@ function showQuestList() {
                         "                                    <div class=\"media\">\n" +
                         "                                        <div class=\"media-body\">" +
                         "<input type='hidden' name='quest_id' value='" + value["id"] + "'>" +
-                        "                                            <a href=\"#\"><h5 class=\"media-heading title-color\">" + value["title"] + "</h5></a>\n";
+                        "                                            <a href=\"/quest/"+value["id"]+"\"><h5 class=\"media-heading title-color\">" + value["title"] + "</h5></a>\n";
                     if (value["type"] == "wch") type = "С развернутым ответом";
                     else if (value["type"] == "mch") type = "С множественным выбором";
-                    else if (value["type"] == "wch") type = "С виртуальным контейнером";
+                    else if (value["type"] == "doc") type = "С виртуальным контейнером";
                     else type = "С выбором ответа";
                     html +=
                         "                                            <small class=\"media-meta\">" + type + "</small>\n" +
@@ -853,6 +881,62 @@ function showQuestList() {
 
                     $("#questList").append(html);
                 });
+            }
+        });
+    }
+    else if ($("div").is("#quest-info")) {
+        $("#quest-info").html("Загрузка...");
+        var quest_id = $("input[name=id]").val();
+        $.ajax({
+            url: '/api/quest/' + quest_id,
+            method: 'get',
+            success: function (data) {
+                $("#quest-info").html("");
+                var type = "";
+                var html = "<h3 class=\"m-b-lg\">" + data["title"] + "</h3>\n" +
+                    "                    <div class=\"row mt-3\">\n" +
+                    "                        <div class=\"col-md-12\">\n" +
+                    "                            <p>" + data["description"] + "</p>" +
+                    "<p><strong>Баллы:</strong> " + data["score"] + "</p>" +
+                    "<p><strong>Текст подсказки для обучающего теста:</strong><br>" + data["hint"] + "</p>" +
+                    "<p><strong>Файлы:</strong><br>";
+                if (data["files"].length > 0) {
+                    $.each(data["files"], function (index, cat) {
+                        html += "<a href='/" + cat["path"] + ">" + cat["path"] + "</a><br>";
+                    });
+                }
+                else {
+                    html += "Отсутствуют<br>";
+                }
+                html+="<p class=\"m-h-lg fz-md lh-lg\"><strong>Категории:</strong> ";
+                if (data["category"].length > 0) {
+                    $.each(data["category"], function (index, cat) {
+                        html += cat["name"] + ","
+                    });
+                    html = html.substr(0, html.length - 1);
+                }
+                else {
+                    html += "Без категории";
+                }
+                if (data["type"] == "wch") type = "С развернутым ответом";
+                else if (data["type"] == "mch") type = "С множественным выбором";
+                else if (data["type"] == "doc") type = "С виртуальным контейнером";
+                else type = "С выбором ответа";
+                html += "<p class=\"m-h-lg fz-md lh-lg\"><strong>Тип:</strong> " + type + " </p>\n";
+
+                html+= "<p><strong>Ответы:</strong><br><ul>";
+
+                $.each(data["answers"], function (index, answer) {
+                    html += "<li>"+answer["text"];
+                    if(answer["status"]==1) html+=" - верный";
+                    html+="</li>";
+                });
+
+                html +=
+                    "                       </ul> </div><!-- END column -->\n" +
+                    "                    </div><!-- .row -->";
+
+                $("#quest-info").append(html);
             }
         });
     }
@@ -994,7 +1078,19 @@ function showTestsList() {
                 }
                 html +=
                     "                        </p><p class=\"m-h-lg fz-md lh-lg\"><strong>Всего вопросов:</strong> " + data["test"]["questions"].length + " </p>\n" +
-                    "                            <p class=\"m-h-lg fz-md lh-lg\"><strong>Всего решали:</strong> " + data["test"]["results"].length + " </p>\n";
+                    "<p class=\"m-h-lg fz-md lh-lg\"><strong>Максимум баллов:</strong> ";
+                if (data["test"]["questions"].length > 0) {
+                    var max = 0;
+                    $.each(data["test"]["questions"], function (index, quest) {
+                        max+= +quest["score"];
+                    });
+                    html+= max;
+                }
+                else {
+                    html += "Нет данных";
+                }
+                html+=
+                    "                           </p> <p class=\"m-h-lg fz-md lh-lg\"><strong>Всего решали:</strong> " + data["test"]["results"].length + " </p>\n";
                 if (data["average_value"] !== null) {
                     html += "<p class=\"m-h-lg fz-md lh-lg\"><strong>Средний балл:</strong> " + data["average_value"] + " </p>\n"
                 }

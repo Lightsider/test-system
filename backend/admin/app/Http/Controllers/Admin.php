@@ -133,7 +133,6 @@ class Admin extends BaseController
         $test = Tests::findOrFail($id);
         $quests = Quests::all();
         $types = Tests::getTypes();
-
         $allow_categories = Categories::all();
         return view('test_detail', [
             "test" => $test,
@@ -154,5 +153,26 @@ class Admin extends BaseController
             "allow_categories" => $allow_categories,
             'types'=>$types
         ]);
+    }
+
+    public function questDetail(int $id)
+    {
+        $quest = Quests::findOrFail($id);
+        $types = Quests::getTypes();
+        $allow_categories = Categories::all();
+        return view('quest_detail', [
+            "quest"=>$quest,
+            "allow_categories" => $allow_categories,
+            'types'=>$types
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
+    public function support()
+    {
+        return view('support');
     }
 }

@@ -42,3 +42,6 @@ Route::get('/category/{id}', 'Api@categoryDetail')->name('categoryDetail');
 Route::post('/addCategory', 'Api@addCategory')->name('addCategory');
 Route::post('/updateCategory/{id}', 'Api@updateCategory')->name('updateCategory');
 Route::delete('/deleteCategory/{id}', 'Api@deleteCategory')->name('deleteCategory');
+
+//files
+Route::delete('/deleteFile/{id}', 'Api@deleteFile')->name('deleteFile');
