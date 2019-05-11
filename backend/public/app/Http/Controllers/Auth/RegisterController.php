@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Http\Controllers\MainController;
+use App\Users;
 use App\Http\Controllers\Controller;
+use App\UsersStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller
+class RegisterController extends MainController
 {
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -49,9 +51,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'login' => ['string', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'fullname' => ['string', 'max:255'],
+            'group' => ['string', 'max:255'],
         ]);
     }
 
@@ -59,14 +62,17 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Users
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+        $userStatus = UsersStatus::where("value","user")->get()->first();
+        return Users::create([
+            'login' => $data['login'],
             'password' => Hash::make($data['password']),
+            'fullname' => $data['fullname'],
+            'group' => $data['group'],
+            'id_status' => $userStatus["id"],
         ]);
     }
 }

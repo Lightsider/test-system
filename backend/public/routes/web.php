@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//dashboard
+Route::get('/', 'PublicSide@index')->middleware('auth')->name('index');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//login and register pages
+Route::get('auth', 'Auth\LoginController@index')->name('auth');
+Route::post('login', 'Auth\LoginController@login')->name('login');
+Route::post('register', 'Auth\RegisterController@register')->name('register');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');

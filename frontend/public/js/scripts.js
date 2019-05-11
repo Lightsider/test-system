@@ -25,3 +25,8 @@ window.onload = function () {
         startTimer(time, display);
     }
 };
+
+$("li[role=presentation]").click(function () {
+    $("li[role=presentation]").removeClass("active");
+    $(this).addClass("active");
+});
