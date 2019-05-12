@@ -12,7 +12,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title mb-3" style="width: 100%">{{$test->title}}</h5>
-                                    <h6 class="card-subtitle mb-2 text-{{$average_values[$test->id]["color"]}}">Средний балл: {{$average_values[$test->id]["count"]??"нет данных"}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-{{$average_values[$test->id]["color"]}}">Средний балл: {{$average_values[$test->id]["value"]??"нет данных"}}</h6>
                                     <p class="card-subtitle mb-2 text-muted">Время: {{$test->time}}</p>
                                     <p class="card-subtitle mb-2 text-muted">Вопросов: {{count($test->questions)}}</p>
                                     @if($test->type =="learn")
@@ -38,7 +38,7 @@
                                     @else
                                         <p class="card-text"><strong>Вы не проходили этот тест</strong></p>
                                     @endif
-                                    <a href="#" class="btn btn-purple">Начать</a>
+                                    <a href="{{route("testPreview",["id"=>$test->id])}}" class="btn btn-purple">Начать</a>
                                 </div>
                             </div>
                         </div>

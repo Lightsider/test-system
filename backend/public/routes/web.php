@@ -1,5 +1,5 @@
 <?php
-
+use App\Settings;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,8 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//tests list
+//tests
 Route::get('/', 'PublicSide@index')->name('index');
+Route::get('/test/{id}', 'PublicSide@testPreview')->name('testPreview');
+
+//profile
+Route::get('/profile', 'PublicSide@profile')->name('profile');
 
 //contacts
 Route::get('/contacts', 'PublicSide@contacts')->name('contacts');
@@ -19,5 +23,6 @@ Route::get('/contacts', 'PublicSide@contacts')->name('contacts');
 //login and register pages
 Route::get('auth', 'Auth\LoginController@index')->name('auth');
 Route::post('login', 'Auth\LoginController@login')->name('login');
-Route::post('register', 'Auth\RegisterController@register')->name('register');
+if(Settings::getByKey("enable_register")->value==="yes")
+    Route::post('register', 'Auth\RegisterController@register')->name('register');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');

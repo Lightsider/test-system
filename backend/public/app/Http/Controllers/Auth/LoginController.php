@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\MainController;
+use App\Settings;
 use Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -62,6 +63,9 @@ class LoginController extends MainController
      */
     public function index()
     {
-        return view('auth');
+        $enable_register = Settings::getByKey("enable_register");
+        return view('auth',[
+            "enable_register"=>$enable_register,
+        ]);
     }
 }

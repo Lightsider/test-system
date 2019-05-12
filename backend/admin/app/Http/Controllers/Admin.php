@@ -67,10 +67,19 @@ class Admin extends BaseController
      */
     public function saveSettings(Request $request)
     {
-        $testing_time = Settings::getByKey("testing_time");
+        /*$testing_time = Settings::getByKey("testing_time");
         $testing_time = Settings::find($testing_time->id);
         $testing_time->value = $request->get("testing_time");
-        $testing_time->save();
+        $testing_time->save();*/
+
+        DB::transaction(function () {
+            global $request;
+            $settings = Settings::all();
+            foreach ($settings as $setting) {
+                $setting->value = $request->get($setting->key) ?? "no";
+                $setting->save();
+            }
+        });
 
         return redirect("settings")->with("message", "Настройки успешно изменены");
     }
@@ -140,6 +149,7 @@ class Admin extends BaseController
             "allow_categories" => $allow_categories,
             'types'=>$types
         ]);
+        //TODO сделать результаты для теста
     }
 
     /**
