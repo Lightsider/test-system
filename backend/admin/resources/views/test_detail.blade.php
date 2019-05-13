@@ -100,6 +100,69 @@
                         <div id="questList" class="row mt-5">
 
                         </div><!-- #contacts-list -->
+                    @if(count($test["results"]))
+                        <!-- start Active Leads -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="leads">
+                                        <div class="card">
+                                            <h1 class="head">Результаты</h1>
+                                            <table class="table text-normalsize">
+                                                <!-- start head -->
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 2%">#</th>
+                                                    <th style="width: 30%">Название теста</th>
+                                                    <th style="width: 15%">Дата</th>
+                                                    <th style="width: 15%">Время выполнения</th>
+                                                    <th style="width: 40%">Результат</th>
+                                                </tr>
+                                                </thead>
+                                                <!-- end head -->
+                                                <!-- start body -->
+                                                <tbody>
+                                                <!-- start rows -->
+                                                @foreach($test["results"] as $key=>$result)
+                                                    <tr>
+                                                        <td>{{$key+1}}</td>
+                                                        <td>{{$result->user->fullname}}</td>
+                                                        <td>{{$result->date}}</td>
+                                                        <td class="text-normalsize">{{$result->time}}</td>
+                                                        <td>
+                                                            <div class="progress">
+                                                                @if($result->result < 25 )
+                                                                    <div class="progress-bar progress-bar bg-danger"
+                                                                         role="progressbar"
+                                                                @elseif($result->result < 50)
+                                                                    <div class="progress-bar progress-bar bg-warning"
+                                                                         role="progressbar"
+                                                                @elseif($result->result < 75)
+                                                                    <div class="progress-bar progress-bar bg-primary"
+                                                                         role="progressbar"
+                                                                @else
+                                                                    <div class="progress-bar progress-bar bg-success"
+                                                                         role="progressbar"
+                                                                         @endif
+                                                                         aria-valuenow="{{$result->result}}" aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width: {{$result->result}}%">
+                                                                        {{$result->result}} баллов
+                                                                    </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                <!-- end rows -->
+                                                </tbody>
+                                                <!-- end body -->
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end Active Leads -->
+                        @endif
                     </div><!-- END column -->
                 </div><!-- .row -->
             </section><!-- .app-content -->

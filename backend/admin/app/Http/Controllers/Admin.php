@@ -139,7 +139,9 @@ class Admin extends BaseController
      */
     public function testDetail(int $id)
     {
-        $test = Tests::findOrFail($id);
+        $test = Tests::with(["results"=> function($query){
+            $query->orderBy('date', 'desc');
+        }])->findOrFail($id);
         $quests = Quests::all();
         $types = Tests::getTypes();
         $allow_categories = Categories::all();
@@ -149,7 +151,6 @@ class Admin extends BaseController
             "allow_categories" => $allow_categories,
             'types'=>$types
         ]);
-        //TODO сделать результаты для теста
     }
 
     /**
