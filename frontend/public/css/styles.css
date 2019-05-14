@@ -103,7 +103,7 @@ a:hover, a:focus {
     border-radius: 20px;
     box-shadow: none;
     padding: 0 20px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     color: black;
     transition: all 0.3s ease 0s;
@@ -144,9 +144,14 @@ a:hover, a:focus {
     padding-top: 5px;
     text-transform: capitalize;
 }
+.btn
+{
+    cursor: pointer;
+}
 .form-horizontal .btn ,
 .btn-purple,
-.btn-primary
+.btn-primary,
+.btn-danger
 {
     width: 100%;
     background: #7b01e9;
@@ -169,11 +174,25 @@ a:hover, a:focus {
     box-shadow: none;
 }
 
-.form-horizontal .btn:focus,
-.btn-yellow:focus,
-.btn-primary:focus
+.btn-yellow:focus
 {
     background: #eec111;
+    color: #fff;
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-danger
+{
+    background: #f10000;
+    color: #fff;
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-danger:hover
+{
+    background: #aa0000;
     color: #fff;
     outline: none;
     box-shadow: none;

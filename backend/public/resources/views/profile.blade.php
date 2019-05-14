@@ -7,7 +7,8 @@
             <h1> Профиль </h1>
             <div class="row">
                 <div class="col-md-12">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" method="post" action="{{ route("profile") }}">
+                        {{csrf_field()}}
                         <div class="row">
                             <div class="col-xs-12 col-lg-4">
                                 <div class="form-group">
@@ -35,13 +36,13 @@
                             <div class="col-xs-12 col-lg-6">
                                 <div class="form-group">
                                     <label for="auth-password">Новый пароль</label>
-                                    <input type="password" class="form-control" id="auth-password">
+                                    <input type="password" class="form-control" id="auth-password" name="password">
                                 </div>
                             </div>
                             <div class="col-xs-12 col-lg-6">
                                 <div class="form-group">
-                                    <label for="auth-password">Повторите пароль</label>
-                                    <input type="password" class="form-control" id="auth-password">
+                                    <label for="auth-password-confirm">Повторите пароль</label>
+                                    <input type="password" class="form-control" id="auth-password-confirm" name="password_confirmation">
                                 </div>
                             </div>
                         </div>
@@ -52,6 +53,26 @@
                                 </div>
                             </div>
                         </div>
+                    </form>
+                    <div class="row justify-content-center">
+                        <div class="col-xs-12 col-lg-3">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger"  style="margin: 0" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Выйти</button>
+                            </div>
+                        </div>
+                    </div>
+                    @if (session('message'))
+                        <div class="text-success text-center">
+                            <strong> {{ session('message') }}</strong>
+                        </div>
+                    @endif
+                    @if ($errors->has('password'))
+                        <div class="text-red text-center">
+                            <p>{{ $errors->first('password') }}</p>
+                        </div>
+                    @endif
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
                     </form>
                 </div><!-- END column -->
             </div><!-- .row -->

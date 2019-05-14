@@ -35,7 +35,7 @@ class TempTesting extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function question()
+    public function quest()
     {
         return $this->belongsTo('App\Quests', 'id_current_quest');
     }
@@ -54,5 +54,21 @@ class TempTesting extends Model
     public function user()
     {
         return $this->belongsTo('App\Users', 'id_user');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuestArrAttribute($quest_arr)
+    {
+        return json_decode($quest_arr);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSkipQuestArrAttribute($skip_quest_arr)
+    {
+        return json_decode($skip_quest_arr);
     }
 }

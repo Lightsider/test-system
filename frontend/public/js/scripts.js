@@ -1,32 +1,43 @@
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        --timer;
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
-        if (timer < 0) {
-            timer = duration;
-        }
-    }, 1000);
-}
-
 window.onload = function () {
-    var display = document.querySelector('#timeLeft');
-    if(display !== null)
-    {
-        var timeArray = display.innerHTML.split(":");
-        var time = +(+timeArray[0]*60) + +timeArray[1];
-        startTimer(time, display);
-    }
+    var dt = new Date();
+    var date = dt.getFullYear() + "-" + String(dt.getMonth() + 1).padStart(2, '0') + "-" + String(dt.getDate()).padStart(2, '0');
+    var deadline =  document.querySelector('#endtime').value;
+    initializeClock('timeLeft', deadline);
 };
 
 $("li[role=presentation]").click(function () {
     $("li[role=presentation]").removeClass("active");
     $(this).addClass("active");
 });
+
+
+function initializeClock(id, endtime){
+    var clock = document.getElementById(id);
+    function updateClock(){
+        var t = getTimeRemaining(endtime);
+        clock.innerHTML =
+            t.hours + ':' + t.minutes + ':' + t.seconds;
+        if(t.total<=0){
+            clearInterval(timeinterval);
+        }
+    }
+    updateClock();
+    var timeinterval = setInterval(updateClock,1000);
+}
+
+
+
+function getTimeRemaining(endtime){
+    var t = Date.parse(endtime) - Date.parse(new Date());
+    var seconds = Math.floor( (t/1000) % 60 ).toString().padStart(2,0);
+    var minutes = Math.floor( (t/1000/60) % 60 ).toString().padStart(2,0);
+    var hours = Math.floor( (t/(1000*60*60)) % 24 ).toString().padStart(2,0);
+    var days = Math.floor( t/(1000*60*60*24) );
+    return {
+        'total': t,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+    };
+}

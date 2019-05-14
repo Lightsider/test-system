@@ -28,7 +28,7 @@
             @endif
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-12">
-                    <a href="#" class="btn btn-purple">Начать</a>
+                    <a href="{{ route("startTest",["id"=>$test->id]) }}" class="btn btn-purple">Начать</a>
                 </div>
             </div>
             <div class="row">

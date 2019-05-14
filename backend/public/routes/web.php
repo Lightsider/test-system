@@ -13,9 +13,12 @@ use App\Settings;
 //tests
 Route::get('/', 'PublicSide@index')->name('index');
 Route::get('/test/{id}', 'PublicSide@testPreview')->name('testPreview');
+Route::get('/startTest/{id}', 'PublicSide@startTest')->name('startTest');
+Route::get('/testing', 'PublicSide@testing')->name('testing');
 
 //profile
 Route::get('/profile', 'PublicSide@profile')->name('profile');
+Route::post('/profile', 'PublicSide@saveProfile')->name('saveProfile');
 
 //contacts
 Route::get('/contacts', 'PublicSide@contacts')->name('contacts');
