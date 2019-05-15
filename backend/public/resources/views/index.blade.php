@@ -32,7 +32,7 @@
                                     @else
                                         <p class="card-text">Без категории</p>
                                     @endif
-                                    @if(!empty($user_results[$test->id]["value"]))
+                                    @if($user_results[$test->id]["value"]!==null)
                                     <p class="card-text text-{{$user_results[$test->id]["color"]}}"><strong>Ваш результат:</strong>
                                         {{$user_results[$test->id]["value"]}} </p>
                                     @else

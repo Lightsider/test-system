@@ -9,7 +9,7 @@
             <strong>Описание:</strong>
             <p>{{$test->description}}</p>
             <strong>Ваш балл:</strong>
-            <p>{{$user_result["value"]??"нет данных"}}</p>
+            <p>{{$user_result["value"]!==null?$user_result["value"]:"нет данных"}}</p>
             <strong>Тип:</strong>
             @if($test->type =="learn")
             <p>обучающий</p>

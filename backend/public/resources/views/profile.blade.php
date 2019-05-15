@@ -88,7 +88,7 @@
                 </div><!-- END column -->
                 <div class="col-md-4">
                     <h3> Последний: </h3>
-                    @if(!empty($last_result->result))
+                    @if($last_result!==null)
                         <p><strong><i>{{ $last_result->test->title }}</i></strong></p>
                         <p><strong>Результат:</strong> {{ $last_result->result }} </p>
                     @else
@@ -97,7 +97,7 @@
                 </div><!-- END column -->
                 <div class="col-md-4">
                     <h3> Лучший: </h3>
-                    @if(!empty($max_result->result))
+                    @if($max_result!==null)
                         <p><strong><i>{{ $max_result->test->title }}</i></strong></p>
                         <p><strong>Результат:</strong> {{ $max_result->result }} </p>
                     @else
