@@ -87,8 +87,8 @@ class Tests extends Model
      */
     public function getUserResult(int $user_id)
     {
-        $result = Results::where("id_user", $user_id)->where("id_test", $this->id)->get()->max();
-        return null !== $result  ? $result->result : null;
+        $result = Results::where("id_user", $user_id)->where("id_test", $this->id)->get()->max('result');
+        return null !== $result  ? $result : null;
     }
 
     /**

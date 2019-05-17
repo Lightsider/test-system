@@ -39,7 +39,7 @@
                         <h4> {{$temp_testing->quest->description}} </h4>
                     </div>
                 </div>
-                <form style="width: 100%">
+                <form style="width: 100%" id="answer" name="answer">
                     <div class="row justify-content-center">
                         <div class="col-lg-6 col-xs-12 mt-3">
                             <h5 class="text-muted">
@@ -57,33 +57,38 @@
                                     Один вариант ответа
                                 @endswitch
                             </h5>
-                            @switch($temp_testing->quest->type)
-                                @case("wch")
-                                <textarea class="form-control" type="text" name="answer"></textarea>
-                                @break
-                                @case("mch")
-                                <div class="funkyradio">
-                                    @foreach($answers as $answer)
-                                        <div class="funkyradio-success">
-                                            <input type="checkbox" name="answer[]" id="answer-{{$answer['id']}}" value="{{$answer['id']}}"/>
-                                            <label for="answer-{{$answer['id']}}">{{$answer['text']}}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                @break
-                                @case("doc")
-                                <textarea class="form-control" type="text" name="answer"></textarea>
-                                @break
-                                @default
-                                <div class="funkyradio">
-                                    @foreach($answers as $answer)
-                                        <div class="funkyradio-success">
-                                            <input type="radio" name="answer" id="answer-{{$answer['id']}}" value="{{$answer['id']}}"/>
-                                            <label for="answer-{{$answer['id']}}">{{$answer['text']}}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endswitch
+                                <input type="hidden" name="test_id" value="{{$temp_testing->test->id}}">
+                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                <input type="hidden" name="token" value="{{$token}}">
+                                @switch($temp_testing->quest->type)
+                                    @case("wch")
+                                    <textarea class="form-control" type="text" name="answer" id="answer"></textarea>
+                                    @break
+                                    @case("mch")
+                                    <div class="funkyradio">
+                                        @foreach($answers as $answer)
+                                            <div class="funkyradio-success">
+                                                <input type="checkbox" name="answer[]" id="answer-{{$answer['id']}}"
+                                                       value="{{$answer['id']}}"/>
+                                                <label for="answer-{{$answer['id']}}">{{$answer['text']}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @break
+                                    @case("doc")
+                                    <textarea class="form-control" type="text" name="answer" id="answer"></textarea>
+                                    @break
+                                    @default
+                                    <div class="funkyradio">
+                                        @foreach($answers as $answer)
+                                            <div class="funkyradio-success">
+                                                <input type="radio" name="answer" id="answer-{{$answer['id']}}"
+                                                       value="{{$answer['id']}}"/>
+                                                <label for="answer-{{$answer['id']}}">{{$answer['text']}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endswitch
                         </div>
                         <div class="col-lg-4 col-xs-12 mt-3">
                             <h5 class="text-muted"> Файлы задания: </h5>
@@ -99,12 +104,19 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-lg-2 col-md-3 col-xs-12">
-                            <button type="submit" class="btn btn-purple">Отправить</button>
+                            <button type="submit" id="sendAnswerBtn" class="btn btn-purple">Отправить</button>
                         </div>
                         <div class="col-6">
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-12">
                             <a id="skip_button" href="#" class="btn btn-primary">Пропустить</a>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-1 col-xs-0"></div>
+                        <div class="col-md-10 col-xs-12">
+                            <div class="alert alert-danger" role="alert" style="display: none" id="answerMessage">
+                            </div>
                         </div>
                     </div>
                 </form>

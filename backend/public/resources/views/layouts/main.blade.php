@@ -22,7 +22,8 @@
     @if(Auth::check())
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mr-0">
-                <li class="nav-item @if(Route::current()->getName() === "index" || Route::current()->getName() === "testPreview") active @endif">
+                <li class="nav-item @if(Route::current()->getName() === "index" || Route::current()->getName() === "testPreview"
+                || Route::current()->getName() === "testing") active @endif">
                     <a class="nav-link" href="{{ route('index') }}">Тесты</a>
                 </li>
                 <li class="nav-item @if(Route::current()->getName() === "profile") active @endif">

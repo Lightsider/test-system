@@ -154,6 +154,9 @@ class PublicSide extends BaseController
         return redirect("testing");
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function testing()
     {
         $user = Auth::user();
@@ -186,12 +189,20 @@ class PublicSide extends BaseController
             shuffle($answers);
         }
 
+        $token = Hash::make($temp_testing->id);
+
         return view('testing', [
+            'token'=>$token,
             'answers'=>$answers,
             'images' => $images,
             "current_quest_number" => $current_quest_number,
             "temp_testing" => $temp_testing
         ]);
+    }
+
+    public function nextQuest()
+    {
+        
     }
 
     /**

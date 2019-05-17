@@ -95,6 +95,9 @@ class TempTesting extends Model
         return true;
     }
 
+    /**
+     * @return false|string
+     */
     private function getStartTime()
     {
         $data_array = date_parse($this->test->time);
