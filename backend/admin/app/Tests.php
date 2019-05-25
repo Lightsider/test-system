@@ -82,4 +82,9 @@ class Tests extends Model
         return $enum;
     }
 
+//    public function getGoing()
+//    {
+//        return TempTesting::where()
+//    }
+
 }

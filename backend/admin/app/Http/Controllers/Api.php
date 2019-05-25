@@ -169,7 +169,7 @@ class Api extends BaseController
             $average_values += $result["result"];
         }
 
-        if($average_values!==null) $average_values = $average_values/count($response["test"]["results"]);
+        if($average_values!==null) $average_values = round($average_values/count($response["test"]["results"]),2);
 
 
         $response["average_value"] = $average_values;
@@ -342,7 +342,7 @@ class Api extends BaseController
                 $average_values[$test->id] += $result["result"];
             }
 
-            if($average_values[$test->id]!==null) $average_values[$test->id] = $average_values[$test->id]/count($test["results"]);
+            if($average_values[$test->id]!==null) $average_values[$test->id] = round($average_values[$test->id]/count($test["results"]),2);
         }
 
         $response["average_values"] = $average_values;

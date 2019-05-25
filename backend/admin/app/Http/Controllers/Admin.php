@@ -35,8 +35,8 @@ class Admin extends BaseController
      */
     public function index()
     {
-        $testing_time = strtotime(Settings::getByKey("testing_time")->value) ?? 0;
-        $current_testing = DB::table("temp_testing")->where("endtime", "<", date("d-m-Y", time() + $testing_time))->get()->all();
+        //$testing_time = strtotime(Settings::getByKey("testing_time")->value) ?? 0;
+        $current_testing = TempTesting::all()->groupBy("id_test");
         $tests_count = Tests::all()->count();
         $quests_count = Quests::all()->count();
         $users_count = Users::all()->count();
@@ -47,6 +47,20 @@ class Admin extends BaseController
             "quests_count" => $quests_count,
             "users_count" => $users_count
         ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function endAllTesting()
+    {
+        $temp_testings = TempTesting::all();
+        foreach ($temp_testings as $temp_testing)
+        {
+            $temp_testing->delete();
+        }
+
+        return redirect("/");
     }
 
     /**
@@ -111,7 +125,7 @@ class Admin extends BaseController
         foreach ($results as $value) {
             $averageValue += $value->result;
         }
-        if (!empty($averageValue)) $averageValue = $averageValue / count($results);
+        if (!empty($averageValue)) $averageValue = round($averageValue / count($results),2);
 
         return view('user_profile', [
             "user" => $user,

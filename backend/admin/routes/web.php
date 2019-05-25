@@ -12,6 +12,7 @@
 */
 //dashboard
 Route::get('/', 'Admin@index')->middleware('status')->name('index');
+Route::get('/endAllTesting', 'Admin@endAllTesting')->middleware('status')->name('endAllTesting');
 
 //users
 Route::get('/users', 'Admin@usersList')->middleware('status')->name('usersList');

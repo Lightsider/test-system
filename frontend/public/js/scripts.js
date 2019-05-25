@@ -57,7 +57,7 @@ $('#answer').submit(function (e) {
             var status = data['status'];
 
             if (status == "ok") {
-                $("#skip_button").click();
+                window.location.href = "/nextQuest";
             }
             else if (status === "success") {
                 var message = data["message"];

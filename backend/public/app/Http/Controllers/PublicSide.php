@@ -82,7 +82,8 @@ class PublicSide extends BaseController
             if (!empty($average_values[$test->id])) $average_values[$test->id]["value"] = round($average_values[$test->id]["value"] / count($test["results"]),2);
             $average_values[$test->id]["color"] = $this->getColorScheme($average_values[$test->id]["value"]);
 
-            $user_results[$test->id]["value"] = round($test->getUserResult(Auth::user()->id),2);
+
+            $user_results[$test->id]["value"] = !empty($test->getUserResult(Auth::user()->id))?round($test->getUserResult(Auth::user()->id),2): null;
             $user_results[$test->id]["color"] = $this->getColorScheme($user_results[$test->id]["value"]);
         }
 
@@ -112,7 +113,7 @@ class PublicSide extends BaseController
         $average_values["color"] = $this->getColorScheme($average_values["value"]);
 
 
-        $user_results["value"] = round($test->getUserResult(Auth::user()->id),2);
+        $user_results["value"] = !empty($test->getUserResult(Auth::user()->id))?round($test->getUserResult(Auth::user()->id),2): null;
         $user_results["color"] = $this->getColorScheme($user_results["value"]);
 
         return view('test_preview', [
@@ -205,6 +206,8 @@ class PublicSide extends BaseController
         $user = Auth::user();
         $temp_testing = TempTesting::where("id_user", $user->id)->get()->first();
 
+        if (empty($temp_testing)) return redirect("/");
+
         if (!$temp_testing->isTestingProcessing()) {
             if (!empty($temp_testing)) {
                 $temp_testing->stopTesting();
@@ -275,15 +278,16 @@ class PublicSide extends BaseController
 
         $average_value["value"] = null;
 
-        $results = Results::with("test")->where("id_user", $user->id)->orderBy("date", "DESC")->get();
-        $max_result = $last_result = $results[0] !== null ? $results[0] : null;
+        $results = Results::with("test")->where("id_user", $user->id)->orderBy("id", "DESC")->get();
+        $max_result = $last_result = null;
+        if(isset($results[0])) $max_result = $last_result = $results[0];
 
         foreach ($results as $key => $result) {
             if ($result->result > $max_result->result) $max_result = $result;
             $average_value["value"] += $result["result"];
             $results[$key]["color"] = $this->getColorScheme($result["result"], "bootstrap");
         }
-        if ($average_value !== null) $average_value["value"] = round($average_value["value"] / count($results));
+        if ($average_value["value"] !== null) $average_value["value"] = round($average_value["value"] / count($results),2);
 
 
         return view('profile', [

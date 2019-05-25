@@ -55,4 +55,20 @@ class TempTesting extends Model
     {
         return $this->belongsTo('App\Users', 'id_user');
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentUserCount()
+    {
+        return TempTesting::where("id_test",$this->id_test)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompleteUserCount()
+    {
+        return Results::where("id_test",$this->id_test)->where("date",date("Y-m-d"))->count();
+    }
 }
