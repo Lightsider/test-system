@@ -58,13 +58,12 @@ class Api extends BaseController
         $quest = $temp_testing->quest;
         $quest_arr = $temp_testing->quest_arr;
 
-        if($quest_arr->{$quest->id}->answered==0) {
+        if ($quest_arr->{$quest->id}->answered == 0) {
 
 
             $showResult = false;
             if ($temp_testing->test->type === "learn") {
                 $showResult = true;
-                $right_answers_id = [];
             }
 
             try {
@@ -77,7 +76,6 @@ class Api extends BaseController
                         if (trim($answer->text) === trim($request->answer))
                             $quest_arr->{$quest->id}->score = $quest->score;
                         $quest_arr->{$quest->id}->answered = 1;
-                        $right_answers_id[] = trim($answer->id);
                         break;
                     case "mch":
                         $this->validate($request, [
@@ -90,7 +88,6 @@ class Api extends BaseController
                         foreach ($answers as $answer) {
                             if ($answer->status == 1) {
                                 $right_answers_count++;
-                                $right_answers_id[] = trim($answer->id);
                                 if (in_array(trim($answer->id), $user_answers))
                                     $right_user_answers_count++;
                             }
@@ -107,7 +104,6 @@ class Api extends BaseController
                         $user_answers = array_map('trim', $user_answers);
                         foreach ($answers as $answer) {
                             if ($answer->status == 1) {
-                                $right_answers_id[] = trim($answer->id);
                                 if (in_array(trim($answer->id), $user_answers))
                                     $quest_arr->{$quest->id}->score = $quest->score;
                             }
@@ -122,7 +118,6 @@ class Api extends BaseController
                         if (trim($answer->text) === trim($request->answer))
                             $quest_arr->{$quest->id}->score = $quest->score;
                         $quest_arr->{$quest->id}->answered = 1;
-                        $right_answers_id[] = trim($answer->id);
                         break;
                     default:
                         $response["status"] = "error";
@@ -138,7 +133,6 @@ class Api extends BaseController
                         $response['status'] = "success";
                     else
                         $response['status'] = "fail";
-                    $response["right_answers"] = $right_answers_id;
                     $response["message"] = $quest->hint;
                 }
 
@@ -157,9 +151,7 @@ class Api extends BaseController
                     ['Content-type' => 'application/json; charset=utf-8'],
                     JSON_UNESCAPED_UNICODE);
             }
-        }
-        else
-        {
+        } else {
             return Response::json(
                 [
                     "status" => "error",

@@ -15,6 +15,8 @@ Route::get('/', 'PublicSide@index')->name('index');
 Route::get('/test/{id}', 'PublicSide@testPreview')->name('testPreview');
 Route::get('/startTest/{id}', 'PublicSide@startTest')->name('startTest');
 Route::get('/testing', 'PublicSide@testing')->name('testing');
+Route::get('/nextQuest', 'PublicSide@nextQuest')->name('nextQuest');
+Route::get('/testingResult', 'PublicSide@testingResult')->name('testingResult');
 
 //profile
 Route::get('/profile', 'PublicSide@profile')->name('profile');

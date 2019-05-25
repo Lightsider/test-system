@@ -41,7 +41,7 @@ class PublicSide extends BaseController
                 return "warning";
             } elseif ($result < 75) {
                 return "primary";
-            } elseif ($result < 100) {
+            } elseif ($result <= 100) {
                 return "success";
             } else return "default";
         } else {
@@ -52,7 +52,7 @@ class PublicSide extends BaseController
                 return "yellow";
             } elseif ($result < 75) {
                 return "blue";
-            } elseif ($result < 100) {
+            } elseif ($result <= 100) {
                 return "green";
             } else return "default";
         }
@@ -79,10 +79,10 @@ class PublicSide extends BaseController
             foreach ($test["results"] as $result) {
                 $average_values[$test->id]["value"] += $result["result"];
             }
-            if (!empty($average_values[$test->id])) $average_values[$test->id]["value"] = $average_values[$test->id]["value"] / count($test["results"]);
+            if (!empty($average_values[$test->id])) $average_values[$test->id]["value"] = round($average_values[$test->id]["value"] / count($test["results"]),2);
             $average_values[$test->id]["color"] = $this->getColorScheme($average_values[$test->id]["value"]);
 
-            $user_results[$test->id]["value"] = $test->getUserResult(Auth::user()->id);
+            $user_results[$test->id]["value"] = round($test->getUserResult(Auth::user()->id),2);
             $user_results[$test->id]["color"] = $this->getColorScheme($user_results[$test->id]["value"]);
         }
 
@@ -108,11 +108,11 @@ class PublicSide extends BaseController
         foreach ($test["results"] as $result) {
             $average_values["value"] += $result["result"];
         }
-        if ($average_values !== null) $average_values["value"] = $average_values["value"] / count($test["results"]);
+        if ($average_values !== null) $average_values["value"] = round($average_values["value"] / count($test["results"]),2);
         $average_values["color"] = $this->getColorScheme($average_values["value"]);
 
 
-        $user_results["value"] = $test->getUserResult(Auth::user()->id);
+        $user_results["value"] = round($test->getUserResult(Auth::user()->id),2);
         $user_results["color"] = $this->getColorScheme($user_results["value"]);
 
         return view('test_preview', [
@@ -161,10 +161,8 @@ class PublicSide extends BaseController
     {
         $user = Auth::user();
         $temp_testing = TempTesting::where("id_user", $user->id)->get()->first();
-        if (!$temp_testing->isTestingProcessing())
-        {
-            if(!empty($temp_testing))
-            {
+        if (!$temp_testing->isTestingProcessing()) {
+            if (!empty($temp_testing)) {
                 $temp_testing->stopTesting();
                 $temp_testing->delete();
             }
@@ -178,13 +176,12 @@ class PublicSide extends BaseController
         if (!empty($temp_testing->quest->files)) {
             foreach ($temp_testing->quest->files as $file) {
                 $mime = mime_content_type($file->path);
-                if(strpos($mime,"image")!==false) $images[] = $file;
+                if (strpos($mime, "image") !== false) $images[] = $file;
             }
         }
 
         $answers = [];
-        if($temp_testing->quest->type==="mch" or $temp_testing->quest->type==="ch")
-        {
+        if ($temp_testing->quest->type === "mch" or $temp_testing->quest->type === "ch") {
             $answers = $temp_testing->quest->answers->toArray();
             shuffle($answers);
         }
@@ -192,17 +189,81 @@ class PublicSide extends BaseController
         $token = Hash::make($temp_testing->id);
 
         return view('testing', [
-            'token'=>$token,
-            'answers'=>$answers,
+            'token' => $token,
+            'answers' => $answers,
             'images' => $images,
             "current_quest_number" => $current_quest_number,
             "temp_testing" => $temp_testing
         ]);
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function nextQuest()
     {
-        
+        $user = Auth::user();
+        $temp_testing = TempTesting::where("id_user", $user->id)->get()->first();
+
+        if (!$temp_testing->isTestingProcessing()) {
+            if (!empty($temp_testing)) {
+                $temp_testing->stopTesting();
+            }
+            return redirect("/");
+        }
+
+        if($temp_testing->isTestingComplete())
+        {
+            return redirect("/testingResult");
+        }
+
+        $quest = $temp_testing->quest;
+        $quest_arr = $temp_testing->quest_arr;
+
+        $get = false;
+        foreach ($quest_arr as $id_quest => $tmp_quest) {
+            if($get)
+            {
+                $temp_testing->id_current_quest = $id_quest;
+                $temp_testing->save();
+                break;
+            }
+            if ($id_quest == $quest->id) {
+                $get = true;
+            }
+        }
+
+
+        return redirect("/testing");
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public  function testingResult()
+    {
+        $user = Auth::user();
+        $temp_testing = TempTesting::where("id_user", $user->id)->get()->first();
+
+        if (!empty($temp_testing)) {
+            $test = $temp_testing->test;
+            $temp_testing->stopTesting();
+        }
+        else
+        {
+            return redirect("/");
+        }
+
+        $result = Results::where("id_test",$test->id)->where("id_user",$user->id)->get()->last();
+        $result_color = $this->getColorScheme($result->result);
+
+        return view('testing_result', [
+            "temp_testing"=>$temp_testing,
+            "test"=>$test,
+            "result"=>$result,
+            "result_color"=>$result_color
+        ]);
+
     }
 
     /**
@@ -215,14 +276,14 @@ class PublicSide extends BaseController
         $average_value["value"] = null;
 
         $results = Results::with("test")->where("id_user", $user->id)->orderBy("date", "DESC")->get();
-        $max_result = $last_result = $results[0]!==null ?$results[0]: null;
+        $max_result = $last_result = $results[0] !== null ? $results[0] : null;
 
         foreach ($results as $key => $result) {
             if ($result->result > $max_result->result) $max_result = $result;
             $average_value["value"] += $result["result"];
             $results[$key]["color"] = $this->getColorScheme($result["result"], "bootstrap");
         }
-        if ($average_value !== null) $average_value["value"] = $average_value["value"] / count($results);
+        if ($average_value !== null) $average_value["value"] = round($average_value["value"] / count($results));
 
 
         return view('profile', [

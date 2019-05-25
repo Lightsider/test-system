@@ -37,6 +37,9 @@
                 <div class="row justify-content-center">
                     <div class="col-10 mt-3">
                         <h4> {{$temp_testing->quest->description}} </h4>
+                        <h5>
+                            Баллы: {{ $temp_testing->quest->score }}
+                        </h5>
                     </div>
                 </div>
                 <form style="width: 100%" id="answer" name="answer">
@@ -57,6 +60,7 @@
                                     Один вариант ответа
                                 @endswitch
                             </h5>
+
                                 <input type="hidden" name="test_id" value="{{$temp_testing->test->id}}">
                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="hidden" name="token" value="{{$token}}">
@@ -109,7 +113,7 @@
                         <div class="col-6">
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-12">
-                            <a id="skip_button" href="#" class="btn btn-primary">Пропустить</a>
+                            <a id="skip_button" href="{{route('nextQuest')}}" class="btn btn-primary">Пропустить</a>
                         </div>
                     </div>
                     <div class="row mt-3">

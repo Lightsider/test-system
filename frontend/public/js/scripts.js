@@ -56,7 +56,7 @@ $('#answer').submit(function (e) {
         success: function (data) {
             var status = data['status'];
 
-            if (status === "ok") {
+            if (status == "ok") {
                 $("#skip_button").click();
             }
             else if (status === "success") {

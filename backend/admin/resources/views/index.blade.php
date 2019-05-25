@@ -29,19 +29,19 @@
                                     <h3 class="m-b-lg text-normalsize">Недавние тестирования</h3>
                                     <div class="row">
                                         @foreach($current_testing as $test)
-                                            {{-- TO DO --}}
+                                            {{-- TODO вывести информацию --}}
                                         <div class="col-sm-6 col-md-4">
                                             <div class="card card-default">
                                                 <div class="card-header">
-                                                    <h4 class="card-title text-normalsize">{{ $test->title }} </h4>
+                                                    <h4 class="card-title text-normalsize">{{ $test->test->title }} </h4>
                                                 </div>
                                                 <div class="card-block">
-                                                    <p><strong>Решают:</strong> 15</p>
-                                                    <p><strong>Закончили:</strong> 5</p>
-                                                    <p><strong>Всего:</strong> 20</p>
+                                                    <p><strong>Решают:</strong> TODO</p>
+                                                    <p><strong>Закончили:</strong> TODO</p>
+                                                    <p><strong>Всего:</strong> TODO</p>
                                                 </div>
                                                 <div class="card-footer">
-                                                    <p><strong>Времени осталось:</strong> 12:50</p>
+                                                    <p><strong>Времени осталось:</strong> TO DO</p>
                                                 </div>
                                             </div>
                                         </div><!-- END column -->

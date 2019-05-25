@@ -19,7 +19,8 @@ class Testing
     {
         $user = Auth::user();
         $temp_testing = TempTesting::where("id_user", $user->id)->get()->first();
-        if (!empty($temp_testing) &&  $request->route()->getAction()["as"]!=="testing") return redirect("/testing");
+        if (!empty($temp_testing) &&  $request->route()->getAction()["as"]!=="testing" &&  $request->route()->getAction()["as"]!=="nextQuest"
+            &&  $request->route()->getAction()["as"]!=="testingResult") return redirect("/testing");
 
         return $next($request);
     }

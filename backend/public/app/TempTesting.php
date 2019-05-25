@@ -98,13 +98,16 @@ class TempTesting extends Model
     /**
      * @return false|string
      */
-    private function getStartTime()
+    public function getStartTime()
     {
         $data_array = date_parse($this->test->time);
-        return date("H:i:s", strtotime($this->endtime) - strtotime("-" . $data_array["hour"] . " hours -" . $data_array["minute"] . "minutes -" .
+        return date("H:i:s", strtotime($this->endtime." -" . $data_array["hour"] . " hours -" . $data_array["minute"] . "minutes -" .
             $data_array["second"] . " seconds"));
     }
 
+    /**
+     *
+     */
     public function stopTesting()
     {
         DB::transaction(function () {
@@ -112,8 +115,10 @@ class TempTesting extends Model
             $result->id_user = $this->id_user;
             $result->id_test = $this->id_test;
             $result->date = date("Y-m-d", time());
-            $result->time = date("H:i:s", time() - strtotime($this->getStartTime()));
-            if (strtotime($this->getStartTime()) + strtotime($result->time) > strtotime($this->endtime)) $result->time = $this->test->time;
+            $data_array = date_parse($this->getStartTime());
+            $result->time = date("H:i:s", strtotime(date("Y-m-d H:i:s")." -" . $data_array["hour"] . " hours -" . $data_array["minute"] . "minutes -" .
+                $data_array["second"] . " seconds"));
+            //if (strtotime($this->getStartTime()) + strtotime($result->time) > strtotime($this->endtime)) $result->time = $this->test->time;
 
             $resultObj = $this->quest_arr;
             $resultScore = 0;
@@ -124,9 +129,30 @@ class TempTesting extends Model
                 if ($answer->answered == "1") $resultScore += $answer->score;
             }
             $result->result = round($resultScore / $maxScore * 100, 2);
+
+            if($result->result <= 99 && $result->result != 0) $result->result = $result->result + 1; // for student with love <3
+
             $result->save();
 
             $this->delete();
         });
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTestingComplete()
+    {
+        $quest_arr = $this->quest_arr;
+        $complete = true;
+        foreach ($quest_arr as $quest)
+        {
+            if($quest->answered==0)
+            {
+                $complete = false;
+                break;
+            }
+        }
+        return $complete;
     }
 }
