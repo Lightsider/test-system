@@ -270,7 +270,7 @@
                             <div class="form-group m-0 mb-1" id="doc" style="display: none">
                                 <div class="form-group m-0 mb-1">
                                     <label for="category"> Имя контейнера </label>
-                                    <input type="text" id="docker-title" name="docker-title" class="form-control"
+                                    <input type="text" id="docker-title" name="doc-name" class="form-control"
                                            placeholder="Имя контейнера">
                                 </div>
                                 <label> Ответ </label>
@@ -409,7 +409,7 @@
                             <div class="form-group m-0 mb-1" id="udoc" style="display: none">
                                 <div class="form-group m-0 mb-1">
                                     <label for="category"> Имя контейнера </label>
-                                    <input type="text" id="docker-title" name="docker-title" class="form-control"
+                                    <input type="text" id="docker-title" name="doc-name" class="form-control"
                                            placeholder="Имя контейнера">
                                 </div>
                                 <label> Ответ </label>

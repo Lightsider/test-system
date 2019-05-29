@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Answers;
 use App\Categories;
+use App\DockerContainers;
 use App\Files;
 use App\Quests;
 use App\QuestToCategory;
@@ -395,7 +396,7 @@ class Api extends BaseController
     {
         if($id!==null && is_numeric($id))
         {
-            $quest = Quests::with("files")->with("category")->with("answers")->findOrFail($id);
+            $quest = Quests::with("files")->with("category")->with("answers")->with('docker')->findOrFail($id);
             return Response::json($quest,
                 200,
                 ['Content-type' => 'application/json; charset=utf-8'],
@@ -573,15 +574,20 @@ class Api extends BaseController
                         }
                         break;
                     case "doc":
-                        //TODO для докера
                         $answer = new Answers();
                         $this->validate($request, [
                             'ans-doc' => ['string','required'],
+                            'doc-name' => ['string','required','unique:docker_containers,name'],
                         ]);
                         $answer->id_quest = $quest->id;
                         $answer->text = $request->get("ans-doc");
                         $answer->status = "1";
                         $answer->save();
+
+                        $docker = new DockerContainers();
+                        $docker->id_quest = $quest->id;
+                        $docker->name = $request->get("doc-name");
+                        $docker->save();
                         break;
                     case "ch":
                         $i=1;
@@ -734,15 +740,20 @@ class Api extends BaseController
                         }
                         break;
                     case "doc":
-                        //TODO для докера
                         $answer = new Answers();
                         $this->validate($request, [
                             'ans-doc' => ['string','required'],
+                            'doc-name' => ['string','required'],
                         ]);
                         $answer->id_quest = $quest->id;
                         $answer->text = $request->get("ans-doc");
                         $answer->status = "1";
                         $answer->save();
+
+                        $docker = DockerContainers::firstOrCreate(["name"=>$request->get('doc-name')]);
+                        $docker->id_quest = $quest->id;
+                        $docker->name = $request->get("doc-name");
+                        $docker->save();
                         break;
                     case "ch":
                         $i=1;

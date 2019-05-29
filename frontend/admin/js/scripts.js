@@ -673,6 +673,7 @@ function getQuestInfoInUpdateForm(id) {
                 });
             }
             else if (data["type"] === "doc") {
+                modal.find(".modal-content input[name=doc-name]").val(data["docker"]["name"]);
                 modal.find(".modal-content textarea[name=ans-doc]").val(data["answers"][0]["text"]);
             }
 
@@ -923,6 +924,11 @@ function showQuestList() {
                 else if (data["type"] == "doc") type = "С виртуальным контейнером";
                 else type = "С выбором ответа";
                 html += "<p class=\"m-h-lg fz-md lh-lg\"><strong>Тип:</strong> " + type + " </p>\n";
+
+                if(data["type"] == "doc")
+                {
+                    html+= "<p><strong>Название контейнера:</strong> "+data["docker"]["name"]+"</p>";
+                }
 
                 html+= "<p><strong>Ответы:</strong><br><ul>";
 
