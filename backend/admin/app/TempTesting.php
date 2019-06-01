@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Docker\API\Model\ContainersCreatePostBody;
+use Docker\Docker;
 use Illuminate\Database\Eloquent\Model;
 
 /**

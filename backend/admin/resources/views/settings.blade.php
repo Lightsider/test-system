@@ -6,29 +6,29 @@
         <div class="wrap">
             <section class="app-content">
                 <div class="card">
-                    <h3 class="m-b-lg">Основные</h3>
+                    <h3 class="m-b-lg mb-5">Основные</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <form method="post" action="{{ route('settings') }}">
                                 {{csrf_field()}}
+                                {{--<div class="row mb-3">--}}
+                                    {{--<div class="col-6">--}}
+
+                                        {{--<div class="form-group">--}}
+                                            {{--<label for="testing_time"> Время отображения тестирований на--}}
+                                                {{--главной </label>--}}
+                                            {{--<input type="text" id="testing_time" name="testing_time"--}}
+                                                   {{--class="form-control"--}}
+                                                   {{--value="@if(!empty($settings["testing_time"])){{$settings["testing_time"]}}@endif">--}}
+                                            {{--<small> Введите его в формате "1 day; 2 week and etc."</small>--}}
+                                        {{--</div>--}}
+
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="row mb-3">
                                     <div class="col-6">
-
                                         <div class="form-group">
-                                            <label for="testing_time"> Время отображения тестирований на
-                                                главной </label>
-                                            <input type="text" id="testing_time" name="testing_time"
-                                                   class="form-control"
-                                                   value="@if(!empty($settings["testing_time"])){{$settings["testing_time"]}}@endif">
-                                            <small> Введите его в формате "1 day; 2 week and etc."</small>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <h6>Свободная регистрация</h6>
+                                            <h6><strong>Свободная регистрация</strong></h6>
                                             <label class="radio-label" for="enable_register" style="font-size: 15px">
                                                 <input type="checkbox" id="enable_register" name="enable_register"
                                                        value="yes"
@@ -36,6 +36,17 @@
                                                 Разрешить пользователям регистрироваться самим
                                             </label>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="testing_time"><strong> Максимальное количество контейнеров одновременно </strong></label>
+                                            <input type="number" id="containers_max_count" name="containers_max_count" min="1"
+                                                   class="form-control"
+                                                   value="@if(!empty($settings["containers_max_count"])){{$settings["containers_max_count"]}}@endif">
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -65,23 +76,23 @@
                     </div><!-- .row -->
                 </div>
 
-                <div class="card">
-                    <h3 class="m-b-lg">Импорт</h3>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="m-h-lg fz-md lh-lg">Здесь будут ваши настройки</p>
-                        </div><!-- END column -->
-                    </div><!-- .row -->
-                </div>
+                {{--<div class="card">--}}
+                    {{--<h3 class="m-b-lg">Импорт</h3>--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-md-12">--}}
+                            {{--<p class="m-h-lg fz-md lh-lg">Здесь будут ваши настройки</p>--}}
+                        {{--</div><!-- END column -->--}}
+                    {{--</div><!-- .row -->--}}
+                {{--</div>--}}
 
-                <div class="card">
-                    <h3 class="m-b-lg">Экспорт</h3>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="m-h-lg fz-md lh-lg">Здесь будут ваши настройки</p>
-                        </div><!-- END column -->
-                    </div><!-- .row -->
-                </div>
+                {{--<div class="card">--}}
+                    {{--<h3 class="m-b-lg">Экспорт</h3>--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-md-12">--}}
+                            {{--<p class="m-h-lg fz-md lh-lg">Здесь будут ваши настройки</p>--}}
+                        {{--</div><!-- END column -->--}}
+                    {{--</div><!-- .row -->--}}
+                {{--</div>--}}
             </section><!-- .app-content -->
         </div>
     </div>

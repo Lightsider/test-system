@@ -57,8 +57,8 @@
                                     </h5>
                                 </div>
                                 <div class="col-lg-4 col-xs-12 mt-3">
-                                    <h5 class="text-muted"> Файлы задания: </h5>
                                     @if(!empty($quest->files))
+                                    <h5 class="text-muted"> Файлы задания: </h5>
                                         <div class="list-group">
                                             @foreach($temp_testing->quest->files as $key=>$file)
                                                 <a href="{{$file->path}}" title="{{$file->path}}"

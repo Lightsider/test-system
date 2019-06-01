@@ -40,6 +40,10 @@
                         <h5>
                             Баллы: {{ $temp_testing->quest->score }}
                         </h5>
+                        @isset($doc_message)
+                            <hr>
+                            <p>{!! $doc_message !!}</p>
+                        @endisset
                     </div>
                 </div>
                 <form style="width: 100%" id="answer" name="answer">
@@ -95,8 +99,8 @@
                                 @endswitch
                         </div>
                         <div class="col-lg-4 col-xs-12 mt-3">
+                            @if(!empty($temp_testing->quest->files->toArray()))
                             <h5 class="text-muted"> Файлы задания: </h5>
-                            @if(!empty($temp_testing->quest->files))
                                 <div class="list-group">
                                     @foreach($temp_testing->quest->files as $key=>$file)
                                         <a href="{{$file->path}}" title="{{$file->path}}"

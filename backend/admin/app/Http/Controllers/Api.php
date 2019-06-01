@@ -750,7 +750,9 @@ class Api extends BaseController
                         $answer->status = "1";
                         $answer->save();
 
-                        $docker = DockerContainers::firstOrCreate(["name"=>$request->get('doc-name')]);
+                        $docker = DockerContainers::where("id_quest",$quest->id)->get()->first();
+                        if(empty($docker->toArray())) $docker = new DockerContainers();
+
                         $docker->id_quest = $quest->id;
                         $docker->name = $request->get("doc-name");
                         $docker->save();

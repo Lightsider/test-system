@@ -82,4 +82,12 @@ class Quests extends Model
         }
         return $enum;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function docker()
+    {
+        return $this->hasOne('App\DockerContainers', 'id_quest');
+    }
 }
