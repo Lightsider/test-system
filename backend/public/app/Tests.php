@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string $active
  * @property string $time
  * @property string $created_at
  * @property string $updated_at
@@ -25,7 +26,7 @@ class Tests extends Model
     /**
      * @var array
      */
-    protected $fillable = ['title', 'description', 'time', 'created_at', 'updated_at'];
+    protected $fillable = ['title', 'description', 'active', 'time', 'created_at', 'updated_at'];
 
     public function getTimeAttribute($value)
     {

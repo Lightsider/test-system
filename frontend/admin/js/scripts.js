@@ -1018,9 +1018,12 @@ function showTestsList() {
                 $("#testsList").html("");
                 $.each(data["tests"], function (index, value) {
                     var type = "";
+                    var active = "card-muted";
+                    if(value["active"]==1)
+                        active = "";
                     var html = "<div class=\"col-sm-6 col-md-4\">\n" +
                         "                                        <a href=\"/test/" + value["id"] + "\">" +
-                        "<div class=\"card\ " + getColorFromResults(data["average_values"][value["id"]], "card") + "\">\n" +
+                        "<div class=\"card\ " + getColorFromResults(data["average_values"][value["id"]], "card") + " "+active+"\">\n" +
                         "                                                <div class=\"card-header\">\n" +
                         "                                                    <h4 class=\"card-title text-normalsize\">" + value["title"] + "</h4>\n" +
                         "                                                </div>\n" +

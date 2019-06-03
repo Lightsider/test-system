@@ -1,3 +1,7 @@
+.card-muted
+{
+    opacity: 0.5;
+}
 .text-normalsize
 {
     text-transform: none !important;

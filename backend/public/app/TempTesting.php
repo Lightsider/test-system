@@ -210,8 +210,6 @@ class TempTesting extends Model
 
                 $containerCreateResult = $docker->containerCreate($containerConfig);
                 $docker->containerStart($containerCreateResult->getId());
-                //$docker->containerInspect($containerCreateResult->getId());
-                //$contStartResult->getNetworkSettings()->getIPAddress()); // get ip
 
                 $quest_arr = json_decode(json_encode($this->quest_arr), True);
                 $quest_arr[$this->id_current_quest]["doc"]["id"] = $containerCreateResult->getId();

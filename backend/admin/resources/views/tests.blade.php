@@ -34,6 +34,13 @@
                                     <textarea class="form-control" placeholder="Описание" name="description"></textarea>
                                 </div>
                                 <div class="form-group">
+                                    <h6>Активность</h6>
+                                    <label class="radio-label" for="active" style="font-size: 15px">
+                                        <input type="checkbox" id="active" name="active" value="1">
+                                        Будет ли доступен этот тест для прохождения?
+                                    </label>
+                                </div>
+                                <div class="form-group">
                                     <h6>Время</h6>
                                     <input type="time" name="time" class="form-control" min="0">
                                 </div>

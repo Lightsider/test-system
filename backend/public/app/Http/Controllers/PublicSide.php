@@ -69,7 +69,7 @@ class PublicSide extends BaseController
      */
     public function index()
     {
-        $tests = Tests::with('questions')->with("category")->get();
+        $tests = Tests::with('questions')->with("category")->where("active","1")->get();
 
         $average_values = [];
         $user_results = [];
@@ -101,7 +101,7 @@ class PublicSide extends BaseController
      */
     public function testPreview(int $id)
     {
-        $test = Tests::with("results")->findOrFail($id);
+        $test = Tests::with("results")->where("active","1")->findOrFail($id);
 
         $average_values = null;
         $user_results = null;
@@ -130,7 +130,7 @@ class PublicSide extends BaseController
      */
     public function startTest(int $id)
     {
-        $test = Tests::with("questions")->findOrFail($id);
+        $test = Tests::with("questions")->where("active","1")->findOrFail($id);
 
         $tmp_test = new TempTesting();
         $tmp_test->id_user = Auth::user()->id;

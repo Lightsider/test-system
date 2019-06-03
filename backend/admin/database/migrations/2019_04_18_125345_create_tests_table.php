@@ -17,6 +17,7 @@ class CreateTestsTable extends Migration
             $table->increments('id');
             $table->string('title',255);
             $table->string('description',255);
+            $table->string('active',255);
             $table->time('time');
             $table->enum('type',["learn","control"]);
             $table->timestamps();

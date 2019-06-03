@@ -25,7 +25,7 @@ class Tests extends Model
     /**
      * @var array
      */
-    protected $fillable = ['title', 'description', 'time', 'created_at', 'updated_at'];
+    protected $fillable = ['title', 'description','active', 'time', 'created_at', 'updated_at'];
 
     public function getTimeAttribute($value)
     {
