@@ -257,7 +257,7 @@ $("#editQuestInTestForm").submit(function (e) {
     e.preventDefault();
     //update quests in test
     $.ajax({
-        url: '/api/addQuestToTest/',
+        url: '/api/addQuestToTest',
         data: $(this).serialize(),
         method: 'post',
         success: function (data) {
