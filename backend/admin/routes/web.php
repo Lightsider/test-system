@@ -26,6 +26,9 @@ Route::get('/test/{id}', 'Admin@testDetail')->middleware('status')->name('testDe
 Route::get('/quests', 'Admin@questsList')->middleware('status')->name('questsList');
 Route::get('/quest/{id}', 'Admin@questDetail')->middleware('status')->name('questDetail');
 
+//results
+Route::get('/results', 'Admin@results')->middleware('status')->name('results');
+
 //settings
 Route::get('/settings', 'Admin@settings')->middleware('status')->name('settings');
 Route::post('/settings', 'Admin@saveSettings')->middleware('status')->name('saveSettings');

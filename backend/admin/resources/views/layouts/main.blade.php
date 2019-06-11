@@ -45,17 +45,8 @@
                 <li class="nav-item"><a href="{{ route("questsList") }}" class="nav-link @if(Route::current()->getName() === "questsList" ||
                 Route::current()->getName() === "questDetail") active @endif"><i class="fa fa-edit"></i>Вопросы</a></li>
                 <li class="nav-item">
-                    <a href="#results" class="nav-link collapsed" data-toggle="collapse" aria-expanded="false">
-                        <i class="fa fa-table"></i>Результаты
-                        <span class="sub-ico">
-                        <i class="fa fa-angle-down"></i>
-                    </span>
-                    </a>
-                </li>
-                <li class="sub collapse" id="results" aria-expanded="false" style="">
-                    <a href="{{ route("usersList") }}" class="nav-link text-normalsize" data-parent="#results">По пользователям</a>
-                    <a href="{{ route("testsList") }}" class="nav-link text-normalsize" data-parent="#results">По тестам</a>
-                </li>
+                    <a href="{{ route("results") }}" class="nav-link @if(Route::current()->getName() === "results") active @endif">
+                        <i class="fa fa-table"></i>Результаты</a></li>
                 <li class="nav-item"><a href="{{ route("settings") }}" class="nav-link @if(Route::current()->getName() === "settings") active @endif"><i
                                 class="fa fa-cog"></i>Настройки</a></li>
                 <li class="nav-item"><a href="{{route("support")}}" class="nav-link @if(Route::current()->getName() === "support") active @endif"><i

@@ -74,6 +74,17 @@ class Admin extends BaseController
         ]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function results()
+    {
+        $results = Results::all(); // custom method
+        return view('results', [
+            "results" => $results
+        ]);
+    }
+
 
     /**
      * @param Request $request

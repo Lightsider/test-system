@@ -100,11 +100,11 @@ class Api extends BaseController
                             'answer' => ['string', 'required'],
                         ]);
                         $answers = $quest->answers;
-                        $user_answers = $request->answer;
-                        $user_answers = array_map('trim', $user_answers);
+                        $user_answer = $request->answer;
+                        $user_answer = trim($user_answer);
                         foreach ($answers as $answer) {
                             if ($answer->status == 1) {
-                                if (in_array(trim($answer->id), $user_answers))
+                                if (trim($answer->id) == $user_answer)
                                     $quest_arr->{$quest->id}->score = $quest->score;
                             }
                         }
